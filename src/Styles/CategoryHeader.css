@@ -1,0 +1,86 @@
+#cats-header {
+    clear: both;
+    padding: 0 100em;
+    margin-left: -100em;
+    border-top: 1px solid #b6b6b6;
+    border-bottom: 1px solid #b6b6b6;
+    overflow: hidden;
+    width: calc(100% + 200em)
+}
+
+#cats-header ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none
+}
+
+.cats-menu {
+    display: flex;
+    justify-content: space-between
+}
+
+#cats-header li {
+    width: 12.5%;
+    display: block;
+    font-family: Cabin,Helvetica,Arial,sans-serif;
+    position: static;
+    text-align: center;
+    margin: .5em 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 4em;
+    padding: .5em 0 .75em
+}
+
+#cats-header li a {
+    display: block;
+    line-height: 1.1;
+    color: #1f2833;
+    text-align: center
+}
+
+#cats-header li.cat-item-english-language-arts a,#cats-header li.cat-item-mathematics a,#cats-header li.cat-item-social-studies a {
+    padding: 0 .5em
+}
+
+#cats-header li.cat-item-objects-to-think-with a {
+    padding: 0 12%
+}
+
+.cat-item-engineering {
+    border-bottom: .75em solid #fab040
+}
+
+.cat-item-science {
+    border-bottom: .75em solid #506f86
+}
+
+.cat-item-technology {
+    border-bottom: .75em solid #895d2e
+}
+
+.cat-item-mathematics {
+    border-bottom: .75em solid #de703c
+}
+
+.cat-item-social-studies {
+    border-bottom: .75em solid #8dadc4
+}
+
+.cat-item-home {
+    border-bottom: .75em solid #2f3c4f
+}
+
+.cat-item-cross-disciplinary {
+    border-bottom: .75em solid #2092e7
+}
+
+#cats-header li a:hover,#cats-header li.current-cat a {
+    text-decoration: none
+}
+
+#cats-header li:hover,#cats-header li.current-cat {
+    border-bottom-width: 1.5em;
+    padding-bottom: 0
+}

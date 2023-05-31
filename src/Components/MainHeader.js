@@ -1,17 +1,20 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import '../Styles/MainHeader.css';
 
 const MainHeader = () => {
     return (
         <div>
-            <nav class="navbar navbar-expand-lg bg-light">
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="#">
-                        CAD Library
-                        <img src="https://citejournal.org/wp-content/themes/cite/images/logo.png"></img>
-                    </a>
+            <header id="masthead" class="site-header" role="banner">
+                <div class="site-branding">
+                    <p class="site-title">
+                        <Link to="/">
+                            <span>CAD</span> 
+                            Library
+                        </Link>
+                    </p>    
                 </div>
-            </nav>
+            </header>
         </div>
     );
 };

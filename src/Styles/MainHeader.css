@@ -1,0 +1,125 @@
+#masthead, #site-navigation {
+    position: relative
+}
+
+p {
+    line-height: 2
+}
+
+.site-title {
+    position: relative;
+    float: left;
+    font-family: Cabin,Helvetica,Arial,sans-serif;
+    margin: .67em 0 .2em
+}
+
+p.site-title {
+    font-size: 2em;
+    margin: .67em 0 .2em;
+    line-height: 1.4
+}
+
+.site-title a {
+    color: #1f2833;
+    font-weight: 400;
+    line-height: .8;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 10px;
+    font-size: .5em;
+    font-family: Cabin,Helvetica,Arial,sans-serif;
+    text-decoration: none
+}
+
+.site-title a:hover {
+    text-decoration: none
+}
+
+.site-title a span {
+    font-size: 4.2em;
+    display: block;
+    letter-spacing: initial;
+    line-height: .4;
+    text-indent: -3px
+}
+
+.site-title:after {
+    content: " ";
+    background: url(//citejournal.org/wp-content/themes/cite/images/logo.png) no-repeat 0 0;
+    background-size: 100%;
+    width: 53px;
+    height: 77px;
+    display: inline-block;
+    position: absolute;
+    margin: -1.35em 0 0
+}
+
+#page {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    padding: .5em 2%;
+}
+
+/* Main Navigation  */
+.main-navigation {
+    clear: both;
+    display: block;
+    float: left;
+    width: 100%
+}
+
+.main-navigation ul {
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding-left: 0
+}
+
+.main-navigation li {
+    float: left;
+    position: relative
+}
+
+.main-navigation a {
+    display: block;
+    text-decoration: none
+}
+
+.main-navigation ul ul {
+    box-shadow: 0 3px 3px rgba(0,0,0,.2);
+    float: left;
+    position: absolute;
+    top: 1.5em;
+    left: -999em;
+    z-index: 99999
+}
+
+.main-navigation ul ul ul {
+    left: -999em;
+    top: 0
+}
+
+.main-navigation ul ul a {
+    width: 200px
+}
+
+.main-navigation ul li:hover>ul,.main-navigation ul li.focus>ul {
+    left: auto
+}
+
+.main-navigation ul ul li:hover>ul,.main-navigation ul ul li.focus>ul {
+    left: 100%
+}
+
+.menu-toggle,.main-navigation.toggled ul {
+    display: block
+}
+
+#primary-menu li {
+    width: 100%
+}
+
+#primary-menu li:hover {
+    background-color: #ccc
+}
