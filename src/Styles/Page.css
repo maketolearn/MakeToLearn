@@ -1,0 +1,30 @@
+#page {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    padding: .5em 2%;
+}
+
+div {
+    display: block;
+}
+
+.clear:before,.clear:after,.entry-content:before,.entry-content:after,.comment-content:before,.comment-content:after,.site-header:before,.site-header:after,.site-content:before,.site-content:after,.site-footer:before,.site-footer:after {
+    content: "";
+    display: table;
+    table-layout: fixed
+}
+
+.clear:after,.entry-content:after,.comment-content:after,.site-header:after,.site-content:after,.site-footer:after {
+    clear: both
+}
+
+html {
+    overflow-x: hidden
+}
+
+body {
+    overflow-x: hidden;
+    background-color: #ebebeb;
+    color: #1f2833
+}

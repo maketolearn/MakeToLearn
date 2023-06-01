@@ -2,10 +2,6 @@
     position: relative
 }
 
-p {
-    line-height: 2
-}
-
 .site-title {
     position: relative;
     float: left;
@@ -15,7 +11,7 @@ p {
 
 p.site-title {
     font-size: 2em;
-    margin: .67em 0 .2em;
+    margin: .7em 0 .2em;
     line-height: 1.4
 }
 
@@ -40,7 +36,7 @@ p.site-title {
     display: block;
     letter-spacing: initial;
     line-height: .4;
-    text-indent: -3px
+    text-indent: -3px;
 }
 
 .site-title:after {
@@ -51,26 +47,21 @@ p.site-title {
     height: 77px;
     display: inline-block;
     position: absolute;
-    margin: -1.35em 0 0
+    margin: -1.35em 0 0;
 }
 
-#page {
-    width: 100%;
-    max-width: 1200px;
-    margin: auto;
-    padding: .5em 2%;
-}
-
-/* Main Navigation  */
+/* Main Navigation */
 .main-navigation {
+    font-family: Cabin,Helvetica,Arial,sans-serif;
+    float: right;
+    width: auto;
+    margin-top: -2.5em;
+    margin-bottom: .25em;
     clear: both;
     display: block;
-    float: left;
-    width: 100%
 }
 
 .main-navigation ul {
-    display: none;
     list-style: none;
     margin: 0;
     padding-left: 0
@@ -82,44 +73,10 @@ p.site-title {
 }
 
 .main-navigation a {
-    display: block;
-    text-decoration: none
-}
-
-.main-navigation ul ul {
-    box-shadow: 0 3px 3px rgba(0,0,0,.2);
-    float: left;
-    position: absolute;
-    top: 1.5em;
-    left: -999em;
-    z-index: 99999
-}
-
-.main-navigation ul ul ul {
-    left: -999em;
-    top: 0
-}
-
-.main-navigation ul ul a {
-    width: 200px
-}
-
-.main-navigation ul li:hover>ul,.main-navigation ul li.focus>ul {
-    left: auto
-}
-
-.main-navigation ul ul li:hover>ul,.main-navigation ul ul li.focus>ul {
-    left: 100%
+    color: #616161;
+    padding: .25em .5em
 }
 
 .menu-toggle,.main-navigation.toggled ul {
     display: block
-}
-
-#primary-menu li {
-    width: 100%
-}
-
-#primary-menu li:hover {
-    background-color: #ccc
 }
