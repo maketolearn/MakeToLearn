@@ -23,6 +23,8 @@
     width: 12.5%;
     display: block;
     font-family: Cabin,Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    font-size: 18px;
     position: static;
     text-align: center;
     margin: .5em 0;
@@ -64,7 +66,7 @@
     border-bottom: .75em solid #de703c
 }
 
-.cat-item-social-studies {
+.cat-item-cross-disciplinary{
     border-bottom: .75em solid #8dadc4
 }
 
@@ -72,7 +74,7 @@
     border-bottom: .75em solid #2f3c4f
 }
 
-.cat-item-cross-disciplinary {
+.cat-item-forum{
     border-bottom: .75em solid #2092e7
 }
 
