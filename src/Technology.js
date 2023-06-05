@@ -1,7 +1,7 @@
 import React from 'react';
 import MainHeader from './Components/MainHeader';
 import CategoryHeader from './Components/CategoryHeader';
-import CategoryBanner from './Components/CatgeoryBannerScience';
+import CategoryBannerTechnology from './Components/CategoryBannerTechnology';
 import { Link } from 'react-router-dom';
 import './Styles/Page.css';
 
@@ -12,7 +12,7 @@ const Technology = () => {
         <div class="site">
           <MainHeader></MainHeader>
           <CategoryHeader></CategoryHeader>
-          <CategoryBanner name={"Technology"}></CategoryBanner>
+          <CategoryBannerTechnology></CategoryBannerTechnology>
         </div>
       </body>
     </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import MainHeader from './Components/MainHeader';
 import CategoryHeader from './Components/CategoryHeader';
-import CategoryBannerHome from './Components/CatgeoryBannerScience';
+import CategoryBannerHome from './Components/CategoryBannerHome';
 import './Styles/Page.css';
 
 const App = () => {

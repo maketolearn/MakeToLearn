@@ -1,7 +1,7 @@
 import React from 'react';
 import MainHeader from './Components/MainHeader';
 import CategoryHeader from './Components/CategoryHeader';
-import CategoryBanner from './Components/CatgeoryBannerScience';
+import CategoryBannerMathematics from './Components/CategoryBannerMathematics';
 import { Link } from 'react-router-dom';
 import './Styles/Page.css';
 
@@ -12,7 +12,7 @@ const Mathematics = () => {
         <div class="site">
           <MainHeader></MainHeader>
           <CategoryHeader></CategoryHeader>
-          <CategoryBanner name={"Mathematics"}></CategoryBanner>
+          <CategoryBannerMathematics></CategoryBannerMathematics>
         </div>
       </body>
     </div>

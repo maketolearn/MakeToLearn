@@ -1,5 +1,14 @@
-.background-engineering{
+#engineering-banner{
     background-color: #fab040;
+    font-size:18px;
+    display: flex;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    font-family: Cabin,Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 #science-banner{
@@ -15,16 +24,43 @@
     padding-bottom: 8px;
 }
 
-.background-technology {
+#technology-banner {
     background-color: #895d2e;
+    font-size:18px;
+    display: flex;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    font-family: Cabin,Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
-.background-mathematics {
+#mathematics-banner {
     background-color: #de703c;
+    font-size:18px;
+    display: flex;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    font-family: Cabin,Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
-.background-home {
+#home-banner {
     background-color:  #2f3c4f;
+    font-size:18px;
+    display: flex;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    font-family: Cabin,Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 .background-forum{
