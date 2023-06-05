@@ -2,7 +2,6 @@ import React from 'react';
 import MainHeader from './Components/MainHeader';
 import CategoryHeader from './Components/CategoryHeader';
 import CategoryBannerTechnology from './Components/CategoryBannerTechnology';
-import { Link } from 'react-router-dom';
 import './Styles/Page.css';
 
 const Technology = () => {

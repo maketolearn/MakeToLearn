@@ -13,7 +13,7 @@ const SearchBar = () => {
 
     return (
         <div id="page">
-            <input type="search" placeholder="Search" onChabge={handleChange} value={input}/>
+            <input type="search" placeholder="Search" onChange={handleChange} value={input}/>
         </div>
     )
 }
