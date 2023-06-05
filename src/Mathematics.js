@@ -2,6 +2,7 @@ import React from 'react';
 import MainHeader from './Components/MainHeader';
 import CategoryHeader from './Components/CategoryHeader';
 import CategoryBannerMathematics from './Components/CategoryBannerMathematics';
+import SearchBar from './Components/SearchBar';
 import { Link } from 'react-router-dom';
 import './Styles/Page.css';
 
@@ -13,6 +14,7 @@ const Mathematics = () => {
           <MainHeader></MainHeader>
           <CategoryHeader></CategoryHeader>
           <CategoryBannerMathematics></CategoryBannerMathematics>
+          <SearchBar></SearchBar>
         </div>
       </body>
     </div>
