@@ -37,7 +37,8 @@ const CategoryHeader = () => {
                             textDecoration: "none",
                         })}>Mathematics</NavLink>
                     </li>
-                    <li class="cat-item cat-item-forum cat-item-9">Forum</li>
+                    <li class="cat-item cat-item-forum cat-item-9">
+                        <a href="https://www.discourse.org/">Forum</a></li>
                 </ul>
             </div>
         </div>
