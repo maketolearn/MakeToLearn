@@ -80,3 +80,10 @@ p.site-title {
 .menu-toggle,.main-navigation.toggled ul {
     display: block
 }
+
+#page {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto; 
+    padding: .5em 2%;
+}

@@ -1,0 +1,41 @@
+.background-engineering{
+    background-color: #fab040;
+}
+
+#science-banner{
+    background-color:#506f86;
+    font-size:18px;
+    display: flex;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    font-family: Cabin,Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.background-technology {
+    background-color: #895d2e;
+}
+
+.background-mathematics {
+    background-color: #de703c;
+}
+
+.background-home {
+    background-color:  #2f3c4f;
+}
+
+.background-forum{
+    background-color:  #2092e7;
+}
+
+.container {
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-top: 0px;
+    width: 100%;
+}

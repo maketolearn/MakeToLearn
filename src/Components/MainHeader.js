@@ -5,7 +5,7 @@ import '../Styles/Page.css';
 
 const MainHeader = () => {
     return (
-        <div>
+        <div id="page">
             <header id="masthead" class="site-header" role="banner">
                 <div class="site-branding">
                     <p class="site-title">

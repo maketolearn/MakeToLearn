@@ -1,17 +1,18 @@
 import React from 'react';
 import MainHeader from './Components/MainHeader';
 import CategoryHeader from './Components/CategoryHeader';
-import CategoryBannerHome from './Components/CatgeoryBannerScience';
+import CategoryBanner from './Components/CatgeoryBannerScience';
+import { Link } from 'react-router-dom';
 import './Styles/Page.css';
 
-const App = () => {
+const Engineering = () => {
   return (
     <div>
       <body>
         <div class="site">
           <MainHeader></MainHeader>
           <CategoryHeader></CategoryHeader>
-          <CategoryBannerHome></CategoryBannerHome>
+          <CategoryBanner name={"Engineering"}></CategoryBanner>
         </div>
       </body>
     </div>
@@ -19,4 +20,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Engineering;
