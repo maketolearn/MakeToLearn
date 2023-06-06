@@ -1,10 +1,17 @@
-import React, {useState, useEffect} from 'react';
-import axios from 'axios';
+import React, {useState, createContext} from 'react';
 import '../Styles/SearchBar.css';
+import ObjectCard from './ObjectCard';
+
+const SearchResults = createContext();
 
 const Search = () => {
 
     const [input, setInput] = useState("");
+    const [imgUrl, setImgUrl] = useState("");
+    const [title, setTitle] = useState("");
+    const [author, setAuthor] = useState("");
+    const [desc, setDesc] = useState("");
+    const [searchObjects, setSearchObjects] = useState([]);
 
     //TO DO: search function
     const fetchDataset = async() => {
@@ -33,9 +40,11 @@ const Search = () => {
             }
 
             let imgUrl = serverUrl + "/api/access/datafile/" + imgID
-
-            let object = {imgURL: imgUrl, title: title, author: author, desc: desc}
-            console.log(object)
+            setImgUrl(imgUrl);
+            setTitle(title);
+            setAuthor(author);
+            setDesc(desc);
+            setSearchObjects([{imgUrl: imgUrl, title: title, author: author, desc: desc}, ...searchObjects]);
 
         } catch(err) {
             console.log("The following Data had an error")
@@ -46,14 +55,20 @@ const Search = () => {
     }
 
 
+
     return (
         <div id="page">
             <div id="form">
                 <input type="search" placeholder="Search" onChange={(e) => setInput(e.target.value)} value={input}/>
                 <button type="submit" onClick={fetchDataset}>Search</button>
             </div>
+
+            {searchObjects.map((object, i) => (
+                <ObjectCard objImageUrl={object.imgUrl} objTitle={object.title} objAuthor={object.author} objDescription={object.desc} key={i}/>
+            ))}
         </div>
     )
 }
 
 export default Search;
+export {SearchResults}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import MainHeader from './Components/MainHeader';
 import CategoryHeader from './Components/CategoryHeader';
 import CategoryBannerMathematics from './Components/CategoryBannerMathematics';
@@ -6,6 +6,7 @@ import Search from './Components/Search';
 import './Styles/Page.css';
 
 const Mathematics = () => {
+
   return (
     <div>
       <body>
