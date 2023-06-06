@@ -5,6 +5,7 @@
     border: 1px solid currentColor;
     border-radius: 15px;
     width: 55%;
+    margin-top: 20px;
 }
 
 input[type="search"] {
