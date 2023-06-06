@@ -1,33 +1,22 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import '../Styles/SearchBar.css';
 
-const SearchBar = () => {
+const Search = () => {
 
     const [input, setInput] = useState("");
 
-    const handleChange = (e) => {
-        e.preventDefault();
-        setInput(e.target.value);
-    };
-
     //TO DO: search function
-
-    const serverUrl = "https://dataverse.lib.virginia.edu";
-
     const fetchDataset = async() => {
-        console.log("here")
+        const serverUrl = "https://dataverse.lib.virginia.edu";
         let doi = input;
-        await fetchDatasetByDOI(doi);
-    };
-
-    const fetchDatasetByDOI = async(doi) => {
         let objUrl = serverUrl + '/api/datasets/:persistentId/?persistentId=' + doi
         const res = await fetch(
                 objUrl, {
                 method: "GET",
                 headers: {"X-Dataverse-key": "d24255ea-8956-47c3-acf5-a75274aa68bc"}
-            })
-
+        })
+    
         const data = await res.json()
         try {
             let title = data.data.latestVersion.metadataBlocks.citation.fields[0].value
@@ -54,17 +43,17 @@ const SearchBar = () => {
             console.log(err)
             console.log("")
         }
-	}
+    }
+
 
     return (
         <div id="page">
-            <form onSubmit="return false;">
-                <input type="text" placeholder="Search" onChange={handleChange} value={input}/>
-                <input type="button" onClick={fetchDataset} value="Search"></input>
-                {/* <button type="submit" onClick={fetchDataset}>Search</button> */}
-            </form>
+            <div id="form">
+                <input type="search" placeholder="Search" onChange={(e) => setInput(e.target.value)} value={input}/>
+                <button type="submit" onClick={fetchDataset}>Search</button>
+            </div>
         </div>
     )
 }
 
-export default SearchBar;
+export default Search;

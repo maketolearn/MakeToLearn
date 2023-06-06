@@ -2,7 +2,7 @@ import React from 'react';
 import MainHeader from './Components/MainHeader';
 import CategoryHeader from './Components/CategoryHeader';
 import CategoryBannerMathematics from './Components/CategoryBannerMathematics';
-import SearchBar from './Components/SearchBar';
+import Search from './Components/Search';
 import './Styles/Page.css';
 
 const Mathematics = () => {
@@ -13,7 +13,7 @@ const Mathematics = () => {
           <MainHeader></MainHeader>
           <CategoryHeader></CategoryHeader>
           <CategoryBannerMathematics></CategoryBannerMathematics>
-          <SearchBar></SearchBar>
+          <Search></Search>
         </div>
       </body>
     </div>
