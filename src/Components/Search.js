@@ -18,6 +18,8 @@ const Search = () => {
         const serverUrl = "https://dataverse.lib.virginia.edu";
         let doi = input;
         let objUrl = serverUrl + '/api/datasets/:persistentId/?persistentId=' + doi
+        // let subject = "Mathematical+Sciences";
+        // let objUrl = serverUrl + '/api/search?type=dataset&per_page=30&q=subject:' + subject;
         const res = await fetch(
                 objUrl, {
                 method: "GET",
