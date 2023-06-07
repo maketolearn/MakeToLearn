@@ -32,21 +32,42 @@ const Mathematics = () => {
       for(var i = 0; i < response.data.data.length; i += 1){
         dois.push(response.data.data[i].identifier);
       }
-      console.log(dois);
-
+      
       dois.forEach(doi => {
         axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ doi)
         .then(object => {
-          objects.push(object.data);
+          if(object.data.latestVersion.metadataBlocks.citation.fields[4].value === 'Mathematical Sciences'){
+            let title = object.data.latestVersion.metadataBlocks.citation.fields[0].value
+            let author = object.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value
+            let desc = object.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value
+
+            let imgID = -1
+            let files = object.data.latestVersion.files
+
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
+                    imgID = files[i].dataFile.id
+                }
+            }
+
+            let imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID
+
+            setImgUrl(imgUrl);
+            setTitle(title);
+            setAuthor(author);
+            setDesc(desc);
+            setMathObjects([{imgUrl: imgUrl, title: title, author: author, desc: desc}, ...mathObjects]);
+            setImgUrl("");
+            setTitle("");
+            setAuthor("");
+            setDesc("");
+          }
         })
         .catch((error) => console.log("Error: ", error));
       })
-
-      console.log(objects);
+      console.log(mathObjects);
     })
     .catch((error) => console.log("Error: ", error))
-
-    console.log("Finished fetching");
   }, [])
 
   return (
