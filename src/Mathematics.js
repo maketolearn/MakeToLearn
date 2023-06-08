@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import MainHeader from './Components/MainHeader';
 import CategoryHeader from './Components/CategoryHeader';
 import CategoryBannerMathematics from './Components/CategoryBannerMathematics';
+import ObjectCard from './Components/ObjectCard';
 import Search from './Components/Search';
 import axios from 'axios';
 import './Styles/Page.css';
@@ -10,22 +11,14 @@ const Mathematics = () => {
 
   //pull all objects of subject Mathematical Sciences and display them
 
-  const [imgUrl, setImgUrl] = useState("");
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [desc, setDesc] = useState("");
-  const [dois, setDOIS] = useState([]);
-  const [mathObjects, setMathObjects] = useState([]);
-
-  let objects = [];
+  let imgUrl = "";
+  let title = "";
+  let author = "";
+  let desc = "";
+  let dois = [];
+  let mathObjects = [];
 
   useEffect(() => {
-    setImgUrl("");
-    setTitle("");
-    setAuthor("");
-    setDesc("");
-    setDOIS([]);
-
     //pull all dois
     axios.get("https://dataverse.lib.virginia.edu/api/dataverses/CADLibrary/contents")
     .then((response) => {
@@ -36,13 +29,15 @@ const Mathematics = () => {
       dois.forEach(doi => {
         axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ doi)
         .then(object => {
-          if(object.data.latestVersion.metadataBlocks.citation.fields[4].value === 'Mathematical Sciences'){
-            let title = object.data.latestVersion.metadataBlocks.citation.fields[0].value
-            let author = object.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value
-            let desc = object.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value
+          // console.log(object.data.data.latestVersion.metadataBlocks.citation.fields[4].value[0]);
+          //console.log(object.data.data.identifier);
+          if(object.data.data.latestVersion.metadataBlocks.citation.fields[4].value[0] === 'Mathematical Sciences'){
+            title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
+            author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
+            desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
 
             let imgID = -1
-            let files = object.data.latestVersion.files
+            let files = object.data.data.latestVersion.files
 
             for (let i = 0; i < files.length; i++) {
                 if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
@@ -50,22 +45,14 @@ const Mathematics = () => {
                 }
             }
 
-            let imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID
+            imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
 
-            setImgUrl(imgUrl);
-            setTitle(title);
-            setAuthor(author);
-            setDesc(desc);
-            setMathObjects([{imgUrl: imgUrl, title: title, author: author, desc: desc}, ...mathObjects]);
-            setImgUrl("");
-            setTitle("");
-            setAuthor("");
-            setDesc("");
+            mathObjects.push({imgUrl: imgUrl, title: title, author: author, desc: desc});
+            console.log(mathObjects);
           }
         })
         .catch((error) => console.log("Error: ", error));
       })
-      console.log(mathObjects);
     })
     .catch((error) => console.log("Error: ", error))
   }, [])
@@ -78,6 +65,12 @@ const Mathematics = () => {
           <CategoryHeader></CategoryHeader>
           <CategoryBannerMathematics></CategoryBannerMathematics>
           <Search></Search>
+
+          { mathObjects }
+
+          {mathObjects.map((object, i) => (
+                <ObjectCard objImageUrl={object.imgUrl} objTitle={object.title} objAuthor={object.author} objDescription={object.desc} key={i}/>
+          ))}
         </div>
       </body>
     </div>
