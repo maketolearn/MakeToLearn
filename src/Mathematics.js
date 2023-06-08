@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import MainHeader from './Components/MainHeader';
 import CategoryHeader from './Components/CategoryHeader';
 import CategoryBannerMathematics from './Components/CategoryBannerMathematics';
 import ObjectCard from './Components/ObjectCard';
 import Search from './Components/Search';
-import axios from 'axios';
+import axios, { all } from 'axios';
 import './Styles/Page.css';
 
 const Mathematics = () => {
@@ -16,7 +16,8 @@ const Mathematics = () => {
   let author = "";
   let desc = "";
   let dois = [];
-  let mathObjects = [];
+
+  const [allMathObjects, setAllMathObjects] = useState([]);
 
   useEffect(() => {
     //pull all dois
@@ -26,6 +27,8 @@ const Mathematics = () => {
         dois.push(response.data.data[i].identifier);
       }
       
+      let mathObjects = []; 
+
       dois.forEach(doi => {
         axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ doi)
         .then(object => {
@@ -47,8 +50,8 @@ const Mathematics = () => {
 
             imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
 
-            mathObjects.push({imgUrl: imgUrl, title: title, author: author, desc: desc});
-            console.log(mathObjects);
+            mathObjects = [{imgUrl: imgUrl, title: title, author: author, desc: desc}, ...mathObjects];
+            setAllMathObjects(mathObjects);
           }
         })
         .catch((error) => console.log("Error: ", error));
@@ -56,6 +59,8 @@ const Mathematics = () => {
     })
     .catch((error) => console.log("Error: ", error))
   }, [])
+
+  console.log(allMathObjects);
 
   return (
     <div>
@@ -66,11 +71,11 @@ const Mathematics = () => {
           <CategoryBannerMathematics></CategoryBannerMathematics>
           <Search></Search>
 
-          { mathObjects }
-
-          {mathObjects.map((object, i) => (
+          <div class="cards" id="page">
+            {allMathObjects.map((object, i) => (
                 <ObjectCard objImageUrl={object.imgUrl} objTitle={object.title} objAuthor={object.author} objDescription={object.desc} key={i}/>
-          ))}
+            ))}
+          </div>
         </div>
       </body>
     </div>
