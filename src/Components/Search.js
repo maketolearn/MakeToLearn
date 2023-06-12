@@ -1,7 +1,7 @@
 import React, {useState, createContext, useEffect} from 'react';
 import '../Styles/SearchBar.css';
 import ObjectCard from './ObjectCard';
-import axios, { all } from 'axios';
+import axios from 'axios';
 
 
 const SearchResults = createContext();
@@ -29,14 +29,10 @@ const Search = (props) => {
         for(var i = 0; i < response.data.data.length; i += 1){
             dois.push(response.data.data[i].identifier);
         }
-        
-        let mathObjects = []; 
 
         dois.forEach(doi => {
             axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ doi)
             .then(object => {
-            // console.log(object.data.data.latestVersion.metadataBlocks.citation.fields[4].value[0]);
-            //console.log(object.data.data.identifier);
             if(object.data.data.latestVersion.metadataBlocks.citation.fields[4].value[0] === props.subject){
                 title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
                 author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
@@ -85,8 +81,6 @@ const Search = (props) => {
                 dois.forEach(doi => {
                     axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId="+ doi)
                     .then(object => {
-                      // console.log(object.data.data.latestVersion.metadataBlocks.citation.fields[4].value[0]);
-                      //console.log(object.data.data.identifier);
                       if(object.data.data.latestVersion.metadataBlocks.citation.fields[4].value[0] === props.subject){
                         title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
                         author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
@@ -112,7 +106,6 @@ const Search = (props) => {
 			})
         } catch(err) {
             console.log("The following Data had an error")
-            // console.log(data)
             console.log(err)
             console.log("")
         }
@@ -130,6 +123,9 @@ const Search = (props) => {
             {searchObjects.map((object, i) => (
                 <ObjectCard objImageUrl={object.imgUrl} objTitle={object.title} objAuthor={object.author} objDescription={object.desc} key={i}/>
             ))}
+            {searchObjects.length === 0 && 
+                <p>No results found.</p>
+            }
             </div>
         </div>
     )
