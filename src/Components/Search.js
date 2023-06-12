@@ -20,6 +20,8 @@ const Search = (props) => {
     
     useEffect(() => {
         pullAllCards();    
+        setInput("");
+        setSearchObjects([]);
     }, [])
 
     const pullAllCards = async() => {
