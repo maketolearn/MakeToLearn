@@ -1,73 +1,136 @@
-import React, {useState, createContext} from 'react';
+import React, {useState, createContext, useEffect} from 'react';
 import '../Styles/SearchBar.css';
 import ObjectCard from './ObjectCard';
+import axios, { all } from 'axios';
+
 
 const SearchResults = createContext();
 
-const Search = () => {
+const Search = (props) => {
 
     const [input, setInput] = useState("");
-    const [imgUrl, setImgUrl] = useState("");
-    const [title, setTitle] = useState("");
-    const [author, setAuthor] = useState("");
-    const [desc, setDesc] = useState("");
     const [searchObjects, setSearchObjects] = useState([]);
 
-    //TO DO: search function
-    const fetchDataset = async() => {
-        const serverUrl = "https://dataverse.lib.virginia.edu";
-        let doi = input;
-        let objUrl = serverUrl + '/api/datasets/:persistentId/?persistentId=' + doi
-        // let subject = "Mathematical+Sciences";
-        // let objUrl = serverUrl + '/api/search?type=dataset&per_page=30&q=subject:' + subject;
-        const res = await fetch(
-                objUrl, {
-                method: "GET",
-                headers: {"X-Dataverse-key": "d24255ea-8956-47c3-acf5-a75274aa68bc"}
-        })
+    let imgUrl = "";
+    let title = "";
+    let author = "";
+    let desc = "";
+    let dois = [];
+    let objects = [];
     
-        const data = await res.json()
-        try {
-            let title = data.data.latestVersion.metadataBlocks.citation.fields[0].value
-            let author = data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value
-            let desc = data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value
+    useEffect(() => {
+        pullAllCards();    
+    }, [])
 
-            let imgID = -1
-            let files = data.data.latestVersion.files
+    const pullAllCards = async() => {
+        //pull all dois
+        axios.get("https://dataverse.lib.virginia.edu/api/dataverses/CADLibrary/contents")
+        .then((response) => {
+        for(var i = 0; i < response.data.data.length; i += 1){
+            dois.push(response.data.data[i].identifier);
+        }
+        
+        let mathObjects = []; 
 
-            for (let i = 0; i < files.length; i++) {
-                if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
-                    imgID = files[i].dataFile.id
+        dois.forEach(doi => {
+            axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ doi)
+            .then(object => {
+            // console.log(object.data.data.latestVersion.metadataBlocks.citation.fields[4].value[0]);
+            //console.log(object.data.data.identifier);
+            if(object.data.data.latestVersion.metadataBlocks.citation.fields[4].value[0] === props.subject){
+                title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
+                author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
+                desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
+
+                let imgID = -1
+                let files = object.data.data.latestVersion.files
+
+                for (let i = 0; i < files.length; i++) {
+                    if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
+                        imgID = files[i].dataFile.id
+                    }
                 }
+
+                imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
+
+                objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc}, ...objects];
+                setSearchObjects(objects);
             }
+            })
+            .catch((error) => console.log("Error: ", error));
+        })
+        })
+        .catch((error) => console.log("Error: ", error))
+    }
 
-            let imgUrl = serverUrl + "/api/access/datafile/" + imgID
-            setImgUrl(imgUrl);
-            setTitle(title);
-            setAuthor(author);
-            setDesc(desc);
-            setSearchObjects([{imgUrl: imgUrl, title: title, author: author, desc: desc}, ...searchObjects]);
-
+    //TO DO: search function
+    const searchByTerm = async() => {
+        // in case of empty search, return all
+        if (input === "") {
+            pullAllCards();
+            return;
+        }
+        try {
+            axios.get("https://dataverse.lib.virginia.edu/api/search?type=dataset&per_page=30&subtree=CADLibrary&q=" + input)
+			.then((response) => {
+				console.log(response);
+                if (response.data.data.count_in_response === 0) {
+                    objects = [];
+                    setSearchObjects(objects);
+                }
+                for(var i = 0; i < response.data.data.count_in_response; i += 1){
+                    dois.push(response.data.data.items[i].global_id);
+                }
+                console.log(dois);
+                dois.forEach(doi => {
+                    axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId="+ doi)
+                    .then(object => {
+                      // console.log(object.data.data.latestVersion.metadataBlocks.citation.fields[4].value[0]);
+                      //console.log(object.data.data.identifier);
+                      if(object.data.data.latestVersion.metadataBlocks.citation.fields[4].value[0] === props.subject){
+                        title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
+                        author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
+                        desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
+            
+                        let imgID = -1
+                        let files = object.data.data.latestVersion.files
+            
+                        for (let i = 0; i < files.length; i++) {
+                            if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
+                                imgID = files[i].dataFile.id
+                            }
+                        }
+            
+                        imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
+            
+                        objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc}, ...objects];
+                        setSearchObjects(objects);
+                      }
+                    })
+                    .catch((error) => console.log("Error: ", error));
+                  })
+			})
         } catch(err) {
             console.log("The following Data had an error")
-            console.log(data)
+            // console.log(data)
             console.log(err)
             console.log("")
         }
     }
 
-
-
     return (
-        <div id="page">
-            <div id="form">
-                <input type="search" placeholder="Search" onChange={(e) => setInput(e.target.value)} value={input}/>
-                <button type="submit" onClick={fetchDataset}>Search</button>
+        <div>
+            <div id="page">
+                <div id="form">
+                    <input type="search" placeholder="Search" onChange={(e) => setInput(e.target.value)} value={input}/>
+                    <button type="submit" onClick={searchByTerm}>Search</button>
+                </div>
             </div>
-
+            <div class="cards" id="page">
             {searchObjects.map((object, i) => (
                 <ObjectCard objImageUrl={object.imgUrl} objTitle={object.title} objAuthor={object.author} objDescription={object.desc} key={i}/>
             ))}
+            </div>
         </div>
     )
 }
