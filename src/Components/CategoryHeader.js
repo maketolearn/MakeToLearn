@@ -11,34 +11,39 @@ const CategoryHeader = () => {
                         <NavLink to="/" style={({ isActive }) => ({
                             background: isActive ? '#c1c1c1' : '',
                             textDecoration: "none",
+                            padding: isActive ? '10px 47px' : '5px 10px',
                         })}>Home</NavLink>
                     </li>
                     <li class="cat-item cat-item-science cat-item-9">
                         <NavLink to="/science" style={({ isActive }) => ({
                             background: isActive ? '#c1c1c1' : '',
                             textDecoration: "none",
+                            padding: isActive ? '10px 37px' : '5px 10px',
                         })}>Science</NavLink>
                     </li>
                     <li class="cat-item cat-item-technology cat-item-9">
                         <NavLink to="/technology" style={({ isActive }) => ({
                             background: isActive ? '#c1c1c1' : '',
                             textDecoration: "none",
+                            padding: isActive ? '10px 21px' : '5px 10px',
                         })}>Technology</NavLink>
                     </li>
                     <li class="cat-item cat-item-engineering cat-item-9">
                         <NavLink to="/engineering" style={({ isActive }) => ({
                             background: isActive ? '#c1c1c1' : '',
                             textDecoration: "none",
+                            padding: isActive ? '10px 20px' : '5px 10px',
                         })}>Engineering</NavLink>
                     </li>
                     <li class="cat-item cat-item-mathematics cat-item-9">
                         <NavLink to="/mathematics" style={({ isActive }) => ({
                             background: isActive ? '#c1c1c1' : '',
                             textDecoration: "none",
+                            padding: isActive ? '10px 18px' : '5px 10px',
                         })}>Mathematics</NavLink>
                     </li>
                     <li class="cat-item cat-item-forum cat-item-9">
-                        <a href="https://www.discourse.org/">Forum</a></li>
+                        <a href="https://forum.cadlibrary.org/">Forum</a></li>
                 </ul>
             </div>
         </div>
