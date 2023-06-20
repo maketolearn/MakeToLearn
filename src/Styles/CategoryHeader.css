@@ -69,8 +69,12 @@
     border-bottom: .75em solid #2f3c4f
 }
 
-.cat-item-forum{
+/* .cat-item-forum{
     border-bottom: .75em solid #2092e7
+} */
+
+.cat-item-forum{
+    border-bottom: .75em solid #8dadc4
 }
 
 #cats-header li a:hover,#cats-header li.current-cat a {
