@@ -63,6 +63,19 @@
     padding-bottom: 8px;
 }
 
+#forum-banner {
+    background-color:  #2092e7;
+    font-size:18px;
+    display: flex;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    font-family: Cabin,Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
 .background-forum{
     background-color:  #2092e7;
 }

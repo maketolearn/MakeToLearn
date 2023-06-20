@@ -5,8 +5,10 @@ import Science from './Science';
 import Technology from './Technology';
 import Engineering from './Engineering';
 import Mathematics from './Mathematics';
+import Forum from './Forum';
+import Object from './Components/Object';
 
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter} from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 
 ReactDOM.render(
@@ -17,6 +19,9 @@ ReactDOM.render(
       <Route path="/technology" element={<Technology/>}></Route>
       <Route path="/engineering" element={<Engineering/>}></Route>
       <Route path="/mathematics" element={<Mathematics/>}></Route>
+      <Route path="/forum" element={<Forum/>}></Route>
+      <Route path="/objects/:doi" element={<Object/>}></Route>
+
     </Routes>
   </BrowserRouter>,
   document.getElementById('root')

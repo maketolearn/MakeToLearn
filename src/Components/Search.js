@@ -15,6 +15,7 @@ const Search = (props) => {
     let title = "";
     let author = "";
     let desc = "";
+    let doi = "";
     let dois = [];
     let objects = [];
     
@@ -51,9 +52,10 @@ const Search = (props) => {
 
                     imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
 
-                    objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc}, ...objects];
+                    objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
                     let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
                     setSearchObjects(sortedObjects);
+                    console.log(sortedObjects)
                 }
             })
             .catch((error) => console.log("Error: ", error));
@@ -100,7 +102,7 @@ const Search = (props) => {
             
                         imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
             
-                        objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc}, ...objects];
+                        objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
                         let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
                         setSearchObjects(sortedObjects);
                       }
@@ -125,7 +127,7 @@ const Search = (props) => {
             </div>
             <div class="cards" id="page">
             {searchObjects.map((object, i) => (
-                <ObjectCard objImageUrl={object.imgUrl} objTitle={object.title} objAuthor={object.author} objDescription={object.desc} key={i}/>
+                <ObjectCard objImageUrl={object.imgUrl} objTitle={object.title} objAuthor={object.author} objDescription={object.desc} doi={object.doi} key={i} />
             ))}
             {searchObjects.length === 0 && 
                 <p>No results found.</p>

@@ -1,0 +1,35 @@
+#img-single {
+    box-sizing: border-box;
+
+    left: 0%;
+    right: 0%;
+    top: 50%;
+    bottom: 52.5%;
+
+    width: 330px;
+    height: 313.5px;
+    margin-right: 20px;
+}
+
+#details {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+#box {
+    /* border-color: black; */
+    border-style:solid;
+    width: 700px;
+    height: auto;
+    padding: 10px;
+    margin-left: 20px;
+}
+
+#link {
+    text-decoration: none;
+    color: black;
+}
+
+.li-detail {
+    list-style-type: none;
+}
