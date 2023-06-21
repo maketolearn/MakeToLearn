@@ -46,7 +46,7 @@ const CategoryHeader = () => {
                         <NavLink to="/forum" style={({ isActive }) => ({
                             background: isActive ? '#c1c1c1' : '',
                             textDecoration: "none",
-                            padding: isActive ? '10px 18px' : '5px 10px',
+                            padding: isActive ? '10px 43px' : '5px 10px',
                         })}>Forum</NavLink>
                     </li>
                 </ul>

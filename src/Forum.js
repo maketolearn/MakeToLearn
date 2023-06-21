@@ -14,11 +14,13 @@ const Forum = () => {
           <CategoryBannerForum></CategoryBannerForum>
 
           <div id="page">
-            <p>An open-source discussion tool, Discourse, is used to support discussions related to the CAD Library. You can access the CAD Library forum hosted by Discourse through this link:</p>
+            <p>An open-source discussion tool, Discourse, is used to support discussions related to the CAD Library.</p>
+            
+            <p> You can access the CAD Library forum through this link:</p>
 
-            <a href="https://forum.cadlibrary.org/" target='_blank'>CAD Library Forum</a>
-
-         
+            <ul>
+              <li style={{listStyle: "none"}}>  <a href="https://forum.cadlibrary.org/" target='_blank' style={{fontSize: "20px"}}>CAD Library Forum</a> </li>
+            </ul>
             
           </div>
         </div>

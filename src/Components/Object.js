@@ -14,7 +14,8 @@ const Object = () => {
     const [title, setTitle] = useState("");
     const [desc, setDesc] = useState("");
     const [introSentence, setIntroSentence] = useState("");
-
+    const [instructionalResourcesUrl, setInstructionalResourcesUrl] = useState(""); //download url for the instructional resources zip file
+    const [fabricationGuideUrl, setFabricationGuideUrl] = useState(""); //download url for the fabrication guide zip file
 
     let doiPieces = [];
     doiPieces.push(doi.substring(0, 2));
@@ -31,6 +32,8 @@ const Object = () => {
             setDesc(description.substring(description.indexOf(".")+1));
     
             let imgID = -1
+            let instructionalID = -1
+            let fabricationID = -1
             let files = object.data.data.latestVersion.files
     
             for (let i = 0; i < files.length; i++) {
@@ -55,6 +58,7 @@ const Object = () => {
                         <h2>{title}</h2>
                         <br></br>
                         <div id="details">
+
                             <div>
                                 <img id="img-single" src={imgUrl} alt="Object Thumbnail Not Found" align="left"></img>
                                 {introSentence}
@@ -67,27 +71,27 @@ const Object = () => {
                             
                             <div id="box">
                                 <b>Developer</b>
-                                <ul>
-                                    <li class="li-detail">Link to developer</li>
-                                </ul>
+                                <br></br>
+                                <p class="detail"><a>Link to developer</a></p>
                                 
                                 <b>Subject</b>
-                                <ul>
-                                    <li class="li-detail">Subject(s)</li>
-                                </ul>
+                                <br></br>
+                                <p class="detail">Subject(s)</p>
                               
                                 <b>Grade Levels</b>
                                 <p></p>
                                 
                                 <b>Download</b>
                                 <ul>
-                                    <li>Instructional Resources</li>
-                                    <li>Fabrication Guide</li>
+                                    <li>
+                                        <a href={instructionalResourcesUrl}>Instructional Resources</a>
+                                    </li>
+                                    <li>
+                                        <a href={fabricationGuideUrl}>Fabrication Guide</a>
+                                    </li>
                                 </ul>
 
-                                <ul>
-                                    <li class="li-detail">Discuss</li>
-                                </ul>
+                                <p class="detail">Discuss</p>
                             </div>
                         </div>
                         
