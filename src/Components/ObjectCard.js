@@ -12,7 +12,7 @@ const ObjectCard = (props) => {
         <div class="card">
             <Link to={`/objects/${doi}`} id="link">
                 <img id="img" src={props.objImageUrl} alt="Object Thumbnail Not Found"></img>
-                <div class="container">
+                <div class="card-desc">
                     <h3><b id="object">{props.objTitle}</b></h3>
                     {/* <h4 id="author">{props.objAuthor}</h4> */}
                     <p id="Description">{props.objDescription}</p>

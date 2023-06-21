@@ -40,9 +40,17 @@ const Object = () => {
                 if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
                     imgID = files[i].dataFile.id
                 }
+                if (files[i].label.toLowerCase() === "fabrication guide package.zip"){
+                    fabricationID = files[i].dataFile.id
+                }
+                if (files[i].label.toLowerCase() === "instructional resources package.zip"){
+                    instructionalID = files[i].dataFile.id
+                }
             }
     
             setImgUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID);
+            setInstructionalResourcesUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + instructionalID);
+            setFabricationGuideUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + fabricationID);
             
         })
         .catch((error) => console.log("Error: ", error));
