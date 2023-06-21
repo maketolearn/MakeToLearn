@@ -13,7 +13,7 @@ const Science = () => {
           <MainHeader></MainHeader>
           <CategoryHeader></CategoryHeader>
           <CategoryBannerScience></CategoryBannerScience>
-          <Search subject='science'></Search>
+          <Search subject="science"></Search>
         </div>
       </body>
     </div>

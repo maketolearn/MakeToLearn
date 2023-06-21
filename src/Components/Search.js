@@ -1,7 +1,7 @@
 import React, {useState, createContext, useEffect} from 'react';
 import '../Styles/SearchBar.css';
-import ObjectCard from './ObjectCard';
 import axios from 'axios';
+import ObjectCard from './ObjectCard';
 
 
 const SearchResults = createContext();
@@ -9,6 +9,7 @@ const SearchResults = createContext();
 const Search = (props) => {
 
     const [input, setInput] = useState("");
+    const [placeholderText, setPlaceholderText] = useState("");
     const [searchObjects, setSearchObjects] = useState([]);
 
     let imgUrl = "";
@@ -19,10 +20,11 @@ const Search = (props) => {
     let dois = [];
     let objects = [];
     
-    useEffect(() => {
-        pullAllCards();    
+    useEffect(() => {  
+        pullAllCards()
         setInput("");
         setSearchObjects([]);
+        setPlaceholderText("Search " + props.subject + "...")
     }, [])
 
     const pullAllCards = async() => {
@@ -121,7 +123,7 @@ const Search = (props) => {
         <div>
             <div id="page">
                 <div id="form">
-                    <input type="search" placeholder="Search" onChange={(e) => setInput(e.target.value)} value={input}/>
+                    <input type="search" placeholder={placeholderText} onChange={(e) => setInput(e.target.value)} value={input}/>
                     <button type="submit" onClick={searchByTerm}>Search</button>
                 </div>
             </div>

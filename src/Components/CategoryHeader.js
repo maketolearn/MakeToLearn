@@ -43,11 +43,12 @@ const CategoryHeader = () => {
                         })}>Mathematics</NavLink>
                     </li>
                     <li class="cat-item cat-item-forum cat-item-9">
-                        <NavLink to="/forum" style={({ isActive }) => ({
+                        {/* <NavLink to="/forum" style={({ isActive }) => ({
                             background: isActive ? '#c1c1c1' : '',
                             textDecoration: "none",
                             padding: isActive ? '10px 43px' : '5px 10px',
-                        })}>Forum</NavLink>
+                        })}>Forum</NavLink> */}
+                        <a href="https://forum.cadlibrary.org/">Forum</a>
                     </li>
                 </ul>
             </div>

@@ -40,10 +40,10 @@ const Object = () => {
                 if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
                     imgID = files[i].dataFile.id
                 }
-                if (files[i].label.toLowerCase() === "fabrication guide package.zip"){
+                if (files[i].label.toLowerCase().substring(0, 11) === "fabrication"){
                     fabricationID = files[i].dataFile.id
                 }
-                if (files[i].label.toLowerCase() === "instructional resources package.zip"){
+                if (files[i].label.toLowerCase().substring(0, 11) === "instruction"){
                     instructionalID = files[i].dataFile.id
                 }
             }
