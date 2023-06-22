@@ -2,8 +2,9 @@ import React from "react";
 import { Link } from 'react-router-dom';
 import '../Styles/MainHeader.css';
 import '../Styles/Page.css';
+import SearchBar from "./SearchBar";
 
-const MainHeader = () => {
+const MainHeader = ({ input, setInput, handleSubmit, subject }) => {
 
     return (
         <div id="page">
@@ -17,6 +18,9 @@ const MainHeader = () => {
                         </Link>
                     </p>    
                 </div>
+
+                
+                <SearchBar input={input}  setInput={setInput} handleSubmit={handleSubmit} subject={subject}></SearchBar>
             
             </header>
         </div>

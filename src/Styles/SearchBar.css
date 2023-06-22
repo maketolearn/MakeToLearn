@@ -4,8 +4,9 @@
     padding: 2px;
     border: 1px solid currentColor;
     border-radius: 15px;
-    width: 55%;
+    width: 29%;
     margin-top: 20px;
+    float:right;
 }
 
 input[type="search"] {
