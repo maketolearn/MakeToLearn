@@ -9,7 +9,7 @@ const App = () => {
     <div>
       <body>
         <div class="site">
-          <MainHeader subject="home"></MainHeader>
+          <MainHeader subject="library"></MainHeader>
           <CategoryHeader></CategoryHeader>
           <CategoryBannerHome></CategoryBannerHome>
 
