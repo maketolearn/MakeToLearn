@@ -167,7 +167,7 @@ const Object = () => {
                                 </ul>
                                 
                             <h4> Citation </h4>
-                                <p>{authorsFormmated} ({year}). <em>{title}</em> [Educational Object]. <em>Educational CAD Model Library</em>. Deposited {depositDate}. NTLS Coalition. doi:10.18130/{dataverseDoi} </p>
+                                <p>{authorsFormmated} ({year}). <em>{title}</em> [Educational Object]. <em>Educational CAD Model Library</em>. Published {depositDate}. NTLS Coalition. doi:10.18130/{dataverseDoi} </p>
                         </div>
                     </div>
                 </div>
