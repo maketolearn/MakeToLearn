@@ -1,10 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
 import MainHeader from './Components/MainHeader';
 import CategoryHeader from './Components/CategoryHeader';
 import CategoryBannerHome from './Components/CategoryBannerHome';
 import './Styles/Page.css';
 
+//Home page
 const App = () => {
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchObjects, setSearchObjects] = useState([]);
+  const [subject, setSubject] = useState("library");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setSearchObjects([]);
+    
+  }
+
   return (
     <div>
       <body>

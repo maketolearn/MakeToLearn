@@ -21,7 +21,6 @@ ReactDOM.render(
       <Route path="/mathematics" element={<Mathematics/>}></Route>
       <Route path="/forum" element={<Forum/>}></Route>
       <Route path="/objects/:doi" element={<Object/>}></Route>
-
     </Routes>
   </BrowserRouter>,
   document.getElementById('root')
