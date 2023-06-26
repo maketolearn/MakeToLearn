@@ -117,7 +117,7 @@ const Object = () => {
         <div>
             <body>
                 <div class="site">
-                    <MainHeader></MainHeader>
+                    <MainHeader subject="home"></MainHeader>
                     <CategoryHeader></CategoryHeader>
                     <div id="page">
                         <h2>{title}</h2>
