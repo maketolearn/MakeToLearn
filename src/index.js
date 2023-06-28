@@ -8,11 +8,11 @@ import Mathematics from './Mathematics';
 import Forum from './Forum';
 import Object from './Components/Object';
 
-import { BrowserRouter} from "react-router-dom";
-import { Routes, Route } from "react-router-dom";
+import { HashRouter} from "react-router-dom";
+import { Routes, Route} from "react-router-dom";
 
 ReactDOM.render(
-  <BrowserRouter>
+  <HashRouter>
     <Routes>
       <Route path="/" element={<App/>}></Route>
       <Route path="/science" element={<Science/>}></Route>
@@ -22,6 +22,6 @@ ReactDOM.render(
       <Route path="/forum" element={<Forum/>}></Route>
       <Route path="/objects/:doi" element={<Object/>}></Route>
     </Routes>
-  </BrowserRouter>,
+  </HashRouter>,
   document.getElementById('root')
 );
