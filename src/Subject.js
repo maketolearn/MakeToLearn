@@ -1,27 +1,26 @@
 import React, {useState, useEffect} from 'react';
 import MainHeader from './Components/MainHeader';
 import CategoryHeader from './Components/CategoryHeader';
-import CategoryBannerMathematics from './Components/CategoryBannerMathematics';
-import Search from './Components/Search';
-import SearchBar from './Components/SearchBar';
-import SearchResultDisplay from './Components/SearchResultDisplay ';
+import SearchResultDisplay from './Components/SearchResultDisplay';
 import './Styles/Page.css';
 import axios from 'axios';
+import CategoryBanner from './Components/CategoryBanner';
 
-const Mathematics = () => {
+const Subject = ({ subjectArg }) => {
+
   const [searchTerm, setSearchTerm] = useState("");
   const [searchObjects, setSearchObjects] = useState([]);
-  const [subject, setSubject] = useState("mathematics");
+  const [subject, setSubject] = useState(subjectArg);
 
   let imgUrl = "";
   let title = "";
   let author = "";
   let desc = "";
-  let doi = "";
   let dois = [];
   let objects = [];
+  let subjectCapitalized = subject.charAt(0).toUpperCase() + subject.slice(1);
 
-  useEffect(() => {  
+  useEffect(() => {
     setSearchObjects([]);
     setSearchTerm("");
     pullAllCards();
@@ -127,9 +126,9 @@ const Mathematics = () => {
     <div>
       <body>
         <div class="site">
-          <MainHeader input={searchTerm}  setInput={setSearchTerm} handleSubmit={handleSubmit} subject={subject}></MainHeader>
+          <MainHeader input={searchTerm}  setInput={setSearchTerm} handleSubmit={handleSubmit} subject={subjectCapitalized}></MainHeader>
           <CategoryHeader></CategoryHeader>
-          <CategoryBannerMathematics></CategoryBannerMathematics>
+          <CategoryBanner subject={subjectCapitalized}></CategoryBanner>
           <SearchResultDisplay searchObjects={searchObjects}></SearchResultDisplay>
         </div>
       </body>
@@ -138,4 +137,4 @@ const Mathematics = () => {
   );
 };
 
-export default Mathematics;
+export default Subject;

@@ -1,7 +1,7 @@
 import React from 'react';
 import MainHeader from './Components/MainHeader';
 import CategoryHeader from './Components/CategoryHeader';
-import CategoryBannerForum from './Components/CategoryBannerForum';
+import CategoryBanner from './Components/CategoryBanner';
 import './Styles/Page.css';
 
 const Forum = () => {
@@ -11,7 +11,7 @@ const Forum = () => {
         <div class="site">
           <MainHeader></MainHeader>
           <CategoryHeader></CategoryHeader>
-          <CategoryBannerForum></CategoryBannerForum>
+          <CategoryBanner subject="Forum"></CategoryBanner>
 
           <div id="page">
             <p>An open-source discussion tool, Discourse, is used to support discussions related to the CAD Library.</p>
