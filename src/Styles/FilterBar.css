@@ -1,0 +1,14 @@
+#filter-box {
+    border-style:solid;
+    height: 500px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+#checkbox {
+    display: flex;
+}
+
+#subject-filter {
+    margin-right: 10px;
+}

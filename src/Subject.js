@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import MainHeader from './Components/MainHeader';
 import CategoryHeader from './Components/CategoryHeader';
 import SearchResultDisplay from './Components/SearchResultDisplay';
+import FilterBar from './Components/FilterBar';
 import './Styles/Page.css';
 import axios from 'axios';
 import CategoryBanner from './Components/CategoryBanner';
@@ -12,6 +13,7 @@ const Subject = ({ subjectArg }) => {
   const [searchObjects, setSearchObjects] = useState([]);
   const [subject, setSubject] = useState(subjectArg);
   const [searchPhrase, setSearchPhrase] = useState("");
+  const subjects = ['Science', 'Technology', 'Engineering', 'Mathematics']
 
   let imgUrl = "";
   let title = "";
@@ -180,6 +182,11 @@ const Subject = ({ subjectArg }) => {
     }
   }
 
+  const handleFilterChange = (filters) => {
+    
+    setSearchObjects(filters);
+  }
+
   return (
     <div>
       <body>
@@ -187,7 +194,13 @@ const Subject = ({ subjectArg }) => {
           <MainHeader input={searchTerm}  setInput={setSearchTerm} handleSubmit={handleSubmit} subject={subjectCapitalized}></MainHeader>
           <CategoryHeader></CategoryHeader>
           <CategoryBanner subject={subjectCapitalized}></CategoryBanner>
-          <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase}></SearchResultDisplay>
+          <div id="page">
+            <h2>Browse {subjectCapitalized} Objects</h2>
+            <div class="results">
+              <FilterBar subjects={subjects} onFilterChange={(handleFilterChange)}></FilterBar>
+              <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase}></SearchResultDisplay>
+            </div>
+          </div>
         </div>
       </body>
     </div>
