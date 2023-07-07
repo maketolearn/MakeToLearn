@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import MainHeader from './Components/MainHeader';
 import CategoryHeader from './Components/CategoryHeader';
-import CategoryBannerHome from './Components/CategoryBannerHome';
+import CategoryBanner from './Components/CategoryBanner';
 import './Styles/Page.css';
 
 //Home page
@@ -23,7 +23,7 @@ const App = () => {
         <div class="site">
           <MainHeader subject="home"></MainHeader>
           <CategoryHeader></CategoryHeader>
-          <CategoryBannerHome></CategoryBannerHome>
+          <CategoryBanner subject="Home"></CategoryBanner>
 
           <div id="page">
             <p>
