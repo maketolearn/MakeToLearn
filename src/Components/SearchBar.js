@@ -3,6 +3,7 @@ import '../Styles/SearchBar.css';
 import axios from 'axios';
 
 const SearchBar = ({ input, setInput, handleSubmit, subject }) => {
+
     const [placeholderText, setPlaceholderText] = useState("");
 
     useEffect(() => {  

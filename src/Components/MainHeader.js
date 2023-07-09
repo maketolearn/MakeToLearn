@@ -6,8 +6,6 @@ import SearchBar from "./SearchBar";
 
 const MainHeader = ({ input, setInput, handleSubmit, subject }) => {
 
-    const isHome = (subject === "home")
-
     return (
         <div id="page">
             <header id="masthead" class="site-header" role="banner">
@@ -21,7 +19,7 @@ const MainHeader = ({ input, setInput, handleSubmit, subject }) => {
                     </p>    
                 </div>
 
-                {!isHome && <SearchBar input={input} setInput={setInput} handleSubmit={handleSubmit} subject={subject}></SearchBar>}
+                <SearchBar input={input} setInput={setInput} handleSubmit={handleSubmit} subject={subject}></SearchBar>
                 
             </header>
         </div>
