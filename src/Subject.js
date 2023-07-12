@@ -6,6 +6,7 @@ import FilterBar from './Components/FilterBar';
 import './Styles/Page.css';
 import axios from 'axios';
 import CategoryBanner from './Components/CategoryBanner';
+import { useParams } from 'react-router-dom';
 
 const Subject = ({ subjectArg }) => {
 
@@ -13,7 +14,6 @@ const Subject = ({ subjectArg }) => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchObjects, setSearchObjects] = useState([]);
-  const [filteredObjects, setFilteredObjects] = useState([]);
   const [subject, setSubject] = useState(subjectArg);
   const [searchPhrase, setSearchPhrase] = useState("");
   const subjects = ['science', 'technology', 'engineering', 'mathematics']
@@ -28,7 +28,6 @@ const Subject = ({ subjectArg }) => {
 
   useEffect(() => {
     setSearchObjects([]);
-    setFilteredObjects([]);
     setSearchTerm("");
     pullAllCards();
   }, [])
@@ -141,6 +140,26 @@ const Subject = ({ subjectArg }) => {
                 let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
                 setSearchObjects(sortedObjects);
               }
+              else if (subject === "library") {
+                title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
+                author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
+                desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
+
+                let imgID = -1
+                let files = object.data.data.latestVersion.files
+
+                for (let i = 0; i < files.length; i++) {
+                    if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
+                        imgID = files[i].dataFile.id
+                    }
+                }
+
+                imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
+
+                objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
+                let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
+                setSearchObjects(sortedObjects);
+            }
             })
             .catch((error) => console.log("Error: ", error));
           })
@@ -195,6 +214,26 @@ const Subject = ({ subjectArg }) => {
                 let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
                 setSearchObjects(sortedObjects);
               }
+              else if (subject === "library") {
+                title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
+                author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
+                desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
+
+                let imgID = -1
+                let files = object.data.data.latestVersion.files
+
+                for (let i = 0; i < files.length; i++) {
+                    if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
+                        imgID = files[i].dataFile.id
+                    }
+                }
+
+                imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
+
+                objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
+                let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
+                setSearchObjects(sortedObjects);
+            }
             })
             .catch((error) => console.log("Error: ", error));
           })
@@ -206,14 +245,52 @@ const Subject = ({ subjectArg }) => {
     }
   }
 
+  const pullAllCardsByFilter = async(filters) => {
+    //pull all dois
+    axios.get("https://dataverse.lib.virginia.edu/api/dataverses/CADLibrary/contents")
+    .then((response) => {
+    for(var i = 0; i < response.data.data.length; i += 1){
+        dois.push(response.data.data[i].identifier);
+    }
+
+    dois.forEach(doi => {
+        axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ doi)
+        .then(object => {
+            if(filters.includes(object.data.data.latestVersion.metadataBlocks.citation.fields[5].value[0].keywordValue.value)){
+                title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
+                author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
+                desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
+
+                let imgID = -1
+                let files = object.data.data.latestVersion.files
+
+                for (let i = 0; i < files.length; i++) {
+                    if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
+                        imgID = files[i].dataFile.id
+                    }
+                }
+
+                imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
+
+                objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
+                let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
+                setSearchObjects(sortedObjects);
+            }
+        })
+        .catch((error) => console.log("Error: ", error));
+    })
+    })
+    .catch((error) => console.log("Error: ", error))
+  }
 
   const handleFilterChange = (filters) => {
     console.log(filters);
-
-    // need to figure out how to append filtered objects
-    filters.forEach(filter => {
-
-    })
+    if(filters.length === 0){
+      pullAllCards();
+    }
+    else {
+      pullAllCardsByFilter(filters);
+    }
   }
 
   return (
