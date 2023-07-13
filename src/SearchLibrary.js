@@ -5,7 +5,6 @@ import SearchResultDisplay from './Components/SearchResultDisplay';
 import FilterBar from './Components/FilterBar';
 import './Styles/Page.css';
 import axios from 'axios';
-import CategoryBanner from './Components/CategoryBanner';
 import { useLocation } from 'react-router-dom';
 
 const SearchLibrary = () => {
@@ -234,11 +233,13 @@ const SearchLibrary = () => {
         <div class="site">
           <MainHeader input={searchTerm}  setInput={setSearchTerm} handleSubmit={handleSubmit} subject={"Library"}></MainHeader>
           <CategoryHeader></CategoryHeader>
+          <div id="page">
             <h2>Browse All Objects</h2>
             <div class="results">
-              <FilterBar subjects={subjects} onFilterChange={(handleFilterChange)}></FilterBar>
-              <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase}></SearchResultDisplay>
+                <FilterBar subjects={subjects} onFilterChange={(handleFilterChange)}></FilterBar>
+                <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase}></SearchResultDisplay>
             </div>
+          </div>  
         </div>
       </body>
     </div>
