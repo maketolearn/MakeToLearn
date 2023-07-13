@@ -17,7 +17,7 @@ const App = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setSearchObjects([]);
-    navigate("/browse");
+    navigate(`/browse`, {state: searchTerm});
   }
 
 

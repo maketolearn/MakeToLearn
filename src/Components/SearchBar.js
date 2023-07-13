@@ -18,7 +18,7 @@ const SearchBar = ({ input, setInput, handleSubmit, subject }) => {
                     <button type="submit" onClick={handleSubmit}>Search</button>
                 </div> */}
                 <form id="form" onSubmit={handleSubmit}>
-                    <input type="search" placeholder={placeholderText} onChange={(e) => setInput(e.target.value)} value={input}/>
+                    <input type="search" placeholder={placeholderText} onChange={(e) => (e === "") ? setInput("none") : setInput(e.target.value)} value={input}/>
                     <button type="submit">Search</button>
                 </form>
             </div>
