@@ -180,16 +180,15 @@ const SearchLibrary = () => {
   }
 
   const pullAllCardsByFilter = async(filters) => {
-    //pull all dois
-    axios.get("https://dataverse.lib.virginia.edu/api/dataverses/CADLibrary/contents")
-    .then((response) => {
-    for(var i = 0; i < response.data.data.length; i += 1){
-        dois.push(response.data.data[i].identifier);
-    }
+    searchObjects.forEach(searchObject => {
+      dois.push(searchObject.doi.substring(13))
+    });
 
     dois.forEach(doi => {
+        console.log(doi);
         axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ doi)
         .then(object => {
+            setSearchObjects([]);
             if(filters.includes(object.data.data.latestVersion.metadataBlocks.citation.fields[5].value[0].keywordValue.value)){
                 title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
                 author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
@@ -213,14 +212,11 @@ const SearchLibrary = () => {
         })
         .catch((error) => console.log("Error: ", error));
     })
-    })
-    .catch((error) => console.log("Error: ", error))
   }
 
   const handleFilterChange = (filters) => {
-    console.log(filters);
     if(filters.length === 0){
-      pullAllCards();
+      searchByPhrase();
     }
     else {
       pullAllCardsByFilter(filters);
