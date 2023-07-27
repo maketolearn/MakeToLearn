@@ -15,6 +15,8 @@ const SearchResultDisplay = ({ searchObjects, searchPhrase }) => {
                     {searchObjects.map((object, i) => (
                         <ObjectCard objImageUrl={object.imgUrl} objTitle={object.title} objAuthor={object.author} objDescription={object.desc} doi={object.doi} key={i} />
                     ))}
+
+                    <ObjectCard objImageUrl={"horseevolution.jpg"} objTitle={"Horse Evolution"} objDescription={"These set of fossil horse teeth have been selected by Florida Museum scientists to help K12 students understand concepts related to horse evolution and climate change. Three lessons have been developed in collaboration with science teachers that can be used with the 3D files provided."} doi={"00000C144"}/>
                 </div>
             </div>
            

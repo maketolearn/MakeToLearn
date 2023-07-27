@@ -1,5 +1,6 @@
 {
   "name": "maketolearn",
+  "homepage": "https://cadlibrary.org",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

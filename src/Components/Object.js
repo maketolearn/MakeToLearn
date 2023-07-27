@@ -18,6 +18,9 @@ const Object = () => {
     const [developerLink, setDeveloperLink] = useState("");
     const [instructionalResourcesUrl, setInstructionalResourcesUrl] = useState(""); //download url for the instructional resources zip file
     const [fabricationGuideUrl, setFabricationGuideUrl] = useState(""); //download url for the fabrication guide zip file
+    const [subject, setSubject] = useState("");
+    const [gradeLevels, setGradeLevels] = useState("");
+    const [forumLink, setForumLink] = useState("");
 
     //citation fields
     const [authorsFormmated, setAuthorsFormatted] = useState("");
@@ -30,52 +33,67 @@ const Object = () => {
     let dataverseDoi = doiPieces[0] + "/" + doiPieces[1];
     
     useEffect(() => {
-        axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ dataverseDoi)
-        .then(object => {
-            console.log(object.data.data.latestVersion);
-            setTitle(object.data.data.latestVersion.metadataBlocks.citation.fields[0].value);
-            let author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
-            formatAuthors(author);
-            let description = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
-
-            setIntroSentence(description.substring(0, description.indexOf(".")) + ".");
-            setDesc(description.substring(description.indexOf(".")+1));
+        if(doi === "00000C144undefined") {
+            setImgUrl("horseevolution.jpg");
+            setTitle("Horse Evolution");
+            setIntroSentence("These set of fossil horse teeth have been selected by Florida Museum scientists to help K12 students understand concepts related to horse evolution and climate change. ");
+            setDesc("Three lessons have been developed in collaboration with science teachers that can be used with the 3D files provided.");
+            setInstructionalResourcesUrl("www.paleoteach.org/specimens/fossil-horses");
+            setDeveloperName("Center for Precollegiate Education and Training, University of Florida");
+            setDeveloperLink("www.paleoteach.org/specimens/fossil-horses");
+            setFabricationGuideUrl("https://www.morphosource.org/projects/00000C144");
+            setSubject("Science -  Biology");
+            setGradeLevels("10, 11, 12")
+            setForumLink("https://forum.cadlibrary.org/t/horse-evolution/24");
+        } else {
+            axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ dataverseDoi)
+            .then(object => {
+                console.log(object.data.data.latestVersion);
+                setTitle(object.data.data.latestVersion.metadataBlocks.citation.fields[0].value);
+                let author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
+                formatAuthors(author);
+                let description = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
     
-            let imgID = -1
-            let instructionalID = -1
-            let fabricationID = -1
-            let files = object.data.data.latestVersion.files
+                setIntroSentence(description.substring(0, description.indexOf(".")) + ".");
+                setDesc(description.substring(description.indexOf(".")+1));
+        
+                let imgID = -1
+                let instructionalID = -1
+                let fabricationID = -1
+                let files = object.data.data.latestVersion.files
+        
+                for (let i = 0; i < files.length; i++) {
+                    if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
+                        imgID = files[i].dataFile.id
+                    }
+                    if (files[i].label.toLowerCase().substring(0, 11) === "fabrication"){
+                        fabricationID = files[i].dataFile.id
+                    }
+                    if (files[i].label.toLowerCase().substring(0, 11) === "instruction"){
+                        instructionalID = files[i].dataFile.id
+                    }
+                }
+        
+                setImgUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID);
+                setInstructionalResourcesUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + instructionalID);
+                setFabricationGuideUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + fabricationID);
     
-            for (let i = 0; i < files.length; i++) {
-                if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
-                    imgID = files[i].dataFile.id
+                //setting link to developer
+                let developer = object.data.data.latestVersion.metadataBlocks.citation.fields[7].value;
+                if(developer.includes("https")){
+                    setDeveloperName(developer.substring(0, developer.indexOf(",")));
+                    setDeveloperLink(developer.substring(developer.indexOf("https")));
                 }
-                if (files[i].label.toLowerCase().substring(0, 11) === "fabrication"){
-                    fabricationID = files[i].dataFile.id
-                }
-                if (files[i].label.toLowerCase().substring(0, 11) === "instruction"){
-                    instructionalID = files[i].dataFile.id
-                }
-            }
+                
+                let depositDate = object.data.data.latestVersion.metadataBlocks.citation.fields[9].value;
+                setYear(depositDate.substring(0, 4));
+                formatDepositDate(depositDate);
     
-            setImgUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID);
-            setInstructionalResourcesUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + instructionalID);
-            setFabricationGuideUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + fabricationID);
-
-            //setting link to developer
-            let developer = object.data.data.latestVersion.metadataBlocks.citation.fields[7].value;
-            if(developer.includes("https")){
-                setDeveloperName(developer.substring(0, developer.indexOf(",")));
-                setDeveloperLink(developer.substring(developer.indexOf("https")));
-            }
-            
-            let depositDate = object.data.data.latestVersion.metadataBlocks.citation.fields[9].value;
-            setYear(depositDate.substring(0, 4));
-            formatDepositDate(depositDate);
-
-            
-        })
-        .catch((error) => console.log("Error: ", error));
+                
+            })
+            .catch((error) => console.log("Error: ", error));
+        }
+       
     }, [])
 
     const formatAuthors = (author) => {
@@ -141,10 +159,10 @@ const Object = () => {
                                 
                                 <b>Subject</b>
                                 <br></br>
-                                <p class="detail">Subject(s)</p>
+                                <p class="detail">{subject}</p>
                               
                                 <b>Grade Levels</b>
-                                <p></p>
+                                <p class="detail"> {gradeLevels} </p>
                                 
                                 <b>Download</b>
                                 <ul>
@@ -156,15 +174,20 @@ const Object = () => {
                                     </li>
                                 </ul>
 
-                                <p class="detail">Discuss</p>
+                                <a class="detail" href={forumLink}>Discuss</a>
                             </div>
                         </div>
                         
                         <div>
                             <h4> Sample Learning Goals </h4>
-                                <ul>
-                                    <li> Sample learning goal </li>
-                                </ul>
+                                { doi === "00000C144undefined" &&
+                                    <ul>
+                                        <li> Exploring the Geologic Time Scale via Changes in Fossilized Horse Teeth in Response to Co-evolution of Plants  </li>
+                                        <li> Examining Intraspecies Variation and Changes in a Single Horse Population </li>
+                                        <li> Proposing Changes to Orthogenesis and Communicating Evolution in Museums </li>
+                                    </ul>
+                                }
+                                
                                 
                             <h4> Citation </h4>
                                 <p>{authorsFormmated} ({year}). <em>{title}</em> [Educational Object]. <em>Educational CAD Model Library</em>. Published {depositDate}. NTLS Coalition. doi:10.18130/{dataverseDoi} </p>
