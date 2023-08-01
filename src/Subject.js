@@ -259,10 +259,7 @@ const Subject = ({ subjectArg }) => {
           <CategoryBanner subject={subjectCapitalized}></CategoryBanner>
           <div id="page">
             <h2>Browse {subjectCapitalized} Objects</h2>
-            <div class="results">
-              <FilterBar subjects={subjects} onFilterChange={(handleFilterChange)}></FilterBar>
-              <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase}></SearchResultDisplay>
-            </div>
+            <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={"cards-no-filter"}></SearchResultDisplay>
           </div>
         </div>
       </body>

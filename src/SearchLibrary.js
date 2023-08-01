@@ -180,16 +180,25 @@ const SearchLibrary = () => {
   }
 
   const pullAllCardsByFilter = async(filters) => {
+
     searchObjects.forEach(searchObject => {
-      dois.push(searchObject.doi.substring(13))
+      if(searchObject.doi.length >= 13){
+        dois.push(searchObject.doi.substring(13));
+      } else {
+        dois.push(searchObject.doi);
+      }
     });
 
+    console.log(dois)
+
     dois.forEach(doi => {
-        console.log(doi);
+      console.log(doi);
         axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ doi)
         .then(object => {
+
             setSearchObjects([]);
             if(filters.includes(object.data.data.latestVersion.metadataBlocks.citation.fields[5].value[0].keywordValue.value)){
+              console.log("TRUE");
                 title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
                 author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
                 desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
@@ -233,7 +242,7 @@ const SearchLibrary = () => {
             <h2>Browse All Objects</h2>
             <div class="results">
                 <FilterBar subjects={subjects} onFilterChange={(handleFilterChange)}></FilterBar>
-                <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase}></SearchResultDisplay>
+                <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={"cards"}></SearchResultDisplay>
             </div>
           </div>  
         </div>
