@@ -187,7 +187,7 @@ const Subject = ({ subjectArg }) => {
           <MainHeader input={searchTerm}  setInput={setSearchTerm} handleSubmit={handleSubmit} subject={subjectCapitalized}></MainHeader>
           <CategoryHeader></CategoryHeader>
           <CategoryBanner subject={subjectCapitalized}></CategoryBanner>
-          <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase}></SearchResultDisplay>
+          <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} subject={subjectArg}></SearchResultDisplay>
         </div>
       </body>
     </div>
