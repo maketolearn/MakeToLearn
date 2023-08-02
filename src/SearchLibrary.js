@@ -187,6 +187,8 @@ const SearchLibrary = () => {
       } else {
         dois.push(searchObject.doi);
       }
+
+      
     });
 
     console.log(dois)
@@ -195,29 +197,30 @@ const SearchLibrary = () => {
       console.log(doi);
         axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ doi)
         .then(object => {
+          console.log(filters);
+          if(filters.includes(object.data.data.latestVersion.metadataBlocks.citation.fields[5].value[0].keywordValue.value)){
+            console.log("TRUE");
+              title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
+              author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
+              desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
 
-            setSearchObjects([]);
-            if(filters.includes(object.data.data.latestVersion.metadataBlocks.citation.fields[5].value[0].keywordValue.value)){
-              console.log("TRUE");
-                title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
-                author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
-                desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
+              let imgID = -1
+              let files = object.data.data.latestVersion.files
 
-                let imgID = -1
-                let files = object.data.data.latestVersion.files
+              for (let i = 0; i < files.length; i++) {
+                  if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
+                      imgID = files[i].dataFile.id
+                  }
+              }
 
-                for (let i = 0; i < files.length; i++) {
-                    if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
-                        imgID = files[i].dataFile.id
-                    }
-                }
+              imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
 
-                imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
-
-                objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
-                let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
-                setSearchObjects(sortedObjects);
-            }
+              objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
+              let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
+              console.log(sortedObjects);
+              setSearchObjects(sortedObjects);
+              console.log(searchObjects);
+          }
         })
         .catch((error) => console.log("Error: ", error));
     })
