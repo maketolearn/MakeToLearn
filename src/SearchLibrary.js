@@ -5,15 +5,17 @@ import SearchResultDisplay from './Components/SearchResultDisplay';
 import FilterBar from './Components/FilterBar';
 import './Styles/Page.css';
 import axios from 'axios';
-import CategoryBanner from './Components/CategoryBanner';
+import { useLocation } from 'react-router-dom';
 
-const Subject = ({ subjectArg }) => {
+const SearchLibrary = () => {
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const location = useLocation();  
+
+  const [searchTerm, setSearchTerm] = useState(location.state);
   const [searchObjects, setSearchObjects] = useState([]);
-  const [subject, setSubject] = useState(subjectArg);
   const [searchPhrase, setSearchPhrase] = useState("");
-  const subjects = ['science', 'technology', 'engineering', 'mathematics']
+  const [filterObjects, setFilterObjects] = useState([]); // objects to be filtered on
+  const subjects = ['Science', 'Technology', 'Engineering', 'Mathematics']
 
   let imgUrl = "";
   let title = "";
@@ -21,12 +23,15 @@ const Subject = ({ subjectArg }) => {
   let desc = "";
   let dois = [];
   let objects = [];
-  let subjectCapitalized = subject.charAt(0).toUpperCase() + subject.slice(1);
 
   useEffect(() => {
     setSearchObjects([]);
-    setSearchTerm("");
-    pullAllCards();
+    if(searchTerm === null){
+        setSearchTerm("");
+        pullAllCards();
+    } else {
+        searchByPhrase();
+    }
   }, [])
 
   const handleSubmit = (event) => {
@@ -47,46 +52,25 @@ const Subject = ({ subjectArg }) => {
     dois.forEach(doi => {
         axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ doi)
         .then(object => {
-            if(object.data.data.latestVersion.metadataBlocks.citation.fields[5].value[0].keywordValue.value === subject){
-                title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
-                author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
-                desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
+            title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
+            author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
+            desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
 
-                let imgID = -1
-                let files = object.data.data.latestVersion.files
+            let imgID = -1
+            let files = object.data.data.latestVersion.files
 
-                for (let i = 0; i < files.length; i++) {
-                    if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
-                        imgID = files[i].dataFile.id
-                    }
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
+                    imgID = files[i].dataFile.id
                 }
-
-                imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
-
-                objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
-                let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
-                setSearchObjects(sortedObjects);
             }
-            else if (subject === "library") {
-                title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
-                author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
-                desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
 
-                let imgID = -1
-                let files = object.data.data.latestVersion.files
+            imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
 
-                for (let i = 0; i < files.length; i++) {
-                    if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
-                        imgID = files[i].dataFile.id
-                    }
-                }
-
-                imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
-
-                objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
-                let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
-                setSearchObjects(sortedObjects);
-            }
+            objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
+            let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
+            setSearchObjects(sortedObjects);
+            setFilterObjects(sortedObjects);
         })
         .catch((error) => console.log("Error: ", error));
     })
@@ -116,27 +100,26 @@ const Subject = ({ subjectArg }) => {
           dois.forEach(doi => {
             axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId="+ doi)
             .then(object => {
-                
-              if(object.data.data.latestVersion.metadataBlocks.citation.fields[5].value[0].keywordValue.value === subject){
                 title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
                 author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
                 desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
-    
+
                 let imgID = -1
                 let files = object.data.data.latestVersion.files
-    
+
                 for (let i = 0; i < files.length; i++) {
                     if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
                         imgID = files[i].dataFile.id
                     }
                 }
-    
+
                 imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
-    
+
                 objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
                 let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
                 setSearchObjects(sortedObjects);
-              }
+                setFilterObjects(sortedObjects);
+              
             })
             .catch((error) => console.log("Error: ", error));
           })
@@ -170,8 +153,6 @@ const Subject = ({ subjectArg }) => {
           dois.forEach(doi => {
             axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId="+ doi)
             .then(object => {
-                
-              if(object.data.data.latestVersion.metadataBlocks.citation.fields[5].value[0].keywordValue.value === subject){
                 title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
                 author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
                 desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
@@ -190,7 +171,7 @@ const Subject = ({ subjectArg }) => {
                 objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
                 let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
                 setSearchObjects(sortedObjects);
-              }
+                setFilterObjects(sortedObjects);
             })
             .catch((error) => console.log("Error: ", error));
           })
@@ -203,50 +184,66 @@ const Subject = ({ subjectArg }) => {
   }
 
   const pullAllCardsByFilter = async(filters) => {
-    //pull all dois
-    axios.get("https://dataverse.lib.virginia.edu/api/dataverses/CADLibrary/contents")
-    .then((response) => {
-    for(var i = 0; i < response.data.data.length; i += 1){
-        dois.push(response.data.data[i].identifier);
-    }
+
+    filterObjects.forEach(filterObject => {
+      if(filterObject.doi.length >= 13){
+        dois.push(filterObject.doi.substring(13));
+      } else {
+        dois.push(filterObject.doi);
+      }
+
+      
+    });
+
+    let resultsFound = false;
 
     dois.forEach(doi => {
+      console.log(doi);
         axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ doi)
         .then(object => {
-            if(filters.includes(object.data.data.latestVersion.metadataBlocks.citation.fields[5].value[0].keywordValue.value)){
-                title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
-                author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
-                desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
+          if(filters.includes(object.data.data.latestVersion.metadataBlocks.citation.fields[5].value[0].keywordValue.value)){
+            resultsFound = true;
+            console.log("TRUE");
+              title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
+              author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
+              desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
 
-                let imgID = -1
-                let files = object.data.data.latestVersion.files
+              let imgID = -1
+              let files = object.data.data.latestVersion.files
 
-                for (let i = 0; i < files.length; i++) {
-                    if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
-                        imgID = files[i].dataFile.id
-                    }
-                }
+              for (let i = 0; i < files.length; i++) {
+                  if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
+                      imgID = files[i].dataFile.id
+                  }
+              }
 
-                imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
+              imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
 
-                objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
-                let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
-                setSearchObjects(sortedObjects);
-            }
+              objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
+              let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
+              console.log(sortedObjects);
+              setSearchObjects(sortedObjects);
+              console.log(searchObjects);
+          }
         })
-        .catch((error) => console.log("Error: ", error));
+      .catch((error) => console.log("Error: ", error));
     })
-    })
-    .catch((error) => console.log("Error: ", error))
+
+    if(!resultsFound){
+      setSearchObjects([]);
+    }
   }
 
   const handleFilterChange = (filters) => {
-    console.log(filters);
     if(filters.length === 0){
-      pullAllCards();
+      searchByPhrase();
     }
     else {
-      pullAllCardsByFilter(filters);
+      let lowercase = [];
+      filters.forEach(filter => {
+        lowercase.push(filter[0].toLowerCase() + filter.substring(1));
+      })
+      pullAllCardsByFilter(lowercase);
     }
   }
 
@@ -254,13 +251,15 @@ const Subject = ({ subjectArg }) => {
     <div>
       <body>
         <div class="site">
-          <MainHeader input={searchTerm}  setInput={setSearchTerm} handleSubmit={handleSubmit} subject={subjectCapitalized}></MainHeader>
+          <MainHeader input={searchTerm}  setInput={setSearchTerm} handleSubmit={handleSubmit} subject={"Library"}></MainHeader>
           <CategoryHeader></CategoryHeader>
-          <CategoryBanner subject={subjectCapitalized}></CategoryBanner>
           <div id="page">
-            <h2>Browse {subjectCapitalized} Objects</h2>
-            <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={"cards-no-filter"} subject={subjectArg} ></SearchResultDisplay>
-          </div>
+            <h2>Browse All Objects</h2>
+            <div class="results">
+                <FilterBar subjects={subjects} onFilterChange={(handleFilterChange)}></FilterBar>
+                <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={"cards"}></SearchResultDisplay>
+            </div>
+          </div>  
         </div>
       </body>
     </div>
@@ -268,4 +267,4 @@ const Subject = ({ subjectArg }) => {
   );
 };
 
-export default Subject;
+export default SearchLibrary;

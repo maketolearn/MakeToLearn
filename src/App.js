@@ -2,26 +2,30 @@ import React, {useState} from 'react';
 import MainHeader from './Components/MainHeader';
 import CategoryHeader from './Components/CategoryHeader';
 import CategoryBanner from './Components/CategoryBanner';
+import { useNavigate } from 'react-router-dom';
 import './Styles/Page.css';
 
 //Home page
 const App = () => {
 
+  const navigate = useNavigate();
+
   const [searchTerm, setSearchTerm] = useState("");
   const [searchObjects, setSearchObjects] = useState([]);
-  const [subject, setSubject] = useState("library");
+  const [subject, setSubject] = useState("Library");
 
   const handleSubmit = (event) => {
     event.preventDefault();
     setSearchObjects([]);
-    
+    navigate(`/browse`, {state: searchTerm});
   }
+
 
   return (
     <div>
       <body>
         <div class="site">
-          <MainHeader subject="home"></MainHeader>
+          <MainHeader input={searchTerm}  setInput={setSearchTerm} handleSubmit={handleSubmit} subject={subject}></MainHeader>
           <CategoryHeader></CategoryHeader>
           <CategoryBanner subject="Home"></CategoryBanner>
 
