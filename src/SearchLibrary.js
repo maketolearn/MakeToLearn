@@ -14,7 +14,8 @@ const SearchLibrary = () => {
   const [searchTerm, setSearchTerm] = useState(location.state);
   const [searchObjects, setSearchObjects] = useState([]);
   const [searchPhrase, setSearchPhrase] = useState("");
-  const subjects = ['science', 'technology', 'engineering', 'mathematics']
+  const [filterObjects, setFilterObjects] = useState([]); // objects to be filtered on
+  const subjects = ['Science', 'Technology', 'Engineering', 'Mathematics']
 
   let imgUrl = "";
   let title = "";
@@ -69,6 +70,7 @@ const SearchLibrary = () => {
             objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
             let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
             setSearchObjects(sortedObjects);
+            setFilterObjects(sortedObjects);
         })
         .catch((error) => console.log("Error: ", error));
     })
@@ -116,6 +118,7 @@ const SearchLibrary = () => {
                 objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
                 let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
                 setSearchObjects(sortedObjects);
+                setFilterObjects(sortedObjects);
               
             })
             .catch((error) => console.log("Error: ", error));
@@ -168,6 +171,7 @@ const SearchLibrary = () => {
                 objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
                 let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
                 setSearchObjects(sortedObjects);
+                setFilterObjects(sortedObjects);
             })
             .catch((error) => console.log("Error: ", error));
           })
@@ -181,24 +185,24 @@ const SearchLibrary = () => {
 
   const pullAllCardsByFilter = async(filters) => {
 
-    searchObjects.forEach(searchObject => {
-      if(searchObject.doi.length >= 13){
-        dois.push(searchObject.doi.substring(13));
+    filterObjects.forEach(filterObject => {
+      if(filterObject.doi.length >= 13){
+        dois.push(filterObject.doi.substring(13));
       } else {
-        dois.push(searchObject.doi);
+        dois.push(filterObject.doi);
       }
 
       
     });
 
-    console.log(dois)
+    let resultsFound = false;
 
     dois.forEach(doi => {
       console.log(doi);
         axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ doi)
         .then(object => {
-          console.log(filters);
           if(filters.includes(object.data.data.latestVersion.metadataBlocks.citation.fields[5].value[0].keywordValue.value)){
+            resultsFound = true;
             console.log("TRUE");
               title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
               author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
@@ -222,8 +226,12 @@ const SearchLibrary = () => {
               console.log(searchObjects);
           }
         })
-        .catch((error) => console.log("Error: ", error));
+      .catch((error) => console.log("Error: ", error));
     })
+
+    if(!resultsFound){
+      setSearchObjects([]);
+    }
   }
 
   const handleFilterChange = (filters) => {
@@ -231,7 +239,11 @@ const SearchLibrary = () => {
       searchByPhrase();
     }
     else {
-      pullAllCardsByFilter(filters);
+      let lowercase = [];
+      filters.forEach(filter => {
+        lowercase.push(filter[0].toLowerCase() + filter.substring(1));
+      })
+      pullAllCardsByFilter(lowercase);
     }
   }
 
