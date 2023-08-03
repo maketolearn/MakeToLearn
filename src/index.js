@@ -5,13 +5,14 @@ import Forum from './Forum';
 import Object from './Components/Object';
 import Subject from './Subject'
 import SearchLibrary from './SearchLibrary';
+import HorseEvolution from './Components/HorseEvolution';
 
-import { HashRouter} from "react-router-dom";
+import { BrowserRouter} from "react-router-dom";
 import { Routes, Route} from "react-router-dom";
 
 
 ReactDOM.render(
-  <HashRouter>
+  <BrowserRouter>
     <Routes>
       <Route path="/" element={<App/>}></Route>
       {/* https://stackoverflow.com/questions/49001001/using-same-component-for-different-route-path-in-react-router-v4 */}
@@ -23,7 +24,8 @@ ReactDOM.render(
 
       <Route path="/forum" element={<Forum/>}></Route>
       <Route path="/objects/:doi" element={<Object/>}></Route>
+      <Route path="/objects/00000C144" element={<HorseEvolution/>}></Route>
     </Routes>
-  </HashRouter>,
+  </BrowserRouter>,
   document.getElementById('root')
 );

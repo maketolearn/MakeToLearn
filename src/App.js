@@ -41,7 +41,7 @@ const App = () => {
             <ul>
               <li>Curator-in-Chief - Glen Bull</li>
               <li>Curator, Mathematics Education Collection - Steven Greenstein</li>
-              <li>Curator, Science Education Collection - Joshua Ellis</li>
+              <li>Curator, Science Education Collection - Joshua Ellis and Sumreen Asim</li>
               <li>Curator, Technology Collection - Elizabeth Whitewolf</li>
               <li>Curator, Engineering Education Collection - Ryan Novitski</li>
             </ul>

@@ -7,7 +7,7 @@ import CategoryHeader from './CategoryHeader';
 import '../Styles/Page.css';
 
 
-const Object = () => {
+const HorseEvolution = () => {
     const { doi } = useParams();
 
     const [imgUrl, setImgUrl] = useState("");
@@ -26,75 +26,18 @@ const Object = () => {
     const [authorsFormmated, setAuthorsFormatted] = useState("");
     const [year, setYear] = useState("");
     const [depositDate, setDepositDate] = useState("");
-
-    let doiPieces = [];
-    doiPieces.push(doi.substring(0, 2));
-    doiPieces.push(doi.substring(2));
-    let dataverseDoi = doiPieces[0] + "/" + doiPieces[1];
     
     useEffect(() => {
-        if(doi === "00000C144undefined") {
-            setImgUrl("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQI543PLIQIc4To-7vEaHXFBFHwChFBBbEOpQCI1saa02QuDiWz");
-            console.log(imgUrl);
-            setTitle("Horse Evolution");
-            setIntroSentence("This dataset of fossil horse teeth published on Morphosource (https://www.morphosource.org/) has been selected by Florida Museum scientists to help K12 students understand concepts related to horse evolution and climate change. ");
-            setDesc("Three lessons have been developed in collaboration with science teachers that can be used with the 3D files provided.");
-            setInstructionalResourcesUrl("http://www.paleoteach.org/chewing-on-change-exploring-the-evolution-of-horses-in-response-to-climate-change/");
-            setDeveloperName("Center for Precollegiate Education and Training, University of Florida");
-            setDeveloperLink("https://www.cpet.ufl.edu/");
-            setFabricationGuideUrl("https://www.morphosource.org/projects/00000C144");
-            setSubject("Science -  Biology");
-            setGradeLevels("10, 11, 12")
-            setForumLink("https://forum.cadlibrary.org/t/horse-evolution/24");
-        } else {
-            axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ dataverseDoi)
-            .then(object => {
-                console.log(object.data.data.latestVersion);
-                setTitle(object.data.data.latestVersion.metadataBlocks.citation.fields[0].value);
-                let author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
-                formatAuthors(author);
-                let description = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
-    
-                setIntroSentence(description.substring(0, description.indexOf(".")) + ".");
-                setDesc(description.substring(description.indexOf(".")+1));
-        
-                let imgID = -1
-                let instructionalID = -1
-                let fabricationID = -1
-                let files = object.data.data.latestVersion.files
-        
-                for (let i = 0; i < files.length; i++) {
-                    if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
-                        imgID = files[i].dataFile.id
-                    }
-                    if (files[i].label.toLowerCase().substring(0, 11) === "fabrication"){
-                        fabricationID = files[i].dataFile.id
-                    }
-                    if (files[i].label.toLowerCase().substring(0, 11) === "instruction"){
-                        instructionalID = files[i].dataFile.id
-                    }
-                }
-        
-                setImgUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID);
-                setInstructionalResourcesUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + instructionalID);
-                setFabricationGuideUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + fabricationID);
-    
-                //setting link to developer
-                let developer = object.data.data.latestVersion.metadataBlocks.citation.fields[7].value;
-                if(developer.includes("https")){
-                    setDeveloperName(developer.substring(0, developer.indexOf(",")));
-                    setDeveloperLink(developer.substring(developer.indexOf("https")));
-                }
-                
-                let depositDate = object.data.data.latestVersion.metadataBlocks.citation.fields[9].value;
-                setYear(depositDate.substring(0, 4));
-                formatDepositDate(depositDate);
-    
-                
-            })
-            .catch((error) => console.log("Error: ", error));
-        }
-       
+        setImgUrl("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQI543PLIQIc4To-7vEaHXFBFHwChFBBbEOpQCI1saa02QuDiWz");
+        setTitle("Horse Evolution");
+        setDesc("Three lessons have been developed in collaboration with science teachers that can be used with the 3D files provided.");
+        setInstructionalResourcesUrl("http://www.paleoteach.org/chewing-on-change-exploring-the-evolution-of-horses-in-response-to-climate-change/");
+        setDeveloperName("Center for Precollegiate Education and Training, University of Florida");
+        setDeveloperLink("https://www.cpet.ufl.edu/");
+        setFabricationGuideUrl("https://www.morphosource.org/projects/00000C144");
+        setSubject("Science -  Biology");
+        setGradeLevels("10, 11, 12")
+        setForumLink("https://forum.cadlibrary.org/t/horse-evolution/24");
     }, [])
 
     const formatAuthors = (author) => {
@@ -145,7 +88,7 @@ const Object = () => {
 
                             <div>
                                 <img id="img-single" src={imgUrl} alt="Object Thumbnail Not Found" align="left"></img>
-                                {introSentence}
+                                This dataset of fossil horse teeth published on  <a href="https://www.morphosource.org/" target="_blank"> Morphosource </a> has been selected by Florida Museum scientists to help K12 students understand concepts related to horse evolution and climate change. "
                                 <br></br>
                                 <br></br>
 
@@ -182,12 +125,15 @@ const Object = () => {
                         <div>
                             <h4> Sample Learning Goals </h4>
                                 <ul>
-                                    <li> Sample learning goal </li>
+                                    <li> Exploring the Geologic Time Scale via Changes in Fossilized Horse Teeth in Response to Co-evolution of Plants  </li>
+                                    <li> Examining Intraspecies Variation and Changes in a Single Horse Population </li>
+                                    <li> Proposing Changes to Orthogenesis and Communicating Evolution in Museums </li>
                                 </ul>
                                 
                                 
                             <h4> Citation </h4>
-                                <p>{authorsFormmated} ({year}). <em>{title}</em> [Educational Object]. <em>Educational CAD Model Library</em>. Published {depositDate}. NTLS Coalition. doi:10.18130/{dataverseDoi} </p>
+                                <p> Broo, J. and Mahoney, J. (2015). Horse Evolution [Educational Project]. Morphosource. Published March 12, 2015. https://www.morphosource.org/projects/00000C144 </p>
+
                         </div>
                     </div>
                 </div>
@@ -197,4 +143,4 @@ const Object = () => {
     )
 }
 
-export default Object;
+export default HorseEvolution;
