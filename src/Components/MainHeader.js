@@ -19,7 +19,7 @@ const MainHeader = ({ input, setInput, handleSubmit, subject }) => {
                     </p>    
                 </div>
 
-                <SearchBar input={input} setInput={setInput} handleSubmit={handleSubmit} subject={subject}></SearchBar>
+                {subject != "none" && <SearchBar input={input} setInput={setInput} handleSubmit={handleSubmit} subject={subject}></SearchBar>}
                 
             </header>
         </div>
