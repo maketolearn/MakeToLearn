@@ -21,6 +21,7 @@ const Object = () => {
     const [subject, setSubject] = useState("");
     const [gradeLevels, setGradeLevels] = useState("");
     const [forumLink, setForumLink] = useState("");
+    const [sampleLearningGoals, setSampleLearningGoals] = useState([]);
 
     //citation fields
     const [authorsFormmated, setAuthorsFormatted] = useState("");
@@ -49,7 +50,7 @@ const Object = () => {
         } else {
             axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ dataverseDoi)
             .then(object => {
-                console.log(object.data.data.latestVersion.metadataBlocks);
+                console.log(object.data.data.latestVersion.metadataBlocks.educationalcad);
                 setTitle(object.data.data.latestVersion.metadataBlocks.citation.fields[0].value);
                 let author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
                 formatAuthors(author);
@@ -80,15 +81,15 @@ const Object = () => {
                 setFabricationGuideUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + fabricationID);
     
                 //setting link to developer
-                setDeveloperName(object.data.data.latestVersion.metadataBlocks.educationalcad.fields[6].value[0].externalAgency.value);
-                setDeveloperLink(object.data.data.latestVersion.metadataBlocks.educationalcad.fields[6].value[0].externalIdValue.value);
+                setDeveloperName(object.data.data.latestVersion.metadataBlocks.educationalcad.fields[7].value[0].externalAgency.value);
+                setDeveloperLink(object.data.data.latestVersion.metadataBlocks.educationalcad.fields[7].value[0].externalIdValue.value);
         
                 //set subject
-                setSubject(object.data.data.latestVersion.metadataBlocks.educationalcad.fields[1].value.primaryDiscipline.value)
+                setSubject(object.data.data.latestVersion.metadataBlocks.educationalcad.fields[2].value.primaryDiscipline.value)
 
 
                 //set grade levels
-                let gradeLevels = object.data.data.latestVersion.metadataBlocks.educationalcad.fields[0].value;
+                let gradeLevels = object.data.data.latestVersion.metadataBlocks.educationalcad.fields[1].value;
                 let gradeLevelsStr = "";
                 let i;
                 for(i = 0; i < gradeLevels.length - 1; i++ ){
@@ -103,6 +104,8 @@ const Object = () => {
                 setYear(publicationDate.substring(0, 4));
                 formatPubDate(publicationDate);
     
+                //set sample learning goals
+                setSampleLearningGoals(object.data.data.latestVersion.metadataBlocks.educationalcad.fields[0].value)
                 
             })
             .catch((error) => console.log("Error: ", error));
@@ -196,7 +199,9 @@ const Object = () => {
                         <div>
                             <h4> Sample Learning Goals </h4>
                                 <ul>
-                                    <li> Sample learning goal </li>
+                                    {sampleLearningGoals.map((goal) => (
+                                        <li> {goal} </li>
+                                    ))}
                                 </ul>
                                 
                                 
