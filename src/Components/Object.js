@@ -25,7 +25,7 @@ const Object = () => {
     //citation fields
     const [authorsFormmated, setAuthorsFormatted] = useState("");
     const [year, setYear] = useState("");
-    const [depositDate, setDepositDate] = useState("");
+    const [pubDate, setPubDate] = useState("");
 
     let doiPieces = [];
     doiPieces.push(doi.substring(0, 2));
@@ -49,7 +49,7 @@ const Object = () => {
         } else {
             axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ dataverseDoi)
             .then(object => {
-                console.log(object.data.data.latestVersion);
+                console.log(object.data.data.latestVersion.metadataBlocks);
                 setTitle(object.data.data.latestVersion.metadataBlocks.citation.fields[0].value);
                 let author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
                 formatAuthors(author);
@@ -80,15 +80,28 @@ const Object = () => {
                 setFabricationGuideUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + fabricationID);
     
                 //setting link to developer
-                let developer = object.data.data.latestVersion.metadataBlocks.citation.fields[7].value;
-                if(developer.includes("https")){
-                    setDeveloperName(developer.substring(0, developer.indexOf(",")));
-                    setDeveloperLink(developer.substring(developer.indexOf("https")));
+                setDeveloperName(object.data.data.latestVersion.metadataBlocks.educationalcad.fields[6].value[0].externalAgency.value);
+                setDeveloperLink(object.data.data.latestVersion.metadataBlocks.educationalcad.fields[6].value[0].externalIdValue.value);
+        
+                //set subject
+                setSubject(object.data.data.latestVersion.metadataBlocks.educationalcad.fields[1].value.primaryDiscipline.value)
+
+
+                //set grade levels
+                let gradeLevels = object.data.data.latestVersion.metadataBlocks.educationalcad.fields[0].value;
+                let gradeLevelsStr = "";
+                let i;
+                for(i = 0; i < gradeLevels.length - 1; i++ ){
+                    gradeLevelsStr += (gradeLevels[i] + ", ");
                 }
+                gradeLevelsStr += gradeLevels[gradeLevels.length-1];
+                setGradeLevels(gradeLevelsStr);
                 
-                let depositDate = object.data.data.latestVersion.metadataBlocks.citation.fields[9].value;
-                setYear(depositDate.substring(0, 4));
-                formatDepositDate(depositDate);
+                
+                let publicationDate = object.data.data.publicationDate;
+                // console.log(publicationDate);
+                setYear(publicationDate.substring(0, 4));
+                formatPubDate(publicationDate);
     
                 
             })
@@ -115,8 +128,9 @@ const Object = () => {
         }
     }
 
-    const formatDepositDate = (depositDate) => {
-        let date = depositDate.split("-");
+    const formatPubDate = (publicationDate) => {
+        
+        let date = publicationDate.split("-");
         let year = date[0];
         let month = date[1];
         if(date[1].includes("0")){
@@ -128,7 +142,7 @@ const Object = () => {
         if(day[0] === "0"){
             day = day[1];
         }
-        setDepositDate(month + " " + day + ", " + year);
+        setPubDate(month + " " + day + ", " + year);
 
     }
 
@@ -187,7 +201,7 @@ const Object = () => {
                                 
                                 
                             <h4> Citation </h4>
-                                <p>{authorsFormmated} ({year}). <em>{title}</em> [Educational Object]. <em>Educational CAD Model Library</em>. Published {depositDate}. NTLS Coalition. doi:10.18130/{dataverseDoi} </p>
+                                <p>{authorsFormmated} ({year}). <em>{title}</em> [Educational Object]. <em>Educational CAD Model Library</em>. Published {pubDate}. NTLS Coalition. doi:10.18130/{dataverseDoi} </p>
                         </div>
                     </div>
                 </div>
