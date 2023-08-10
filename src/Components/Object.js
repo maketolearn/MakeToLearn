@@ -154,7 +154,7 @@ const Object = () => {
             <body>
                 <div class="site">
                     <MainHeader subject="none"></MainHeader>
-                    <CategoryHeader></CategoryHeader>
+                    <CategoryHeader subject={subject}></CategoryHeader>
                     <div id="page">
                         <h2>{title}</h2>
                         <br></br>
