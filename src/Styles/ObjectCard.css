@@ -3,13 +3,32 @@
     transition: 0.3s;
     border-radius: 25px; /* 5px rounded corners */
     width: 90%;
+    height: 350px; /* Set the desired height */
     
     margin-top: 20px;
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
+
+.card:hover {
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25); /* Add shadow on hover */
+}
+  
 
 #more {
     display: none;
+}
+
+.card-image {
+    overflow: hidden;
+    height: 130px; /* Set the desired height */
+}
+
+.card-image:has(:hover) {
+    overflow: hidden;
+    height: 170px; /* Set the desired height */
 }
 
 #img {
@@ -24,9 +43,21 @@
     border-radius: 25px 25px 0px 0px;
 
     max-width: 100%;
-    height: auto;
+    /* height: 60%; */
+
+    object-fit: cover;
+    object-position: bottom center; /* Show the top part of the image */
+    /* object-fit: none; */
+    overflow: hidden;
 }
 
 .card-desc{
+    overflow: hidden; /* Hide any overflow */
     padding: 10px; 
 }
+
+.card-title {
+    /* white-space: nowrap; Prevent title from wrapping */
+    overflow: hidden; /* Hide any overflow */
+    text-overflow: ellipsis; /* Add ellipsis (...) if title overflows */
+  }
