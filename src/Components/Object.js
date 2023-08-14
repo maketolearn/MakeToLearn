@@ -23,7 +23,7 @@ const Object = () => {
     const [primaryDiscipline, setPrimaryDiscipline] = useState("");
     const [secondaryDiscipline, setSecondaryDiscipline] = useState("");
     const [gradeLevels, setGradeLevels] = useState("");
-    const [forumLink, setForumLink] = useState("");
+    const [forumLink, setForumLink] = useState("https://forum.cadlibrary.org/");
     const [sampleLearningGoals, setSampleLearningGoals] = useState([]);
 
     //citation fields
