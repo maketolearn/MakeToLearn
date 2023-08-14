@@ -10,6 +10,8 @@ import '../Styles/Page.css';
 const Object = () => {
     const { doi } = useParams();
 
+
+    //metadata fields
     const [imgUrl, setImgUrl] = useState("");
     const [title, setTitle] = useState("");
     const [desc, setDesc] = useState("");
@@ -18,7 +20,8 @@ const Object = () => {
     const [developerLink, setDeveloperLink] = useState("");
     const [instructionalResourcesUrl, setInstructionalResourcesUrl] = useState(""); //download url for the instructional resources zip file
     const [fabricationGuideUrl, setFabricationGuideUrl] = useState(""); //download url for the fabrication guide zip file
-    const [subject, setSubject] = useState("");
+    const [primaryDiscipline, setPrimaryDiscipline] = useState("");
+    const [secondaryDiscipline, setSecondaryDiscipline] = useState("");
     const [gradeLevels, setGradeLevels] = useState("");
     const [forumLink, setForumLink] = useState("");
     const [sampleLearningGoals, setSampleLearningGoals] = useState([]);
@@ -44,21 +47,72 @@ const Object = () => {
             setDeveloperName("Center for Precollegiate Education and Training, University of Florida");
             setDeveloperLink("https://www.cpet.ufl.edu/");
             setFabricationGuideUrl("https://www.morphosource.org/projects/00000C144");
-            setSubject("Science -  Biology");
+            setPrimaryDiscipline("Science -  Biology");
             setGradeLevels("10, 11, 12")
             setForumLink("https://forum.cadlibrary.org/t/horse-evolution/24");
         } else {
             axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ dataverseDoi)
             .then(object => {
-                console.log(object.data.data.latestVersion.metadataBlocks.educationalcad);
-                setTitle(object.data.data.latestVersion.metadataBlocks.citation.fields[0].value);
-                let author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
+
+                //change the citation api response to a dictionary
+                let citationBlock = object.data.data.latestVersion.metadataBlocks.citation.fields;
+                let citationMetadata = {};
+
+                for(let i = 0; i < citationBlock.length; i++){
+                    let key = citationBlock[i].typeName;
+                    citationMetadata[key] = citationBlock[i].value;
+                }
+
+                console.log(citationMetadata);
+
+                //change the educational cad api response to a dictionary
+                let educationalCADBlock = object.data.data.latestVersion.metadataBlocks.educationalcad.fields;
+                let educationCADMetadata = {};
+                for(let i = 0; i < educationalCADBlock.length; i++){
+                    let key = educationalCADBlock[i].typeName;
+                    educationCADMetadata[key] = educationalCADBlock[i].value;
+                }
+                
+                console.log(educationCADMetadata);
+
+                //set the citation metadata fields
+                setTitle(citationMetadata["title"]);
+                let author = citationMetadata["author"][0].authorName.value;
                 formatAuthors(author);
-                let description = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
-    
+
+                let description = citationMetadata["dsDescription"][0].dsDescriptionValue.value;
                 setIntroSentence(description.substring(0, description.indexOf(".")) + ".");
                 setDesc(description.substring(description.indexOf(".")+1));
+
+                let publicationDate = object.data.data.publicationDate;
+                setYear(publicationDate.substring(0, 4));
+                formatPubDate(publicationDate);
+
+                //set the educational cad metadata fields
+                //setting link to developer
+                setDeveloperName(educationCADMetadata["externalContrib"][0].externalAgency.value);
+                setDeveloperLink(educationCADMetadata["externalContrib"][0].externalIdValue.value);
         
+                //set disciplines (secondary discipline may be optional)
+                setPrimaryDiscipline(educationCADMetadata["discipline"].primaryDiscipline.value)
+                if(educationCADMetadata["discipline"].secondaryDiscipline != null){
+                    setSecondaryDiscipline(educationCADMetadata["discipline"].secondaryDiscipline.value);
+                }
+                
+                //set grade levels
+                let gradeLevels = educationCADMetadata["gradeLevel"];
+                let gradeLevelsStr = "";
+                let i;
+                for(i = 0; i < gradeLevels.length - 1; i++ ){
+                    gradeLevelsStr += (gradeLevels[i] + ", ");
+                }
+                gradeLevelsStr += gradeLevels[gradeLevels.length-1];
+                setGradeLevels(gradeLevelsStr);
+                
+                //set sample learning goals
+                setSampleLearningGoals(educationCADMetadata["sampleLearningGoals"]);
+
+                //file metadata
                 let imgID = -1
                 let instructionalID = -1
                 let fabricationID = -1
@@ -79,33 +133,6 @@ const Object = () => {
                 setImgUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID);
                 setInstructionalResourcesUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + instructionalID);
                 setFabricationGuideUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + fabricationID);
-    
-                //setting link to developer
-                setDeveloperName(object.data.data.latestVersion.metadataBlocks.educationalcad.fields[7].value[0].externalAgency.value);
-                setDeveloperLink(object.data.data.latestVersion.metadataBlocks.educationalcad.fields[7].value[0].externalIdValue.value);
-        
-                //set subject
-                setSubject(object.data.data.latestVersion.metadataBlocks.educationalcad.fields[2].value.primaryDiscipline.value)
-
-
-                //set grade levels
-                let gradeLevels = object.data.data.latestVersion.metadataBlocks.educationalcad.fields[1].value;
-                let gradeLevelsStr = "";
-                let i;
-                for(i = 0; i < gradeLevels.length - 1; i++ ){
-                    gradeLevelsStr += (gradeLevels[i] + ", ");
-                }
-                gradeLevelsStr += gradeLevels[gradeLevels.length-1];
-                setGradeLevels(gradeLevelsStr);
-                
-                
-                let publicationDate = object.data.data.publicationDate;
-                // console.log(publicationDate);
-                setYear(publicationDate.substring(0, 4));
-                formatPubDate(publicationDate);
-    
-                //set sample learning goals
-                setSampleLearningGoals(object.data.data.latestVersion.metadataBlocks.educationalcad.fields[0].value)
                 
             })
             .catch((error) => console.log("Error: ", error));
@@ -154,7 +181,7 @@ const Object = () => {
             <body>
                 <div class="site">
                     <MainHeader subject="none"></MainHeader>
-                    <CategoryHeader subject={subject}></CategoryHeader>
+                    <CategoryHeader subject={primaryDiscipline}></CategoryHeader>
                     <div id="page">
                         <h2>{title}</h2>
                         <br></br>
@@ -177,7 +204,7 @@ const Object = () => {
                                 
                                 <b>Subject</b>
                                 <br></br>
-                                <p class="detail">{subject}</p>
+                                <p class="detail">{primaryDiscipline}</p>
                               
                                 <b>Grade Levels</b>
                                 <p class="detail"> {gradeLevels} </p>
