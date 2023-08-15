@@ -90,6 +90,18 @@ a {
     text-decoration: none;
 }
 
+#science-active {
+    background-color:#c1c1c1;
+}
+
+#technology-active {
+    background-color:#c1c1c1;
+}
+
+#engineering-active {
+    background-color:#c1c1c1;
+}
+
 #mathematics-active {
     background-color:#c1c1c1;
 }
