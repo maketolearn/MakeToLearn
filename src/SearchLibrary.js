@@ -26,8 +26,7 @@ const SearchLibrary = () => {
   let objects = [];
 
   useEffect(() => {
-    //figure out all fabrication here?
-    
+    //pull all unique fab equipment here?
     setSearchObjects([]);
     if(searchTerm === null){
         setSearchTerm("");
