@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import '../Styles/FilterBar.css';
 
-const FilterBar = ({subjects, onFilterChange}) => {
+const FilterBar = ({subjects, fabEquipment, onFilterChange}) => {
 
     const [selected, setSelected] = useState([]);
 
@@ -33,6 +33,17 @@ const FilterBar = ({subjects, onFilterChange}) => {
                     {subject}
                 </label> 
             )}
+            <br></br>
+
+            <h4> Fabrication Equipment </h4>
+            {fabEquipment.map((equipment) =>
+                <label id="checkbox" key={equipment}>
+                    <input id="subject-filter" type="checkbox" checked={selected.includes(equipment)} onChange={() => handleFilterChange(equipment)}>
+                    </input>
+                    {equipment}
+                </label> 
+            )}
+
 
         </div>
     );

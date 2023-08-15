@@ -16,6 +16,7 @@ const SearchLibrary = () => {
   const [searchPhrase, setSearchPhrase] = useState("");
   const [filterObjects, setFilterObjects] = useState([]); // objects to be filtered on
   const subjects = ['Science', 'Technology', 'Engineering', 'Mathematics']
+  const fabEquipment = ['Scissors', 'Die Cutter', 'Laser Cutter', '3D Printer']
 
   let imgUrl = "";
   let title = "";
@@ -25,6 +26,8 @@ const SearchLibrary = () => {
   let objects = [];
 
   useEffect(() => {
+    //figure out all fabrication here?
+    
     setSearchObjects([]);
     if(searchTerm === null){
         setSearchTerm("");
@@ -202,33 +205,77 @@ const SearchLibrary = () => {
     let resultsFound = false;
 
     dois.forEach(doi => {
-      console.log(doi);
+      // console.log(doi);
         axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ doi)
         .then(object => {
-          if(filters.includes(object.data.data.latestVersion.metadataBlocks.citation.fields[5].value[0].keywordValue.value)){
+
+          //gather all values from filter fields 
+          //change the educational cad api response to a dictionary
+          let educationalCADBlock = object.data.data.latestVersion.metadataBlocks.educationalcad.fields;
+          let educationCADMetadata = {};
+          for(let i = 0; i < educationalCADBlock.length; i++){
+              let key = educationalCADBlock[i].typeName;
+              educationCADMetadata[key] = educationalCADBlock[i].value;
+          }
+          let filterValues = [];
+          filterValues.push(educationCADMetadata['discipline'].primaryDiscipline.value);
+          educationCADMetadata['fabEquipment'].forEach((equipment) => {
+            filterValues.push(equipment);
+          })
+          console.log(filterValues);
+          filters.every(elem => {
+            console.log(elem)
+            console.log(filterValues.includes(elem))})
+
+          if(filters.every(elem => filterValues.includes(elem))){
             resultsFound = true;
             console.log("TRUE");
-              title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
-              author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
-              desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
+            title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
+            author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
+            desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
 
-              let imgID = -1
-              let files = object.data.data.latestVersion.files
+            let imgID = -1
+            let files = object.data.data.latestVersion.files
 
-              for (let i = 0; i < files.length; i++) {
-                  if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
-                      imgID = files[i].dataFile.id
-                  }
-              }
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
+                    imgID = files[i].dataFile.id
+                }
+            }
 
-              imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
+            imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
 
-              objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
-              let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
-              console.log(sortedObjects);
-              setSearchObjects(sortedObjects);
-              console.log(searchObjects);
+            objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
+            let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
+            console.log(sortedObjects);
+            setSearchObjects(sortedObjects);
+            console.log(searchObjects);
           }
+
+          // if(filters.includes(object.data.data.latestVersion.metadataBlocks.citation.fields[5].value[0].keywordValue.value)){
+          //   resultsFound = true;
+          //   console.log("TRUE");
+          //     title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
+          //     author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
+          //     desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
+
+          //     let imgID = -1
+          //     let files = object.data.data.latestVersion.files
+
+          //     for (let i = 0; i < files.length; i++) {
+          //         if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
+          //             imgID = files[i].dataFile.id
+          //         }
+          //     }
+
+          //     imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
+
+          //     objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
+          //     let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
+          //     console.log(sortedObjects);
+          //     setSearchObjects(sortedObjects);
+          //     console.log(searchObjects);
+          // }
         })
       .catch((error) => console.log("Error: ", error));
     })
@@ -239,15 +286,16 @@ const SearchLibrary = () => {
   }
 
   const handleFilterChange = (filters) => {
+    console.log(filters);
     if(filters.length === 0){
       searchByPhrase();
     }
     else {
-      let lowercase = [];
-      filters.forEach(filter => {
-        lowercase.push(filter[0].toLowerCase() + filter.substring(1));
-      })
-      pullAllCardsByFilter(lowercase);
+      // let lowercase = [];
+      // filters.forEach(filter => {
+      //   lowercase.push(filter[0].toLowerCase() + filter.substring(1));
+      // })
+      pullAllCardsByFilter(filters);
     }
   }
 
@@ -260,7 +308,7 @@ const SearchLibrary = () => {
           <div id="page">
             <h2>Browse All Objects</h2>
             <div class="results">
-                <FilterBar subjects={subjects} onFilterChange={(handleFilterChange)}></FilterBar>
+                <FilterBar subjects={subjects} fabEquipment={fabEquipment} onFilterChange={(handleFilterChange)}></FilterBar>
                 <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={"cards"}></SearchResultDisplay>
             </div>
           </div>  
