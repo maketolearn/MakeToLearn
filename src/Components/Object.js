@@ -56,25 +56,15 @@ const Object = () => {
 
                 //file metadata
                 let imgID = -1
-                let instructionalID = -1
-                let fabricationID = -1
                 let files = object.data.data.latestVersion.files
         
                 for (let i = 0; i < files.length; i++) {
                     if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
                         imgID = files[i].dataFile.id
                     }
-                    if (files[i].label.toLowerCase().substring(0, 11) === "fabrication"){
-                        fabricationID = files[i].dataFile.id
-                    }
-                    if (files[i].label.toLowerCase().substring(0, 11) === "instruction"){
-                        instructionalID = files[i].dataFile.id
-                    }
                 }
         
                 setImgUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID);
-                setInstructionalResourcesUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + instructionalID);
-                setFabricationGuideUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + fabricationID);
 
                 //change the citation api response to a dictionary
                 let citationBlock = object.data.data.latestVersion.metadataBlocks.citation.fields;
@@ -133,6 +123,21 @@ const Object = () => {
                 
                 //set sample learning goals
                 setSampleLearningGoals(educationCADMetadata["sampleLearningGoals"]);
+
+                //fabrication and learning packages
+                let instructionalID = -1
+                let fabricationID = -1
+
+                for (let i = 0; i < files.length; i++) {
+                    if (files[i].label.toLowerCase().substring(0, 11) === "fabrication"){
+                        fabricationID = files[i].dataFile.id
+                    }
+                    if (files[i].label.toLowerCase().substring(0, 11) === "instruction"){
+                        instructionalID = files[i].dataFile.id
+                    }
+                }
+                setInstructionalResourcesUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + instructionalID);
+                setFabricationGuideUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + fabricationID);
                 
             })
             .catch((error) => console.log("Error: ", error));
