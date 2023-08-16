@@ -331,7 +331,7 @@ const Subject = ({ subjectArg }) => {
             <h2>Browse {subjectCapitalized} Objects</h2>
             <div class="results">
                 <FilterBarSubject fabEquipment={fabEquipment} onFilterChange={(handleFilterChange)}></FilterBarSubject>
-                <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={"cards"}></SearchResultDisplay>
+                <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={"cards"} subject={subjectArg}></SearchResultDisplay>
             </div>
             {/* <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={"cards-no-filter"} subject={subjectArg} ></SearchResultDisplay> */}
           </div>
