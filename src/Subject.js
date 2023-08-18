@@ -14,7 +14,9 @@ const Subject = ({ subjectArg }) => {
   const [subject, setSubject] = useState(subjectArg);
   const [searchPhrase, setSearchPhrase] = useState("");
   const [filterObjects, setFilterObjects] = useState([]); // objects to be filtered on
-  const fabEquipment = ['Scissors', 'Die Cutter', 'Laser Cutter', '3D Printer']
+  const [fabEquipment, setFabEquipment] = useState([]);
+  const grades = ['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+  // const fabEquipment = ['Scissors', 'Die Cutter', 'Laser Cutter', '3D Printer']
 
   let imgUrl = "";
   let title = "";
@@ -22,11 +24,13 @@ const Subject = ({ subjectArg }) => {
   let desc = "";
   let dois = [];
   let objects = [];
+  let equipmentList = [];
   let subjectCapitalized = subject.charAt(0).toUpperCase() + subject.slice(1);
 
   useEffect(() => {
     setSearchObjects([]);
     setSearchTerm("");
+    pullFacets();
     pullAllCards();
   }, [])
 
@@ -35,6 +39,22 @@ const Subject = ({ subjectArg }) => {
     setSearchObjects([]);
     setSearchPhrase("");
     searchByPhrase();
+  }
+
+  const pullFacets = async() => {
+    axios.get("https://dataverse.lib.virginia.edu/api/search?q=*&show_facets=true&subtree=CADLibrary")
+    .then((response) => {
+      let facets = response.data.data.facets[0];
+      
+      //setting facets for fab equipment
+      facets.fabEquipment_ss.labels.forEach(equipment => {
+        // console.log(Object.keys(equipment)[0])
+        equipmentList =  [Object.keys(equipment)[0], ...equipmentList];
+        setFabEquipment(equipmentList);
+      })
+      console.log(fabEquipment)
+    })
+    .catch((error) => console.log("Error: ", error));
   }
 
   const pullAllCards = async() => {
@@ -330,7 +350,7 @@ const Subject = ({ subjectArg }) => {
           <div id="page">
             <h2>Browse {subjectCapitalized} Objects</h2>
             <div class="results">
-                <FilterBarSubject fabEquipment={fabEquipment} onFilterChange={(handleFilterChange)}></FilterBarSubject>
+                <FilterBarSubject fabEquipment={fabEquipment} grades={grades} onFilterChange={(handleFilterChange)}></FilterBarSubject>
                 <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={"cards"} subject={subjectArg}></SearchResultDisplay>
             </div>
             {/* <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={"cards-no-filter"} subject={subjectArg} ></SearchResultDisplay> */}

@@ -16,7 +16,8 @@ const SearchLibrary = () => {
   const [searchPhrase, setSearchPhrase] = useState("");
   const [filterObjects, setFilterObjects] = useState([]); // objects to be filtered on
   const subjects = ['Science', 'Technology', 'Engineering', 'Mathematics']
-  const fabEquipment = ['Scissors', 'Die Cutter', 'Laser Cutter', '3D Printer']
+  const grades = ['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+  const [fabEquipment, setFabEquipment] = useState([]);
 
   let imgUrl = "";
   let title = "";
@@ -24,10 +25,12 @@ const SearchLibrary = () => {
   let desc = "";
   let dois = [];
   let objects = [];
+  let equipmentList = [];
 
   useEffect(() => {
     //pull all unique fab equipment here?
     setSearchObjects([]);
+    pullFacets();
     if(searchTerm === null){
         setSearchTerm("");
         pullAllCards();
@@ -41,6 +44,22 @@ const SearchLibrary = () => {
     setSearchObjects([]);
     setSearchPhrase("");
     searchByPhrase();
+  }
+
+  const pullFacets = async() => {
+    axios.get("https://dataverse.lib.virginia.edu/api/search?q=*&show_facets=true&subtree=CADLibrary")
+    .then((response) => {
+      let facets = response.data.data.facets[0];
+      
+      //setting facets for fab equipment
+      facets.fabEquipment_ss.labels.forEach(equipment => {
+        // console.log(Object.keys(equipment)[0])
+        equipmentList =  [Object.keys(equipment)[0], ...equipmentList];
+        setFabEquipment(equipmentList);
+      })
+      console.log(fabEquipment)
+    })
+    .catch((error) => console.log("Error: ", error));
   }
 
   const pullAllCards = async() => {
@@ -250,31 +269,6 @@ const SearchLibrary = () => {
             setSearchObjects(sortedObjects);
             console.log(searchObjects);
           }
-
-          // if(filters.includes(object.data.data.latestVersion.metadataBlocks.citation.fields[5].value[0].keywordValue.value)){
-          //   resultsFound = true;
-          //   console.log("TRUE");
-          //     title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
-          //     author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
-          //     desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
-
-          //     let imgID = -1
-          //     let files = object.data.data.latestVersion.files
-
-          //     for (let i = 0; i < files.length; i++) {
-          //         if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
-          //             imgID = files[i].dataFile.id
-          //         }
-          //     }
-
-          //     imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
-
-          //     objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
-          //     let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
-          //     console.log(sortedObjects);
-          //     setSearchObjects(sortedObjects);
-          //     console.log(searchObjects);
-          // }
         })
       .catch((error) => console.log("Error: ", error));
     })
@@ -307,7 +301,7 @@ const SearchLibrary = () => {
           <div id="page">
             <h2>Browse All Objects</h2>
             <div class="results">
-                <FilterBar subjects={subjects} fabEquipment={fabEquipment} onFilterChange={(handleFilterChange)}></FilterBar>
+                <FilterBar subjects={subjects} fabEquipment={fabEquipment} grades ={grades} onFilterChange={(handleFilterChange)}></FilterBar>
                 <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={"cards"}></SearchResultDisplay>
             </div>
           </div>  
