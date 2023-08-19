@@ -235,17 +235,53 @@ const SearchLibrary = () => {
               let key = educationalCADBlock[i].typeName;
               educationCADMetadata[key] = educationalCADBlock[i].value;
           }
-          let filterValues = [];
-          filterValues.push(educationCADMetadata['discipline'].primaryDiscipline.value);
-          educationCADMetadata['fabEquipment'].forEach((equipment) => {
-            filterValues.push(equipment);
-          })
-          console.log(filterValues);
-          filters.every(elem => {
-            console.log(elem)
-            console.log(filterValues.includes(elem))})
+        
+          let filterValueSubject = educationCADMetadata['discipline'].primaryDiscipline.value;
+          let filterValuesFabEquipment = [];
+          let filterValuesGrades = [];
 
-          if(filters.every(elem => filterValues.includes(elem))){
+          console.log(educationCADMetadata)
+        
+          educationCADMetadata['fabEquipment'].forEach((equipment) => {
+            filterValuesFabEquipment.push(equipment);
+          })
+          educationCADMetadata['gradeLevel'].forEach((grade) => {
+            filterValuesGrades.push(grade);
+          })
+          
+          //check to see if filters are met
+
+          // set to true if the filter subject matches or there is no subject selected
+          let filtersSubjectMet = filters.includes(filterValueSubject) || (!filters.includes("Science") && !filters.includes("Technology") && !filters.includes("Engineering") && !filters.includes("Mathematics"));
+
+          // needs refactoring!!
+          let selected = false;
+          fabEquipment.forEach(equipment => {
+             if(filters.includes(equipment)){
+              selected = true;
+             }
+          })
+
+          let filtersFabEquipMet = !selected;
+          let filtersGradeMet = false || (!filters.includes("K") && !filters.includes("1") && !filters.includes("2") && !filters.includes("3") && !filters.includes("4") && !filters.includes("5") && !filters.includes("6") && !filters.includes("7") && !filters.includes("8") && !filters.includes("9") && !filters.includes("10") && !filters.includes("11") && !filters.includes("12"));
+
+          filterValuesFabEquipment.forEach(equipment => {
+            if(filters.includes(equipment)){
+              filtersFabEquipMet = true;
+            }
+          })
+
+          filterValuesGrades.forEach(grade => {
+            if(filters.includes(grade)){
+              filtersGradeMet = true;
+            }
+          })
+
+          console.log(filtersSubjectMet)
+          console.log(filtersFabEquipMet)
+          console.log(filtersGradeMet)
+
+          if(filtersSubjectMet && filtersFabEquipMet && filtersGradeMet){
             resultsFound = true;
             console.log("TRUE");
             title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
@@ -265,9 +301,9 @@ const SearchLibrary = () => {
 
             objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
             let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
-            console.log(sortedObjects);
+            // console.log(sortedObjects);
             setSearchObjects(sortedObjects);
-            console.log(searchObjects);
+            // console.log(searchObjects);
           }
         })
       .catch((error) => console.log("Error: ", error));
@@ -284,10 +320,6 @@ const SearchLibrary = () => {
       searchByPhrase();
     }
     else {
-      // let lowercase = [];
-      // filters.forEach(filter => {
-      //   lowercase.push(filter[0].toLowerCase() + filter.substring(1));
-      // })
       pullAllCardsByFilter(filters);
     }
   }
