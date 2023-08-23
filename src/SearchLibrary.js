@@ -115,7 +115,9 @@ const SearchLibrary = () => {
 
                 imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
 
-                objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
+                let doiIdentifier = doi.substring(13);
+
+                objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doiIdentifier}, ...objects];
                 let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
                 setSearchObjects(sortedObjects);
                 setFilterObjects(sortedObjects);
@@ -167,8 +169,10 @@ const SearchLibrary = () => {
                 }
     
                 imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
+
+                let doiIdentifier = doi.substring(13);
     
-                objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
+                objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doiIdentifier}, ...objects];
                 let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
                 setSearchObjects(sortedObjects);
                 setFilterObjects(sortedObjects);
