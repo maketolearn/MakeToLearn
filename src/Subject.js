@@ -258,12 +258,12 @@ const Subject = ({ subjectArg }) => {
               let key = educationalCADBlock[i].typeName;
               educationCADMetadata[key] = educationalCADBlock[i].value;
           }
-        
-          let filterValueSubject = educationCADMetadata['discipline'].primaryDiscipline.value;
-          let filterValuesFabEquipment = [];
-          let filterValuesGrades = [];
 
           console.log(educationCADMetadata)
+        
+          let filterValueSubject = educationCADMetadata['disciplines'][0].discipline.value;
+          let filterValuesFabEquipment = [];
+          let filterValuesGrades = [];
         
           educationCADMetadata['fabEquipment'].forEach((equipment) => {
             filterValuesFabEquipment.push(equipment);

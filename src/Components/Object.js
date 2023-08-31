@@ -106,10 +106,10 @@ const Object = () => {
                 setDeveloperLink(educationCADMetadata["externalContrib"][0].externalIdValue.value);
         
                 //set disciplines (secondary discipline may be optional)
-                setPrimaryDiscipline(educationCADMetadata["discipline"].primaryDiscipline.value)
-                if(educationCADMetadata["discipline"].secondaryDiscipline != null){
-                    setSecondaryDiscipline(educationCADMetadata["discipline"].secondaryDiscipline.value);
-                }
+                setPrimaryDiscipline(educationCADMetadata['disciplines'][0].discipline.value)
+                // if(educationCADMetadata["discipline"].secondaryDiscipline != null){
+                //     setSecondaryDiscipline(educationCADMetadata["discipline"].secondaryDiscipline.value);
+                // }
                 
                 //set grade levels
                 let gradeLevels = educationCADMetadata["gradeLevel"];
