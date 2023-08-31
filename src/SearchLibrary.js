@@ -9,7 +9,10 @@ import { useLocation } from 'react-router-dom';
 
 const SearchLibrary = () => {
 
-  const location = useLocation();  
+  const location = useLocation(); 
+  const [showComponent, setShowComponent] = useState(false); 
+  const [cardDisplay, setCardDisplay] = useState("cards-no-filter")
+  const [resultsDisplay, setResultsDisplay] = useState("")
 
   const [searchTerm, setSearchTerm] = useState(location.state);
   const [searchObjects, setSearchObjects] = useState([]);
@@ -18,6 +21,7 @@ const SearchLibrary = () => {
   const subjects = ['Science', 'Technology', 'Engineering', 'Mathematics']
   const grades = ['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
   const [fabEquipment, setFabEquipment] = useState([]);
+
 
   let imgUrl = "";
   let title = "";
@@ -325,17 +329,32 @@ const SearchLibrary = () => {
     }
   }
 
+  const handleCheckboxChange = () => {
+    setShowComponent(!showComponent);
+    if(cardDisplay === "cards"){
+      setCardDisplay("cards-no-filter");
+    } else {
+      setCardDisplay("cards");
+    }
+    
+    if(resultsDisplay === ""){
+      setResultsDisplay("results");
+    } else {
+      setResultsDisplay("");
+    }
+  };
+
   return (
     <div>
       <body>
         <div class="site">
-          <MainHeader input={searchTerm}  setInput={setSearchTerm} handleSubmit={handleSubmit} subject={"Library"}></MainHeader>
+          <MainHeader input={searchTerm}  setInput={setSearchTerm} handleSubmit={handleSubmit} subject={"Library"} showComponent={showComponent} handleCheckboxChange={handleCheckboxChange}></MainHeader>
           <CategoryHeader></CategoryHeader>
           <div id="page">
             <h2>Browse All Objects</h2>
-            <div class="results">
-                <FilterBar subjects={subjects} fabEquipment={fabEquipment} grades ={grades} onFilterChange={(handleFilterChange)}></FilterBar>
-                <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={"cards"}></SearchResultDisplay>
+            <div class={resultsDisplay}>
+                {showComponent && <FilterBar subjects={subjects} fabEquipment={fabEquipment} grades ={grades} onFilterChange={(handleFilterChange)}></FilterBar>}
+                <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={cardDisplay}></SearchResultDisplay>
             </div>
           </div>  
         </div>
