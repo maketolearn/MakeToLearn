@@ -21,7 +21,8 @@ const SearchLibrary = () => {
   const subjects = ['Science', 'Technology', 'Engineering', 'Mathematics']
   const grades = ['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
   const [fabEquipment, setFabEquipment] = useState([]);
-
+  
+  const [filters, setFilters] = useState([]);
 
   let imgUrl = "";
   let title = "";
@@ -32,7 +33,6 @@ const SearchLibrary = () => {
   let equipmentList = [];
 
   useEffect(() => {
-    //pull all unique fab equipment here?
     setSearchObjects([]);
     pullFacets();
     if(searchTerm === null){
@@ -42,6 +42,8 @@ const SearchLibrary = () => {
         searchByPhrase();
     }
   }, [])
+
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -213,6 +215,7 @@ const SearchLibrary = () => {
   }
 
   const pullAllCardsByFilter = async(filters) => {
+    setFilters(filters);
 
     filterObjects.forEach(filterObject => {
       if(filterObject.doi.length >= 13){
@@ -240,7 +243,7 @@ const SearchLibrary = () => {
               educationCADMetadata[key] = educationalCADBlock[i].value;
           }
 
-          console.log(educationCADMetadata)
+          //console.log(educationCADMetadata)
 
         
           let filterValueSubject = educationCADMetadata['disciplines'][0].discipline.value;
@@ -282,13 +285,13 @@ const SearchLibrary = () => {
             }
           })
 
-          console.log(filtersSubjectMet)
-          console.log(filtersFabEquipMet)
-          console.log(filtersGradeMet)
+          //console.log(filtersSubjectMet)
+          //console.log(filtersFabEquipMet)
+          //console.log(filtersGradeMet)
 
           if(filtersSubjectMet && filtersFabEquipMet && filtersGradeMet){
             resultsFound = true;
-            console.log("TRUE");
+            //console.log("TRUE");
             title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
             author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
             desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
@@ -320,7 +323,6 @@ const SearchLibrary = () => {
   }
 
   const handleFilterChange = (filters) => {
-    console.log(filters);
     if(filters.length === 0){
       searchByPhrase();
     }
@@ -353,7 +355,7 @@ const SearchLibrary = () => {
           <div id="page">
             <h2>Browse All Objects</h2>
             <div class={resultsDisplay}>
-                {showComponent && <FilterBar subjects={subjects} fabEquipment={fabEquipment} grades ={grades} onFilterChange={(handleFilterChange)}></FilterBar>}
+                {showComponent && <FilterBar filters={filters} subjects={subjects} fabEquipment={fabEquipment} grades ={grades} onFilterChange={(handleFilterChange)}></FilterBar>}
                 <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={cardDisplay}></SearchResultDisplay>
             </div>
           </div>  

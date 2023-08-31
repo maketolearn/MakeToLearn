@@ -1,9 +1,19 @@
 import React, {useState} from "react";
 import '../Styles/FilterBar.css';
 
-const FilterBar = ({subjects, fabEquipment, grades, onFilterChange}) => {
+const FilterBar = ({filters, subjects, fabEquipment, grades, onFilterChange}) => {
 
-    const [selected, setSelected] = useState([]);
+    const [selected, setSelected] = useState(filters);
+    
+    // console.log("Current filters: " + filters)
+    // let i = 0
+    // selected.forEach((item) => {
+    //     console.log(i)
+    //     console.log(item)
+    //     i++
+    // })
+
+    // console.log("Science filter is selected: " + (selected[1] === "Science"))
 
     const handleFilterChange = (option) => {
 
@@ -20,8 +30,6 @@ const FilterBar = ({subjects, fabEquipment, grades, onFilterChange}) => {
         setSelected(updated);
         onFilterChange(updated);
     }
-
-
 
     return(
         <div id="filter-box">
