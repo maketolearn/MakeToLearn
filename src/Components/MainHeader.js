@@ -16,11 +16,18 @@ const MainHeader = ({ input, setInput, handleSubmit, subject }) => {
                             Library
                             {/* <img src="cadLibrary.png"></img> */}
                         </Link>
-                    </p>    
+                    </p>   
+                    
                 </div>
-
-                {subject != "none" && <SearchBar input={input} setInput={setInput} handleSubmit={handleSubmit} subject={subject}></SearchBar>}
                 
+                <div class="slider-container">
+                    <div id="slider-text"> Show Filters</div>
+                    <label class="switch">
+                        <input type="checkbox"/>
+                        <span class="slider round"></span>
+                    </label>
+                    {subject != "none" && <SearchBar input={input} setInput={setInput} handleSubmit={handleSubmit} subject={subject}></SearchBar>}
+                </div>
             </header>
         </div>
     );
