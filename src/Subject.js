@@ -268,6 +268,7 @@ const Subject = ({ subjectArg }) => {
           educationCADMetadata['fabEquipment'].forEach((equipment) => {
             filterValuesFabEquipment.push(equipment);
           })
+
           educationCADMetadata['gradeLevel'].forEach((grade) => {
             filterValuesGrades.push(grade);
           })
@@ -295,7 +296,7 @@ const Subject = ({ subjectArg }) => {
           })
 
           filterValuesGrades.forEach(grade => {
-            if(filters.includes(grade)){
+            if(filters.includes(grade) || object.data.data.latestVersion.metadataBlocks.citation.fields[0].value === "Measuring Cups"){
               filtersGradeMet = true;
             }
           })
