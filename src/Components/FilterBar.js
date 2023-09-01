@@ -54,13 +54,16 @@ const FilterBar = ({filters, subjects, fabEquipment, grades, onFilterChange}) =>
             <br></br>
 
             <h4> Grade Level </h4>
-            {grades.map((grade) =>
-                <label id="checkbox" key={grade}>
-                    <input id="subject-filter" type="checkbox" checked={selected.includes(grade)} onChange={() => handleFilterChange(grade)}>
-                    </input>
-                    {grade}
-                </label> 
-            )}
+            <div class="grade-checkboxes">
+                {grades.map((grade) =>
+                    <label id="checkbox" key={grade}>
+                        <input id="subject-filter" type="checkbox" checked={selected.includes(grade)} onChange={() => handleFilterChange(grade)}>
+                        </input>
+                        {grade}
+                    </label> 
+                )}
+            </div>
+            
 
 
         </div>

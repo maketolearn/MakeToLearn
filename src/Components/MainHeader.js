@@ -4,7 +4,7 @@ import '../Styles/MainHeader.css';
 import '../Styles/Page.css';
 import SearchBar from "./SearchBar";
 
-const MainHeader = ({ input, setInput, handleSubmit, subject, showComponent, handleCheckboxChange }) => {
+const MainHeader = ({ input, setInput, handleSubmit, subject, showComponent, handleCheckboxChange, showFilter }) => {
 
     return (
         <div id="page">
@@ -21,11 +21,11 @@ const MainHeader = ({ input, setInput, handleSubmit, subject, showComponent, han
                 </div>
                 
                 <div class="slider-container">
-                    <div id="slider-text"> Show Filters</div>
-                    <label class="switch">
+                    {showFilter && <div id="slider-text"> Show Filters</div>}
+                    {showFilter && <label class="switch">
                         <input type="checkbox" checked={showComponent} onChange={handleCheckboxChange}/>
                         <span class="slider round"></span>
-                    </label>
+                    </label>}
                     {subject != "none" && <SearchBar input={input} setInput={setInput} handleSubmit={handleSubmit} subject={subject}></SearchBar>}
                 </div>
             </header>

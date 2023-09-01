@@ -350,7 +350,7 @@ const SearchLibrary = () => {
     <div>
       <body>
         <div class="site">
-          <MainHeader input={searchTerm}  setInput={setSearchTerm} handleSubmit={handleSubmit} subject={"Library"} showComponent={showComponent} handleCheckboxChange={handleCheckboxChange}></MainHeader>
+          <MainHeader input={searchTerm}  setInput={setSearchTerm} handleSubmit={handleSubmit} subject={"Library"} showComponent={showComponent} handleCheckboxChange={handleCheckboxChange} showFilter={true}></MainHeader>
           <CategoryHeader></CategoryHeader>
           <div id="page">
             <h2>Browse All Objects</h2>
