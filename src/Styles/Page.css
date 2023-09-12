@@ -47,3 +47,12 @@ body {
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-gap: 1rem;
 }
+
+.tab1 {
+    tab-size: 8;
+}
+
+#checkbox-label {
+    margin-left: 10px;
+}
+

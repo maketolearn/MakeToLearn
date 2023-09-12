@@ -17,9 +17,8 @@ const MainHeader = ({ input, setInput, handleSubmit, subject, showComponent, han
                             {/* <img src="cadLibrary.png"></img> */}
                         </Link>
                     </p>   
-                    
                 </div>
-                
+
                 <div class="slider-container">
                     {showFilter && <div id="slider-text"> Show Filters</div>}
                     {showFilter && <label class="switch">
@@ -28,6 +27,15 @@ const MainHeader = ({ input, setInput, handleSubmit, subject, showComponent, han
                     </label>}
                     {subject != "none" && <SearchBar input={input} setInput={setInput} handleSubmit={handleSubmit} subject={subject}></SearchBar>}
                 </div>
+
+                <nav class="main-navigation"> 
+                    <br></br>
+                    <div>
+                        <ul aria-expanded="false">
+                            <li><Link to="/submission">Submissions</Link></li>
+                        </ul>
+                    </div>
+                </nav>
             </header>
         </div>
     );

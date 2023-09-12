@@ -76,6 +76,19 @@
     padding-bottom: 8px;
 }
 
+#submissions-banner {
+    background-color:  #2f3c4f;
+    font-size:18px;
+    display: flex;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    font-family: Cabin,Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
 .background-forum{
     background-color:  #2092e7;
 }

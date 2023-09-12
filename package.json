@@ -6,12 +6,15 @@
   "dependencies": {
     "axios": "^1.4.0",
     "bootstrap": "^5.3.0",
+    "emailjs-com": "^3.2.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
     "react-collapsed": "^4.0.2",
     "react-dom": "^18.2.0",
+    "react-google-recaptcha": "^3.1.0",
     "react-router-dom": "^6.11.2",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "reaptcha": "^1.12.1"
   },
   "scripts": {
     "start": "react-scripts start",
