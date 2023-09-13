@@ -27,6 +27,11 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(250px,0.25fr));
     grid-auto-rows: auto;
     grid-gap: 0.25rem;
+
+    justify-content: space-evenly;
+    justify-items: center;
+    align-content: space-evenly;
+    align-items: center;
 }
 
 .cards-no-filter {
@@ -34,6 +39,11 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(250px,0.25fr));
     grid-auto-rows: auto;
     grid-gap: 0.25rem;
+
+    justify-content: space-evenly;
+    justify-items: center;
+    align-content: space-evenly;
+    align-items: center;
 }
 
 .results {

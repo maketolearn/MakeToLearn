@@ -1,14 +1,62 @@
-import React from "react";
+import React, {useState} from 'react';
 import '../Styles/CategoryBanner.css';
+// import svg from "../../public/ico.svg";import React from "react";
+import { NavLink } from 'react-router-dom';
+
 
 const CategoryBanner= ({subject}) => {   
 
     const id = subject.toLowerCase() + "-banner";
 
+    const [hamburger, setHamburger] = useState(false);
+
+    function toggleMenu(){
+        setHamburger(!hamburger);
+        console.log(hamburger);
+    }
+
+    const scienceID = (subject === "Science" ? "science-active" : "");
+    const techID = (subject === "Technology" ? "technology-active" : "");
+    const engineeringID = (subject === "Engineering" ? "engineering-active" : "");
+    const mathID = (subject === "Mathematics" ? "mathematics-active" : "");
+
+
     return (
         <div>
             <container id={id}>
-                {subject}
+                
+                <div/>
+
+                <div class="subject"> {subject} </div>
+
+                <div id="iconPlaceholder"/>
+
+                <a href="#!" id="icon" onClick={toggleMenu}/>
+
+                <ul className={hamburger ? 'dropdown-menu on' : 'dropdown-menu off'} 
+                onMouseLeave={toggleMenu} 
+                onClick={toggleMenu} 
+                aria-expanded="false">
+                    <li class="menu-item menu-item-home" >
+                        <NavLink to="/" >Home</NavLink>
+                    </li>
+                    <li class="menu-item menu-item-science" >
+                        <NavLink to="/science" >Science</NavLink>
+                    </li>
+                    <li class="menu-item menu-item-technology">
+                        <NavLink to="/technology" >Technology</NavLink>
+                    </li>
+                    <li class="menu-item menu-item-engineering" >
+                        <NavLink to="/engineering" >Engineering</NavLink>
+                    </li>
+                    <li class="menu-item menu-item-mathematics" >
+                        <NavLink to="/mathematics" >Mathematics</NavLink>
+                    </li>
+                    <li class="menu-item menu-item-forum" >
+                        <a href="https://forum.cadlibrary.org/">Forum</a>
+                    </li>
+                </ul>
+
             </container> 
         </div>
     
