@@ -353,7 +353,6 @@ const SearchLibrary = () => {
           <MainHeader input={searchTerm}  setInput={setSearchTerm} handleSubmit={handleSubmit} subject={"Library"} showComponent={showComponent} handleCheckboxChange={handleCheckboxChange} showFilter={true}></MainHeader>
           <CategoryHeader></CategoryHeader>
           <div id="page">
-            <h2>Browse All Objects</h2>
             <div class={resultsDisplay}>
                 {showComponent && <FilterBar filters={filters} subjects={subjects} fabEquipment={fabEquipment} grades ={grades} onFilterChange={(handleFilterChange)}></FilterBar>}
                 <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={cardDisplay}></SearchResultDisplay>

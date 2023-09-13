@@ -3,12 +3,14 @@
     font-size:18px;
     display: flex;
     color: white;
-    align-items: center;
-    justify-content: center;
     font-family: Cabin,Helvetica,Arial,sans-serif;
     font-weight: bold;
     padding-top: 8px;
     padding-bottom: 8px;
+
+    display: flex;
+    justify-content: space-between; /* This pushes the items apart */
+    align-items: center;
 }
 
 #science-banner{
@@ -16,12 +18,14 @@
     font-size:18px;
     display: flex;
     color: white;
-    align-items: center;
-    justify-content: center;
     font-family: Cabin,Helvetica,Arial,sans-serif;
     font-weight: bold;
     padding-top: 8px;
     padding-bottom: 8px;
+
+    display: flex;
+    justify-content: space-between; /* This pushes the items apart */
+    align-items: center;
 }
 
 #technology-banner {
@@ -29,12 +33,14 @@
     font-size:18px;
     display: flex;
     color: white;
-    align-items: center;
-    justify-content: center;
     font-family: Cabin,Helvetica,Arial,sans-serif;
     font-weight: bold;
     padding-top: 8px;
     padding-bottom: 8px;
+
+    display: flex;
+    justify-content: space-between; /* This pushes the items apart */
+    align-items: center;
 }
 
 #mathematics-banner {
@@ -42,12 +48,14 @@
     font-size:18px;
     display: flex;
     color: white;
-    align-items: center;
-    justify-content: center;
     font-family: Cabin,Helvetica,Arial,sans-serif;
     font-weight: bold;
     padding-top: 8px;
     padding-bottom: 8px;
+
+    display: flex;
+    justify-content: space-between; /* This pushes the items apart */
+    align-items: center;
 }
 
 #home-banner {
@@ -55,12 +63,14 @@
     font-size:18px;
     display: flex;
     color: white;
-    align-items: center;
-    justify-content: center;
     font-family: Cabin,Helvetica,Arial,sans-serif;
     font-weight: bold;
     padding-top: 8px;
     padding-bottom: 8px;
+
+    display: flex;
+    justify-content: space-between; /* This pushes the items apart */
+    align-items: center;
 }
 
 #forum-banner {
@@ -68,23 +78,105 @@
     font-size:18px;
     display: flex;
     color: white;
-    align-items: center;
-    justify-content: center;
     font-family: Cabin,Helvetica,Arial,sans-serif;
     font-weight: bold;
     padding-top: 8px;
     padding-bottom: 8px;
+
+    display: flex;
+    justify-content: space-between; /* This pushes the items apart */
+    align-items: center;
 }
 
 .background-forum{
     background-color:  #2092e7;
 }
 
-.container {
+container {
     padding-left: 0px;
     padding-right: 0px;
     margin-right: 0px;
     margin-left: 0px;
     margin-top: 0px;
     width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+container div {
+    display: grid;
+}
+
+@media (max-width: 768px) {
+    #icon::before {
+        content: url('hamburger-icon.svg');
+        padding-right: 10px;
+        padding-top: 10px;
+        vertical-align: middle;
+    }
+
+    #iconPlaceholder {
+        display: none;
+    }
+}
+
+@media (min-width: 768px) {
+    #icon {
+        display: none;
+    }
+}
+
+.dropdown-menu {
+    display: grid;
+    width: 100%;
+}
+
+.dropdown-menu.on {
+    display: grid;
+}
+
+.dropdown-menu.off {
+    display: none;
+}
+
+.menu-item {
+    text-align: center;
+    transition: 0.1s ease;
+    padding: 10px;
+}
+
+/* .menu-item:hover {
+    text-align: center;
+    padding: 7px;
+    font-size: 20px;
+} */
+
+
+.menu-item-engineering {
+    background-color: #fab040;
+}
+
+.menu-item-science {
+    background-color: #506f86;
+}
+
+.menu-item-technology {
+    background-color: #895d2e;
+}
+
+.menu-item-mathematics {
+    background-color: #de703c;
+}
+
+.menu-item-home {
+    background-color: #2f3c4f;
+}
+
+.menu-item-forum {
+    background-color: #8dadc4;
+}
+
+.menu-item a {
+    color: white;
+    display: block;
 }

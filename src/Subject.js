@@ -378,7 +378,7 @@ const Subject = ({ subjectArg }) => {
           <CategoryHeader></CategoryHeader>
           <CategoryBanner subject={subjectCapitalized}></CategoryBanner>
           <div id="page">
-            <h2>Browse {subjectCapitalized} Objects</h2>
+
             <div class={resultsDisplay}>
                 {showComponent && <FilterBarSubject filters={filters} fabEquipment={fabEquipment} grades={grades} onFilterChange={(handleFilterChange)}></FilterBarSubject>}
                 <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={cardDisplay} subject={subjectArg}></SearchResultDisplay>

@@ -24,26 +24,36 @@ body {
 
 .cards {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(250px,0.25fr));
     grid-auto-rows: auto;
-    grid-gap: 1rem;
+    grid-gap: 0.25rem;
+
+    justify-content: space-evenly;
+    justify-items: center;
+    align-content: space-evenly;
+    align-items: center;
 }
 
 .cards-no-filter {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(250px,0.25fr));
     grid-auto-rows: auto;
-    grid-gap: 1rem;
+    grid-gap: 0.25rem;
+
+    justify-content: space-evenly;
+    justify-items: center;
+    align-content: space-evenly;
+    align-items: center;
 }
 
 .results {
     display: grid;
     grid-template-columns: 0.35fr 1fr;
-    grid-gap: 1rem;
+    grid-gap: 0.25rem;
 }
 
 .results-no-filter {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-gap: 1rem;
+    grid-gap: 0.25rem;
 }

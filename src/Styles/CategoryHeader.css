@@ -7,11 +7,26 @@
     width: calc(100% + 200em)
 }
 
-#cats-header ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none
+/* from chatgpt */
+/* Styles for screens smaller than 768px (typical mobile devices) */
+@media (max-width: 768px) {
+    #cats-header ul {
+        display: none
+    }
 }
+
+@media (min-width: 768px) {
+    #cats-header ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none
+    }
+
+    #hamburger-menu ul {
+        display: none
+    }
+}
+
 
 .cats-menu {
     display: flex;
