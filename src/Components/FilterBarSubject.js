@@ -1,19 +1,9 @@
 import React, {useState} from "react";
 import '../Styles/FilterBar.css';
 
-const FilterBar = ({filters, subjects, fabEquipment, grades, onFilterChange}) => {
+const FilterBarSubject = ({filters, fabEquipment, grades, onFilterChange}) => {
 
     const [selected, setSelected] = useState(filters);
-    
-    // console.log("Current filters: " + filters)
-    // let i = 0
-    // selected.forEach((item) => {
-    //     console.log(i)
-    //     console.log(item)
-    //     i++
-    // })
-
-    // console.log("Science filter is selected: " + (selected[1] === "Science"))
 
     const handleFilterChange = (option) => {
 
@@ -31,17 +21,10 @@ const FilterBar = ({filters, subjects, fabEquipment, grades, onFilterChange}) =>
         onFilterChange(updated);
     }
 
+
+
     return(
-        <div id="filter-box">
-            <h4> Subject </h4>
-            {subjects.map((subject) =>
-                <label id="checkbox" key={subject}>
-                    <input id="subject-filter" type="checkbox" checked={selected.includes(subject)} onChange={() => handleFilterChange(subject)}>
-                    </input>
-                    {subject}
-                </label> 
-            )}
-            <br></br>
+        <div id="filter-box-subject">
 
             <h4> Fabrication Equipment </h4>
             {fabEquipment.map((equipment) =>
@@ -64,10 +47,8 @@ const FilterBar = ({filters, subjects, fabEquipment, grades, onFilterChange}) =>
                 )}
             </div>
             
-
-
         </div>
     );
 };
 
-export default FilterBar;
+export default FilterBarSubject;

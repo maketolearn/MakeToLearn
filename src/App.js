@@ -25,7 +25,7 @@ const App = () => {
     <div>
       <body>
         <div class="site">
-          <MainHeader input={searchTerm}  setInput={setSearchTerm} handleSubmit={handleSubmit} subject={subject}></MainHeader>
+          <MainHeader input={searchTerm}  setInput={setSearchTerm} handleSubmit={handleSubmit} subject={subject} showFilter={false}></MainHeader>
           <CategoryHeader></CategoryHeader>
           <CategoryBanner subject="Home"></CategoryBanner>
 

@@ -25,6 +25,7 @@ const Object = () => {
     const [gradeLevels, setGradeLevels] = useState("");
     const [forumLink, setForumLink] = useState("https://forum.cadlibrary.org/");
     const [sampleLearningGoals, setSampleLearningGoals] = useState([]);
+    const [hasDeveloper, setHasDeveloper] = useState(false);
 
     //citation fields
     const [authorsFormmated, setAuthorsFormatted] = useState("");
@@ -66,6 +67,8 @@ const Object = () => {
         
                 setImgUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID);
 
+                console.log(object.data.data)
+
                 //change the citation api response to a dictionary
                 let citationBlock = object.data.data.latestVersion.metadataBlocks.citation.fields;
                 let citationMetadata = {};
@@ -92,24 +95,26 @@ const Object = () => {
                 let author = citationMetadata["author"][0].authorName.value;
                 formatAuthors(author);
 
-                let description = citationMetadata["dsDescription"][0].dsDescriptionValue.value;
-                setIntroSentence(description.substring(0, description.indexOf(".")) + ".");
-                setDesc(description.substring(description.indexOf(".")+1));
+                setIntroSentence(citationMetadata["dsDescription"][0].dsDescriptionValue.value);
+                setDesc(citationMetadata["dsDescription"][1].dsDescriptionValue.value);
 
-                let publicationDate = object.data.data.publicationDate;
+                let publicationDate = object.data.data.latestVersion.lastUpdateTime.substring(0,10);
                 setYear(publicationDate.substring(0, 4));
                 formatPubDate(publicationDate);
 
                 //set the educational cad metadata fields
                 //setting link to developer
-                setDeveloperName(educationCADMetadata["externalContrib"][0].externalAgency.value);
-                setDeveloperLink(educationCADMetadata["externalContrib"][0].externalIdValue.value);
+                if("externalContrib" in educationCADMetadata){
+                    setDeveloperName(educationCADMetadata["externalContrib"][0].externalAgency.value);
+                    setDeveloperLink(educationCADMetadata["externalContrib"][0].externalIdValue.value);
+                    setHasDeveloper(true);
+                }
         
                 //set disciplines (secondary discipline may be optional)
-                setPrimaryDiscipline(educationCADMetadata["discipline"].primaryDiscipline.value)
-                if(educationCADMetadata["discipline"].secondaryDiscipline != null){
-                    setSecondaryDiscipline(educationCADMetadata["discipline"].secondaryDiscipline.value);
-                }
+                setPrimaryDiscipline(educationCADMetadata['disciplines'][0].discipline.value)
+                // if(educationCADMetadata["discipline"].secondaryDiscipline != null){
+                //     setSecondaryDiscipline(educationCADMetadata["discipline"].secondaryDiscipline.value);
+                // }
                 
                 //set grade levels
                 let gradeLevels = educationCADMetadata["gradeLevel"];
@@ -203,9 +208,12 @@ const Object = () => {
                             </div>
                             
                             <div id="box">
-                                <b>Developer</b>
+                                {hasDeveloper && 
+                                <div>
+                                    <b>Developer</b>
                                 <br></br>
                                 <p class="detail"><a href={developerLink} target="_blank">{developerName}</a></p>
+                                </div>}
                                 
                                 <b>Subject</b>
                                 <br></br>

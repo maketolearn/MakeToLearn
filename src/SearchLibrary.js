@@ -9,13 +9,20 @@ import { useLocation } from 'react-router-dom';
 
 const SearchLibrary = () => {
 
-  const location = useLocation();  
+  const location = useLocation(); 
+  const [showComponent, setShowComponent] = useState(false); 
+  const [cardDisplay, setCardDisplay] = useState("cards-no-filter")
+  const [resultsDisplay, setResultsDisplay] = useState("")
 
   const [searchTerm, setSearchTerm] = useState(location.state);
   const [searchObjects, setSearchObjects] = useState([]);
   const [searchPhrase, setSearchPhrase] = useState("");
   const [filterObjects, setFilterObjects] = useState([]); // objects to be filtered on
   const subjects = ['Science', 'Technology', 'Engineering', 'Mathematics']
+  const grades = ['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+  const [fabEquipment, setFabEquipment] = useState([]);
+  
+  const [filters, setFilters] = useState([]);
 
   let imgUrl = "";
   let title = "";
@@ -23,9 +30,11 @@ const SearchLibrary = () => {
   let desc = "";
   let dois = [];
   let objects = [];
+  let equipmentList = [];
 
   useEffect(() => {
     setSearchObjects([]);
+    pullFacets();
     if(searchTerm === null){
         setSearchTerm("");
         pullAllCards();
@@ -34,11 +43,29 @@ const SearchLibrary = () => {
     }
   }, [])
 
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setSearchObjects([]);
     setSearchPhrase("");
     searchByPhrase();
+  }
+
+  const pullFacets = async() => {
+    axios.get("https://dataverse.lib.virginia.edu/api/search?q=*&show_facets=true&subtree=CADLibrary")
+    .then((response) => {
+      let facets = response.data.data.facets[0];
+      
+      //setting facets for fab equipment
+      facets.fabEquipment_ss.labels.forEach(equipment => {
+        // console.log(Object.keys(equipment)[0])
+        equipmentList =  [Object.keys(equipment)[0], ...equipmentList];
+        setFabEquipment(equipmentList);
+      })
+      console.log(fabEquipment)
+    })
+    .catch((error) => console.log("Error: ", error));
   }
 
   const pullAllCards = async() => {
@@ -188,6 +215,7 @@ const SearchLibrary = () => {
   }
 
   const pullAllCardsByFilter = async(filters) => {
+    setFilters(filters);
 
     filterObjects.forEach(filterObject => {
       if(filterObject.doi.length >= 13){
@@ -202,32 +230,88 @@ const SearchLibrary = () => {
     let resultsFound = false;
 
     dois.forEach(doi => {
-      console.log(doi);
+      // console.log(doi);
         axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ doi)
         .then(object => {
-          if(filters.includes(object.data.data.latestVersion.metadataBlocks.citation.fields[5].value[0].keywordValue.value)){
+
+          //gather all values from filter fields 
+          //change the educational cad api response to a dictionary
+          let educationalCADBlock = object.data.data.latestVersion.metadataBlocks.educationalcad.fields;
+          let educationCADMetadata = {};
+          for(let i = 0; i < educationalCADBlock.length; i++){
+              let key = educationalCADBlock[i].typeName;
+              educationCADMetadata[key] = educationalCADBlock[i].value;
+          }
+
+          //console.log(educationCADMetadata)
+
+        
+          let filterValueSubject = educationCADMetadata['disciplines'][0].discipline.value;
+          let filterValuesFabEquipment = [];
+          let filterValuesGrades = [];
+        
+          educationCADMetadata['fabEquipment'].forEach((equipment) => {
+            filterValuesFabEquipment.push(equipment);
+          })
+          educationCADMetadata['gradeLevel'].forEach((grade) => {
+            filterValuesGrades.push(grade);
+          })
+          
+          //check to see if filters are met
+
+          // set to true if the filter subject matches or there is no subject selected
+          let filtersSubjectMet = filters.includes(filterValueSubject) || (!filters.includes("Science") && !filters.includes("Technology") && !filters.includes("Engineering") && !filters.includes("Mathematics"));
+
+          // needs refactoring!!
+          let selected = false;
+          fabEquipment.forEach(equipment => {
+             if(filters.includes(equipment)){
+              selected = true;
+             }
+          })
+
+          let filtersFabEquipMet = !selected;
+          let filtersGradeMet = false || (!filters.includes("K") && !filters.includes("1") && !filters.includes("2") && !filters.includes("3") && !filters.includes("4") && !filters.includes("5") && !filters.includes("6") && !filters.includes("7") && !filters.includes("8") && !filters.includes("9") && !filters.includes("10") && !filters.includes("11") && !filters.includes("12"));
+
+          filterValuesFabEquipment.forEach(equipment => {
+            if(filters.includes(equipment)){
+              filtersFabEquipMet = true;
+            }
+          })
+
+          filterValuesGrades.forEach(grade => {
+            if(filters.includes(grade)){
+              filtersGradeMet = true;
+            }
+          })
+
+          //console.log(filtersSubjectMet)
+          //console.log(filtersFabEquipMet)
+          //console.log(filtersGradeMet)
+
+          if(filtersSubjectMet && filtersFabEquipMet && filtersGradeMet){
             resultsFound = true;
-            console.log("TRUE");
-              title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
-              author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
-              desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
+            //console.log("TRUE");
+            title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
+            author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
+            desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
 
-              let imgID = -1
-              let files = object.data.data.latestVersion.files
+            let imgID = -1
+            let files = object.data.data.latestVersion.files
 
-              for (let i = 0; i < files.length; i++) {
-                  if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
-                      imgID = files[i].dataFile.id
-                  }
-              }
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
+                    imgID = files[i].dataFile.id
+                }
+            }
 
-              imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
+            imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
 
-              objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
-              let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
-              console.log(sortedObjects);
-              setSearchObjects(sortedObjects);
-              console.log(searchObjects);
+            objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
+            let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
+            // console.log(sortedObjects);
+            setSearchObjects(sortedObjects);
+            // console.log(searchObjects);
           }
         })
       .catch((error) => console.log("Error: ", error));
@@ -243,24 +327,35 @@ const SearchLibrary = () => {
       searchByPhrase();
     }
     else {
-      let lowercase = [];
-      filters.forEach(filter => {
-        lowercase.push(filter[0].toLowerCase() + filter.substring(1));
-      })
-      pullAllCardsByFilter(lowercase);
+      pullAllCardsByFilter(filters);
     }
   }
+
+  const handleCheckboxChange = () => {
+    setShowComponent(!showComponent);
+    if(cardDisplay === "cards"){
+      setCardDisplay("cards-no-filter");
+    } else {
+      setCardDisplay("cards");
+    }
+    
+    if(resultsDisplay === ""){
+      setResultsDisplay("results");
+    } else {
+      setResultsDisplay("");
+    }
+  };
 
   return (
     <div>
       <body>
         <div class="site">
-          <MainHeader input={searchTerm}  setInput={setSearchTerm} handleSubmit={handleSubmit} subject={"Library"}></MainHeader>
+          <MainHeader input={searchTerm}  setInput={setSearchTerm} handleSubmit={handleSubmit} subject={"Library"} showComponent={showComponent} handleCheckboxChange={handleCheckboxChange} showFilter={true}></MainHeader>
           <CategoryHeader></CategoryHeader>
           <div id="page">
-            <div class="results">
-                <FilterBar subjects={subjects} onFilterChange={(handleFilterChange)}></FilterBar>
-                <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={"cards"}></SearchResultDisplay>
+            <div class={resultsDisplay}>
+                {showComponent && <FilterBar filters={filters} subjects={subjects} fabEquipment={fabEquipment} grades ={grades} onFilterChange={(handleFilterChange)}></FilterBar>}
+                <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={cardDisplay}></SearchResultDisplay>
             </div>
           </div>  
         </div>

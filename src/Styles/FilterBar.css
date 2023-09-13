@@ -1,6 +1,13 @@
 #filter-box {
     border-style:solid;
-    height: 500px;
+    height: 520px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+#filter-box-subject {
+    border-style:solid;
+    height: 350px;
     padding: 10px;
     margin-top: 10px;
 }
@@ -11,4 +18,10 @@
 
 #subject-filter {
     margin-right: 10px;
+}
+
+.grade-checkboxes {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
 }

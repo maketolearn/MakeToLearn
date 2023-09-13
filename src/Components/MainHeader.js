@@ -4,7 +4,7 @@ import '../Styles/MainHeader.css';
 import '../Styles/Page.css';
 import SearchBar from "./SearchBar";
 
-const MainHeader = ({ input, setInput, handleSubmit, subject }) => {
+const MainHeader = ({ input, setInput, handleSubmit, subject, showComponent, handleCheckboxChange, showFilter }) => {
 
     return (
         <div id="page">
@@ -16,11 +16,18 @@ const MainHeader = ({ input, setInput, handleSubmit, subject }) => {
                             Library
                             {/* <img src="cadLibrary.png"></img> */}
                         </Link>
-                    </p>    
+                    </p>   
+                    
                 </div>
-
-                {subject != "none" && <SearchBar input={input} setInput={setInput} handleSubmit={handleSubmit} subject={subject}></SearchBar>}
                 
+                <div class="slider-container">
+                    {showFilter && <div id="slider-text"> Show Filters</div>}
+                    {showFilter && <label class="switch">
+                        <input type="checkbox" checked={showComponent} onChange={handleCheckboxChange}/>
+                        <span class="slider round"></span>
+                    </label>}
+                    {subject != "none" && <SearchBar input={input} setInput={setInput} handleSubmit={handleSubmit} subject={subject}></SearchBar>}
+                </div>
             </header>
         </div>
     );
