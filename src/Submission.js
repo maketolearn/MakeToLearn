@@ -3,23 +3,19 @@ import MainHeader from './Components/MainHeader';
 import CategoryHeader from './Components/CategoryHeader';
 import CategoryBanner from './Components/CategoryBanner';
 import { useNavigate } from 'react-router-dom';
+import emailjs from '@emailjs/browser';
+import ReCAPTCHA from 'react-google-recaptcha';
 import './Styles/Page.css';
 import './Styles/Submission.css'
 
 const Submission = () => {
 
     const navigate = useNavigate();
+    const form = useRef();
   
     const [searchTerm, setSearchTerm] = useState("");
     const [searchObjects, setSearchObjects] = useState([]);
     const [subject, setSubject] = useState("Library");
-
-    const [curatorSubject, setCuratorSubject] = useState("");
-    const [toName, setToName] = useState("");
-    const [toEmail, setToEmail] = useState("");
-    const [fromName, setFromName] = useState("");
-    const [fromEmail, setFromEmail] = useState("");
-    const [message, setMessage] = useState("");
   
     const handleSubmit = (event) => {
       event.preventDefault();
@@ -27,8 +23,15 @@ const Submission = () => {
       navigate(`/browse`, {state: searchTerm});
     }
 
-    const handleFormSubmit = async(e) => {
+    const sendEmail = (e) => {
+      e.preventDefault();
       
+      emailjs.sendForm('service_41f3fg5', 'template_nprqnh3', form.current, 'MIqeZxkpcd7inecb4')
+      .then((result) => {
+          console.log(result.text);
+      }, (error) => {
+          console.log(error.text);
+      });
     }
   
     return (
@@ -45,30 +48,35 @@ const Submission = () => {
                 <li> Do you use physical objects in your teaching?  Would you be interested in publishing an educational object that you have developed in the <em>CAD Library</em>? </li>
                 <li>Do you have other questions about the <em>CAD Library</em> or the submission process?</li>
               </ul>
+              <form ref={form} onSubmit={sendEmail}>
 
-              <p>To inquire, contact one of the following CAD Library curators:</p>
-              <ul>
-                <input type="radio"></input><label id="checkbox-label">Science Curators&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Joshua Ellis & Sumreen Asim</label>
-                <br></br>
-                <input type="radio"></input><label id="checkbox-label">Technology Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Elizabeth Whitewolf</label>
-                <br></br>
-                <input type="radio"></input><label id="checkbox-label">Engineering Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ryan Novitski</label>
-                <br></br>
-                <input type="radio"></input><label id="checkbox-label">Mathematics Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Steven Greenstein </label>
-              </ul>
+                <p>To inquire, contact one of the following CAD Library curators:</p>
+                <ul>
+                  <input type="radio" name="object_subject" value="Science"></input><label id="checkbox-label">Science Curators&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Joshua Ellis & Sumreen Asim</label>
+                  <br></br>
+                  <input type="radio" name="object_subject" value="Technology"></input><label id="checkbox-label">Technology Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Elizabeth Whitewolf</label>
+                  <br></br>
+                  <input type="radio" name="object_subject" value="Engineering"></input><label id="checkbox-label">Engineering Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ryan Novitski</label>
+                  <br></br>
+                  <input type="radio" name="object_subject" value="Mathematics"></input><label id="checkbox-label">Mathematics Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Steven Greenstein </label>
+                </ul>
 
-              <p>Provide your name, e-mail address, and a short description of your interest.</p>
-              <form onSubmit={handleFormSubmit}>
+                <p>Provide your name, e-mail address, and a short description of your interest.</p>
+                <input type="hidden" name="to_name" value="Rishi"></input>
+                
                 <label>Name</label><br></br>
-                <input type="text" onChange={(e) => setFromName(e.target.value)} value={fromName}></input><br></br><br></br>
+                <input type="text" name="from_name"></input><br></br><br></br>
 
                 <label>Email</label><br></br>
-                <input type="text"></input><br></br><br></br>
+                <input type="email" name="from_email"></input><br></br><br></br>
 
                 <label>Brief description of your interest or query</label><br></br>
                 <textarea name="message" rows="10" cols="100"></textarea><br></br><br></br>
 
-                <button>Submit</button>
+                <div class="g-recaptcha" data-sitekey={process.env.REACT_APP_SITE_KEY}></div><br></br>
+
+                <input type="submit" value="Submit Inquiry"/>
+                <br></br><br></br>
               </form>
             </div>
           </div>
