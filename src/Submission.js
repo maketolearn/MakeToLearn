@@ -28,10 +28,7 @@ const Submission = () => {
     }
 
     const handleFormSubmit = async(e) => {
-      e.preventDefault();
-      const inputVal = await e.target[0].value;
-      const token = captchaRef.current.getValue();
-      captchaRef.current.reset();
+      
     }
   
     return (
@@ -63,7 +60,7 @@ const Submission = () => {
               <p>Provide your name, e-mail address, and a short description of your interest.</p>
               <form onSubmit={handleFormSubmit}>
                 <label>Name</label><br></br>
-                <input type="text" onChange={(e) => setName(e.target.value)} value={name}></input><br></br><br></br>
+                <input type="text" onChange={(e) => setFromName(e.target.value)} value={fromName}></input><br></br><br></br>
 
                 <label>Email</label><br></br>
                 <input type="text"></input><br></br><br></br>
