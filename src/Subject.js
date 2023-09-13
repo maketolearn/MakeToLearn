@@ -258,7 +258,6 @@ const Subject = ({ subjectArg }) => {
           <CategoryHeader></CategoryHeader>
           <CategoryBanner subject={subjectCapitalized}></CategoryBanner>
           <div id="page">
-            <h3><b>Browse {subjectCapitalized} Objects</b></h3>
             <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={"cards-no-filter"} subject={subjectArg} ></SearchResultDisplay>
           </div>
         </div>

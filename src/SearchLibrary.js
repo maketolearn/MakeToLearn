@@ -258,7 +258,6 @@ const SearchLibrary = () => {
           <MainHeader input={searchTerm}  setInput={setSearchTerm} handleSubmit={handleSubmit} subject={"Library"}></MainHeader>
           <CategoryHeader></CategoryHeader>
           <div id="page">
-            <h2>Browse All Objects</h2>
             <div class="results">
                 <FilterBar subjects={subjects} onFilterChange={(handleFilterChange)}></FilterBar>
                 <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={"cards"}></SearchResultDisplay>
