@@ -15,6 +15,8 @@ const Submission = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [searchObjects, setSearchObjects] = useState([]);
     const [subject, setSubject] = useState("Library");
+
+    const [showMessage, setShowMessage] = useState(false);
   
     const handleSubmit = (event) => {
       event.preventDefault();
@@ -27,6 +29,7 @@ const Submission = () => {
       
       emailjs.sendForm('service_41f3fg5', 'template_nprqnh3', form.current, 'MIqeZxkpcd7inecb4')
       .then((result) => {
+          setShowMessage(true);
           console.log(result.text);
       }, (error) => {
           console.log(error.text);
@@ -51,31 +54,33 @@ const Submission = () => {
 
                 <p>To inquire, contact one of the following CAD Library curators:</p>
                 <ul>
-                  <input type="radio" name="object_subject" value="Science"></input><label id="checkbox-label">Science Curators&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Joshua Ellis & Sumreen Asim</label>
+                  <input type="radio" name="object_subject" value="science" required></input><label id="checkbox-label">Science Curators&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Joshua Ellis & Sumreen Asim</label>
                   <br></br>
-                  <input type="radio" name="object_subject" value="Technology"></input><label id="checkbox-label">Technology Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Elizabeth Whitewolf</label>
+                  <input type="radio" name="object_subject" value="technology"></input><label id="checkbox-label">Technology Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Elizabeth Whitewolf</label>
                   <br></br>
-                  <input type="radio" name="object_subject" value="Engineering"></input><label id="checkbox-label">Engineering Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ryan Novitski</label>
+                  <input type="radio" name="object_subject" value="engineering"></input><label id="checkbox-label">Engineering Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ryan Novitski</label>
                   <br></br>
-                  <input type="radio" name="object_subject" value="Mathematics"></input><label id="checkbox-label">Mathematics Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Steven Greenstein </label>
+                  <input type="radio" name="object_subject" value="mathematics"></input><label id="checkbox-label">Mathematics Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Steven Greenstein </label>
                 </ul>
 
                 <p>Provide your name, e-mail address, and a short description of your interest.</p>
                 <input type="hidden" name="to_name" value="Rishi"></input>
                 
                 <label>Name</label><br></br>
-                <input type="text" name="from_name"></input><br></br><br></br>
+                <input type="text" name="from_name" required></input><br></br><br></br>
 
                 <label>Email</label><br></br>
-                <input type="email" name="from_email"></input><br></br><br></br>
+                <input type="email" name="from_email" required></input><br></br><br></br>
 
                 <label>Brief description of your interest or query</label><br></br>
-                <textarea name="message" rows="10" cols="100"></textarea><br></br><br></br>
+                <textarea name="message" rows="10" cols="100" required></textarea><br></br><br></br>
 
-                <div class="g-recaptcha" data-sitekey={process.env.REACT_APP_SITE_KEY}></div><br></br>
+                {/* <div class="g-recaptcha" data-sitekey={process.env.REACT_APP_SITE_KEY}></div><br></br> */}
 
-                <input type="submit" value="Submit Inquiry"/>
-                <br></br><br></br>
+                <input type="submit" value="Submit Inquiry"/><br></br><br></br>
+                
+                {showMessage && <p> Submission inquiry succesfully sent.</p>}
+            
               </form>
             </div>
           </div>
