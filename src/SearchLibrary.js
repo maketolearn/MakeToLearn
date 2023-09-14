@@ -354,7 +354,7 @@ const SearchLibrary = () => {
           <CategoryHeader></CategoryHeader>
           <div id="page">
             <div class={resultsDisplay}>
-                {showComponent && <FilterBar filters={filters} subjects={subjects} fabEquipment={fabEquipment} grades ={grades} onFilterChange={(handleFilterChange)}></FilterBar>}
+                {showComponent && <div><FilterBar filters={filters} subjects={subjects} fabEquipment={fabEquipment} grades ={grades} onFilterChange={(handleFilterChange)}></FilterBar></div>}
                 <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={cardDisplay}></SearchResultDisplay>
             </div>
           </div>  

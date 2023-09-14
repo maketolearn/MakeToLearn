@@ -48,6 +48,7 @@ p.site-title {
     display: inline-block;
     position: absolute;
     margin: -1.35em 0 0;
+    /* border-right: 5em; */
 }
 
 /* Main Navigation */
@@ -60,6 +61,12 @@ p.site-title {
     clear: both;
     display: block;
     flex: 1;
+}
+
+@media (max-width: 768px) {
+    .main-navigation {
+        margin-top: -1.5em;
+    }
 }
 
 .main-navigation ul {
@@ -94,6 +101,14 @@ p.site-title {
     display: flex;
     align-items: center;
     margin-top: 20px;
+    /* margin-left: 50px; */
+    overflow: scroll;
+}
+
+@media (min-width: 610px) {
+    .slider-container {
+        margin-left: 50px;
+    }
 }
 
 /* The switch - the box around the slider */
