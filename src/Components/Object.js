@@ -210,7 +210,7 @@ const Object = () => {
                         <br></br>
                         <div id="details">
 
-                            <div>
+                            <div class="desktop-object">
                                 <img id="img-single" src={imgUrl} alt="Object Thumbnail Not Found" align="left"></img>
                                 {introSentence}
                                 <br></br>
@@ -218,6 +218,11 @@ const Object = () => {
 
                                 <h4> Big Idea </h4>
                                 {desc}
+                            </div>
+
+                            <div class="mobile-object">
+                                <div class="centered"><img id="img-single" src={imgUrl} alt="Object Thumbnail Not Found" align="center"></img></div>
+                                {introSentence}
                             </div>
                             
                             <div id="box">
@@ -247,9 +252,16 @@ const Object = () => {
 
                                 <a class="detail" href={forumLink}>Discuss</a>
                             </div>
+
+                            <div class="mobile-object">
+                                <h4> Big Idea </h4>
+                                {desc}
+                            </div>
+
                         </div>
                         
                         <div>
+                            <br />
                             <h4> Sample Learning Goals </h4>
                                 <ul>
                                     {sampleLearningGoals.map((goal) => (
