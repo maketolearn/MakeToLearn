@@ -39,6 +39,8 @@ const Object = () => {
     const [forumLink, setForumLink] = useState("https://forum.cadlibrary.org/");
     const [sampleLearningGoals, setSampleLearningGoals] = useState([]);
     const [hasDeveloper, setHasDeveloper] = useState(false);
+    const [instructAvail, setInstructAvail] = useState(false);
+    const [fabAvail, setFabAvail] = useState(false);
 
     //citation fields
     const [authorsFormmated, setAuthorsFormatted] = useState("");
@@ -154,8 +156,16 @@ const Object = () => {
                         instructionalID = files[i].dataFile.id
                     }
                 }
-                setInstructionalResourcesUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + instructionalID);
-                setFabricationGuideUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + fabricationID);
+
+                if(fabricationID != -1){
+                    setFabricationGuideUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + fabricationID);
+                    setFabAvail(true);
+                }
+
+                if(instructionalID != -1){
+                    setInstructionalResourcesUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + instructionalID);
+                    setInstructAvail(true);
+                }
                 
             })
             .catch((error) => console.log("Error: ", error));
@@ -241,14 +251,16 @@ const Object = () => {
                                 <p class="detail"> {gradeLevels} </p>
                                 
                                 <b>Download</b>
+                                {(instructAvail || fabAvail) ?
                                 <ul>
                                     <li>
-                                        <a href={instructionalResourcesUrl}>Instructional Resources</a>
+                                        {instructAvail ? <a href={instructionalResourcesUrl}>Instructional Resources</a> : <p>No instructional resources at this time</p>}
                                     </li>
                                     <li>
-                                        <a href={fabricationGuideUrl}>Fabrication Guide</a>
+                                       {fabAvail ? <a href={fabricationGuideUrl}>Fabrication Guide</a> : <p>No fabrication guide at this time</p>}
                                     </li>
-                                </ul>
+                                </ul> : <p class="detail">No download packages available for this dataset</p>}
+                                
 
                                 <a class="detail" href={forumLink}>Discuss</a>
                             </div>
