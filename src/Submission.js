@@ -16,7 +16,23 @@ const Submission = () => {
     const [searchObjects, setSearchObjects] = useState([]);
     const [subject, setSubject] = useState("Library");
 
+    const [objectSubject, setObjectSubject] = useState("");
+    const [fromName, setFromName] = useState("");
+    const [fromEmail, setFromEmail] = useState("");
+    const [message, setMessage] = useState("");
+
     const [showMessage, setShowMessage] = useState(false);
+
+    const handleSubjectSelect = (event) => {
+      setObjectSubject(event.target.value);
+    }
+
+    const resetForm = () => {
+      setObjectSubject("");
+      setFromName("");
+      setFromEmail("");
+      setMessage("");
+    }
   
     const handleSubmit = (event) => {
       event.preventDefault();
@@ -34,6 +50,8 @@ const Submission = () => {
       }, (error) => {
           console.log(error.text);
       });
+
+      resetForm();
     }
   
     return (
@@ -54,26 +72,26 @@ const Submission = () => {
 
                 <p>To inquire, contact one of the following CAD Library curators:</p>
                 <ul>
-                  <input type="radio" name="object_subject" value="science" required></input><label id="checkbox-label">Science Curators&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Joshua Ellis & Sumreen Asim</label>
+                  <input type="radio" name="object_subject" value="science" onChange={handleSubjectSelect} checked={objectSubject === "science"} required></input><label id="checkbox-label">Science Curators&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Joshua Ellis & Sumreen Asim</label>
                   <br></br>
-                  <input type="radio" name="object_subject" value="technology"></input><label id="checkbox-label">Technology Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Elizabeth Whitewolf</label>
+                  <input type="radio" name="object_subject" value="technology" onChange={handleSubjectSelect} checked={objectSubject === "technology"}></input><label id="checkbox-label">Technology Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Elizabeth Whitewolf</label>
                   <br></br>
-                  <input type="radio" name="object_subject" value="engineering"></input><label id="checkbox-label">Engineering Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ryan Novitski</label>
+                  <input type="radio" name="object_subject" value="engineering" onChange={handleSubjectSelect} checked={objectSubject === "engineering"}></input><label id="checkbox-label">Engineering Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ryan Novitski</label>
                   <br></br>
-                  <input type="radio" name="object_subject" value="mathematics"></input><label id="checkbox-label">Mathematics Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Steven Greenstein </label>
+                  <input type="radio" name="object_subject" value="mathematics" onChange={handleSubjectSelect} checked={objectSubject === "mathematics"}></input><label id="checkbox-label">Mathematics Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Steven Greenstein </label>
                 </ul>
 
                 <p>Provide your name, e-mail address, and a short description of your interest.</p>
                 <input type="hidden" name="to_name" value="Rishi"></input>
                 
                 <label>Name</label><br></br>
-                <input type="text" name="from_name" required></input><br></br><br></br>
+                <input type="text" name="from_name" onChange={(e) => setFromName(e.target.value)} value={fromName} required></input><br></br><br></br>
 
                 <label>Email</label><br></br>
-                <input type="email" name="from_email" required></input><br></br><br></br>
+                <input type="email" name="from_email" onChange={(e) => setFromEmail(e.target.value)} value={fromEmail} required></input><br></br><br></br>
 
                 <label>Brief description of your interest or query</label><br></br>
-                <textarea name="message" rows="10" cols="100" required></textarea><br></br><br></br>
+                <textarea name="message" rows="10" cols="100" onChange={(e) => setMessage(e.target.value)} value={message} required></textarea><br></br><br></br>
 
                 {/* <div class="g-recaptcha" data-sitekey={process.env.REACT_APP_SITE_KEY}></div><br></br> */}
                 {showMessage && <p> Submission inquiry succesfully sent.</p>}<br></br>

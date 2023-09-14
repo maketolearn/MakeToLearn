@@ -3,6 +3,7 @@ import MainHeader from './Components/MainHeader';
 import CategoryHeader from './Components/CategoryHeader';
 import CategoryBanner from './Components/CategoryBanner';
 import { useNavigate } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import './Styles/Page.css';
 
 //Home page
@@ -35,7 +36,7 @@ const App = () => {
             </p>
 
             <p>
-              We welcome submission of educational objects designed for K-12 teaching and learning for review and publication in the <em>CAD Library</em>.
+              We welcome <Link to="/submission">submission</Link> of educational objects designed for K-12 teaching and learning for review and publication in the <em>CAD Library</em>.
             </p>
 
             <ul>
