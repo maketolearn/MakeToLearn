@@ -58,7 +58,7 @@ const Subject = ({ subjectArg }) => {
         equipmentList =  [Object.keys(equipment)[0], ...equipmentList];
         setFabEquipment(equipmentList);
       })
-      console.log(fabEquipment)
+      // console.log(fabEquipment)
     })
     .catch((error) => console.log("Error: ", error));
   }
@@ -266,7 +266,7 @@ const Subject = ({ subjectArg }) => {
               educationCADMetadata[key] = educationalCADBlock[i].value;
           }
 
-          console.log(educationCADMetadata)
+          // console.log(educationCADMetadata)
         
           let filterValueSubject = educationCADMetadata['disciplines'][0].discipline.value;
           let filterValuesFabEquipment = [];
@@ -308,13 +308,13 @@ const Subject = ({ subjectArg }) => {
             }
           })
 
-          console.log(filtersSubjectMet)
-          console.log(filtersFabEquipMet)
-          console.log(filtersGradeMet)
+          // console.log(filtersSubjectMet)
+          // console.log(filtersFabEquipMet)
+          // console.log(filtersGradeMet)
 
           if(filtersSubjectMet && filtersFabEquipMet && filtersGradeMet){
             resultsFound = true;
-            console.log("TRUE");
+            // console.log("TRUE");
             title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
             author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
             desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
@@ -346,7 +346,7 @@ const Subject = ({ subjectArg }) => {
   }
 
   const handleFilterChange = (filters) => {
-    console.log(filters);
+    // console.log(filters);
     if(filters.length === 0){
       searchByPhrase();
     }

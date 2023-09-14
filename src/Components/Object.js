@@ -40,7 +40,7 @@ const Object = () => {
     useEffect(() => {
         if(doi === "00000C144undefined") {
             setImgUrl("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQI543PLIQIc4To-7vEaHXFBFHwChFBBbEOpQCI1saa02QuDiWz");
-            console.log(imgUrl);
+            // console.log(imgUrl);
             setTitle("Horse Evolution");
             setIntroSentence("This dataset of fossil horse teeth published on Morphosource (https://www.morphosource.org/) has been selected by Florida Museum scientists to help K12 students understand concepts related to horse evolution and climate change. ");
             setDesc("Three lessons have been developed in collaboration with science teachers that can be used with the 3D files provided.");
@@ -67,7 +67,7 @@ const Object = () => {
         
                 setImgUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID);
 
-                console.log(object.data.data)
+                // console.log(object.data.data)
 
                 //change the citation api response to a dictionary
                 let citationBlock = object.data.data.latestVersion.metadataBlocks.citation.fields;
@@ -78,7 +78,7 @@ const Object = () => {
                     citationMetadata[key] = citationBlock[i].value;
                 }
 
-                console.log(citationMetadata);
+                // console.log(citationMetadata);
 
                 //change the educational cad api response to a dictionary
                 let educationalCADBlock = object.data.data.latestVersion.metadataBlocks.educationalcad.fields;
@@ -88,7 +88,7 @@ const Object = () => {
                     educationCADMetadata[key] = educationalCADBlock[i].value;
                 }
                 
-                console.log(educationCADMetadata);
+                // console.log(educationCADMetadata);
 
                 //set the citation metadata fields
                 setTitle(citationMetadata["title"]);

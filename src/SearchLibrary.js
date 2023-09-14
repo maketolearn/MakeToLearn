@@ -63,7 +63,7 @@ const SearchLibrary = () => {
         equipmentList =  [Object.keys(equipment)[0], ...equipmentList];
         setFabEquipment(equipmentList);
       })
-      console.log(fabEquipment)
+      // console.log(fabEquipment)
     })
     .catch((error) => console.log("Error: ", error));
   }
