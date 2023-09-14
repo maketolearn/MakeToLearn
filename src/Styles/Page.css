@@ -52,11 +52,19 @@ body {
     align-items: center;
 }
 
-.results {
-    display: grid;
-    grid-template-columns: 0.35fr 1fr;
-    grid-gap: 1rem;
-    /* grid-gap: 0.25rem; */
+@media (min-width: 768px) {
+    .results {
+        display: grid;
+        grid-template-columns: 0.35fr 1fr;
+        grid-gap: 1rem;
+        /* grid-gap: 0.25rem; */
+    }
+}
+
+@media (max-width: 768px) {
+    .results {
+        display: block;
+    }
 }
 
 .results-no-filter {
