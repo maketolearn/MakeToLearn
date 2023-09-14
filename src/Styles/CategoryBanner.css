@@ -93,12 +93,14 @@
     font-size:18px;
     display: flex;
     color: white;
-    align-items: center;
-    justify-content: center;
     font-family: Cabin,Helvetica,Arial,sans-serif;
     font-weight: bold;
     padding-top: 8px;
     padding-bottom: 8px;
+
+    display: flex;
+    justify-content: space-between; /* This pushes the items apart */
+    align-items: center;
 }
 
 .background-forum{
