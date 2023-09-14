@@ -4,7 +4,6 @@ import CategoryHeader from './Components/CategoryHeader';
 import CategoryBanner from './Components/CategoryBanner';
 import { useNavigate } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
-import ReCAPTCHA from 'react-google-recaptcha';
 import './Styles/Page.css';
 import './Styles/Submission.css'
 
