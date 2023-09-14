@@ -10,9 +10,14 @@ const CategoryBanner= ({subject}) => {
 
     const [hamburger, setHamburger] = useState(false);
 
-    function toggleMenu(){
-        setHamburger(!hamburger);
-        console.log(hamburger);
+    function menuOn(){
+        setHamburger(true);
+        // console.log(hamburger);
+    }
+
+    function menuOff(){
+        setHamburger(false);
+        // console.log(hamburger);
     }
 
     const scienceID = (subject === "Science" ? "science-active" : "");
@@ -31,11 +36,11 @@ const CategoryBanner= ({subject}) => {
 
                 <div id="iconPlaceholder"/>
 
-                <a href="#!" id="icon" onClick={toggleMenu}/>
+                <a href="#!" id="icon" onClick={menuOn}/>
 
                 <ul className={hamburger ? 'dropdown-menu on' : 'dropdown-menu off'} 
-                onMouseLeave={toggleMenu} 
-                onClick={toggleMenu} 
+                onMouseLeave={menuOff} 
+                onClick={menuOff} 
                 aria-expanded="false">
                     <li class="menu-item menu-item-home" >
                         <NavLink to="/" >Home</NavLink>
