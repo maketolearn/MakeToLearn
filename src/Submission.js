@@ -76,11 +76,10 @@ const Submission = () => {
                 <textarea name="message" rows="10" cols="100" required></textarea><br></br><br></br>
 
                 {/* <div class="g-recaptcha" data-sitekey={process.env.REACT_APP_SITE_KEY}></div><br></br> */}
+                {showMessage && <p> Submission inquiry succesfully sent.</p>}<br></br>
 
                 <input type="submit" value="Submit Inquiry"/><br></br><br></br>
                 
-                {showMessage && <p> Submission inquiry succesfully sent.</p>}
-            
               </form>
             </div>
           </div>
