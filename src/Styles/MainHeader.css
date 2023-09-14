@@ -102,7 +102,7 @@ p.site-title {
     align-items: center;
     margin-top: 20px;
     /* margin-left: 50px; */
-    overflow: scroll;
+    /* overflow: scroll; */
 }
 
 @media (min-width: 610px) {

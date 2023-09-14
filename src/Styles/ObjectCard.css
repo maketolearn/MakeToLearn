@@ -36,7 +36,7 @@
 }
 
 .card-image {
-    overflow: hidden;
+    overflow: hidden; 
     height: 200px; /* Set the desired height */
 }
 
@@ -58,12 +58,12 @@
     object-position: bottom center; /* Show the top part of the image */
     /* object-fit: none; */
     /* opacity: 0.7; */
-    overflow: hidden;
+    overflow: hidden; 
     transition: 0.5s ease;
 }
 
 .card-desc{
-    overflow: hidden; /* Hide any overflow */
+    overflow: hidden; /*Hide any overflow */
     padding: 10px; 
 }
 
