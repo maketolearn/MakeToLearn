@@ -3,12 +3,25 @@ import "../Styles/Object.css";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import MainHeader from './MainHeader';
+import { useNavigate } from 'react-router-dom';
 import CategoryHeader from './CategoryHeader';
 import '../Styles/Page.css';
 
 
 const Object = () => {
     const { doi } = useParams();
+
+    const [searchTerm, setSearchTerm] = useState("");
+    const [searchObjects, setSearchObjects] = useState([]);
+    const [subject, setSubject] = useState("Library");
+
+    const navigate = useNavigate();
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        setSearchObjects([]);
+        navigate(`/browse`, {state: searchTerm});
+    }
 
 
     //metadata fields
@@ -190,7 +203,7 @@ const Object = () => {
         <div>
             <body>
                 <div class="site">
-                    <MainHeader subject="none"></MainHeader>
+                <MainHeader input={searchTerm}  setInput={setSearchTerm} handleSubmit={handleSubmit} subject={subject} showFilter={false}></MainHeader>
                     <CategoryHeader subject={primaryDiscipline}></CategoryHeader>
                     <div id="page">
                         <h2>{title}</h2>

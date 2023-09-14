@@ -26,7 +26,7 @@ const ObjectCard = (props) => {
                     <div>
                         {/* <h4 id="author">{props.objAuthor}</h4> */}
                         {doi === "00000C144" ? 
-                        <p id="Description">This dataset of fossil horse teeth published on  <a href="https://www.morphosource.org/" target="_blank"> Morphosource </a> has been selected by Florida Museum scientists to help K12 students understand concepts related to horse evolution. <button>See More</button></p> 
+                        <p id="Description">This dataset of fossil horse teeth published on  <a href="https://www.morphosource.org/" target="_blank"> Morphosource </a> has been selected by Florida Museum scientists to help K12 students understand concepts related to horse evolution.</p> 
                         // the .match function finds the next space after the number of characters input 
                         : <p id="Description">{props.objDescription.match(/^.{150}\w*/)}</p>}
                     </div>
