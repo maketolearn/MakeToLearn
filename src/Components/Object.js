@@ -75,6 +75,7 @@ const Object = () => {
                 let files = object.data.data.latestVersion.files
         
                 for (let i = 0; i < files.length; i++) {
+                    console.log(files[i].label.toLowerCase().slice(-3))
                     if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
                         imgID = files[i].dataFile.id
                     }
