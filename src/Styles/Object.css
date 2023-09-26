@@ -25,7 +25,11 @@
     margin-bottom: 20px;
 }
 
-
+.inactive-link {
+    pointer-events: none;
+    color: black;
+    cursor: default;
+ }
 
 #box {
     /* border-color: black; */
