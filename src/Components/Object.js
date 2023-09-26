@@ -75,7 +75,7 @@ const Object = () => {
                 let files = object.data.data.latestVersion.files
         
                 for (let i = 0; i < files.length; i++) {
-                    console.log(files[i].label.toLowerCase().slice(-3))
+                    // console.log(files[i].label.toLowerCase().slice(-3))
                     if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
                         imgID = files[i].dataFile.id
                     }
@@ -121,8 +121,15 @@ const Object = () => {
                 //set the educational cad metadata fields
                 //setting link to developer
                 if("externalContrib" in educationCADMetadata){
-                    setDeveloperName(educationCADMetadata["externalContrib"][0].externalAgency.value);
-                    setDeveloperLink(educationCADMetadata["externalContrib"][0].externalIdValue.value);
+                    // console.log(educationCADMetadata)
+                    // console.log(educationCADMetadata["externalContrib"][0])
+                    if ("externalAgency" in educationCADMetadata["externalContrib"][0]){
+                        setDeveloperName(educationCADMetadata["externalContrib"][0].externalAgency.value);
+                    }
+
+                    if ("externalIdValue" in educationCADMetadata["externalContrib"][0]){
+                        setDeveloperLink(educationCADMetadata["externalContrib"][0].externalIdValue.value);
+                    }
                     setHasDeveloper(true);
                 }
         
@@ -169,7 +176,7 @@ const Object = () => {
                 }
                 
             })
-            .catch((error) => console.log("Error: ", error));
+            .catch((error) => console.log("Error: ", error.stack));
         }
        
     }, [])
@@ -241,7 +248,11 @@ const Object = () => {
                                 <div>
                                     <b>Developer</b>
                                 <br></br>
-                                <p class="detail"><a href={developerLink} target="_blank">{developerName}</a></p>
+                                <p class="detail"><a href={developerLink}
+                                    className={
+                                        developerLink === "" ? 'inactive-link' : ''
+                                    }
+                                    target="_blank" id="dev-link">{developerName}</a></p>
                                 </div>}
                                 
                                 <b>Subject</b>
