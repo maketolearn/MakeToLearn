@@ -108,8 +108,20 @@ const Object = () => {
 
                 //set the citation metadata fields
                 setTitle(citationMetadata["title"]);
-                let author = citationMetadata["author"][0].authorName.value;
-                formatAuthors(author);
+
+                if(citationMetadata["author"].length === 2){
+                    let author1 = citationMetadata["author"][0].authorName.value;
+                    let author2 = citationMetadata["author"][1].authorName.value;
+
+                    let authorLastName1 = author1.substring(0, author1.indexOf(","));
+                    let authorFirstInitial1 = author1.charAt(authorLastName1.length + 2);
+                    let authorLastName2 = author2.substring(0, author2.indexOf(","));
+                    let authorFirstInitial2 = author2.charAt(authorLastName2.length + 2);
+                    setAuthorsFormatted(authorLastName1 + ", " + authorFirstInitial1 + ". & " + authorLastName2 + ", " + authorFirstInitial2 + ".")
+                } else {
+                    let author = citationMetadata["author"][0].authorName.value;
+                    formatAuthors(author);
+                }
 
                 setIntroSentence(citationMetadata["dsDescription"][0].dsDescriptionValue.value);
                 setDesc(citationMetadata["dsDescription"][1].dsDescriptionValue.value);
