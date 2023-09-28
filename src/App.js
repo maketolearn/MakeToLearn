@@ -43,7 +43,7 @@ const App = () => {
               <li>Curator, Mathematics Education Collection - <Link to="/people/Steven-Greenstein">Steven Greenstein</Link> and <Link to="/people/Allison-McCulloch">Allison McCulloch</Link></li>
               <li>Curator, Science Education Collection - <Link to="/people/Joshua-Ellis">Joshua Ellis</Link> and <Link to="/people/Sumreen-Asim">Sumreen Asim</Link></li>
               <li>Curator, Technology Collection - <Link to="/people/Elizabeth-Whitewolf">Elizabeth Whitewolf</Link></li>
-              <li>Curator, Engineering Education Collection - Ryan Novitski</li>
+              <li>Curator, Engineering Education Collection - <Link to="/people/Ryan-Novitski">Ryan Novitski</Link></li>
             </ul>
             
           </div>

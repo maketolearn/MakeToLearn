@@ -58,6 +58,10 @@ const Bio = () => {
         } else if(firstName === "Glen" && lastName === "Bull"){
             setImgLocation("/GlenBull.png")
             setIsGlen(true)
+        } else if(firstName === "Ryan" && lastName === "Novitski"){
+            setImgLocation("/Novitski.png")
+            paragraphs.push("Ryan Novitski is the Director of STEM Learning at the International Technology and Engineering Education Association (ITEEA). This role involves development and delivery of integrative STEM courseware. He also ensures that all content is based on research and aligned with professional standards. He has served as a technology and engineering education instructor and as vice principal in a secondary school setting. He is currently serving as the Co-P.I. on three National Science Foundation grants related to STEM education, including the Educational CAD Model Library initiative.")
+            setDescription(paragraphs)
         }
     }, [])
 
