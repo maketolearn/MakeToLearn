@@ -74,7 +74,7 @@ const Subject = ({ subjectArg }) => {
     dois.forEach(doi => {
         axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ doi)
         .then(object => {
-            if(object.data.data.latestVersion.metadataBlocks.citation.fields[5].value[0].keywordValue.value === subject){
+            if(object.data.data.latestVersion.metadataBlocks.educationalcad.fields[3].value[0].discipline.value.toLowerCase() === subject){
                 title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
                 author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
                 desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
