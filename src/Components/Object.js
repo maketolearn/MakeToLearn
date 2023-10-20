@@ -41,6 +41,8 @@ const Object = () => {
     const [hasDeveloper, setHasDeveloper] = useState(false);
     const [instructAvail, setInstructAvail] = useState(false);
     const [fabAvail, setFabAvail] = useState(false);
+    const [relatedWorkAvail, setRelatedWorkAvail] = useState(false);
+    const [relatedWorks, setRelatedWorks] = useState([])
 
     //citation fields
     const [authorsFormmated, setAuthorsFormatted] = useState("");
@@ -51,6 +53,7 @@ const Object = () => {
     doiPieces.push(doi.substring(0, 2));
     doiPieces.push(doi.substring(2));
     let dataverseDoi = doiPieces[0] + "/" + doiPieces[1];
+    let publications = [];
     
     useEffect(() => {
         if(doi === "00000C144undefined") {
@@ -94,7 +97,25 @@ const Object = () => {
                     citationMetadata[key] = citationBlock[i].value;
                 }
 
-                // console.log(citationMetadata);
+                console.log(citationMetadata);
+
+                if("notesText" in citationMetadata){
+                    setForumLink(citationMetadata["notesText"]);
+                }
+
+                if("publication" in citationMetadata){
+                    setRelatedWorkAvail(true);
+                    citationMetadata["publication"].forEach(publication => {
+                        if("publicationCitation" in publication){
+                            publications = [{title: publication.publicationCitation.value, url: publication.publicationURL.value}, ...publications];
+                        } else {
+                            publications = [{title: publication.publicationURL.value, url: publication.publicationURL.value}, ...publications];
+                        }
+                        
+                        setRelatedWorks(publications);
+                    })
+                    // console.log(relatedWorks)
+                }
 
                 //change the educational cad api response to a dictionary
                 let educationalCADBlock = object.data.data.latestVersion.metadataBlocks.educationalcad.fields;
@@ -298,6 +319,16 @@ const Object = () => {
                         
                         <div>
                             <br />
+                            {relatedWorkAvail && <h4>Related Articles</h4>}
+                            {relatedWorkAvail && 
+                                <ul>
+                                {relatedWorks.map((workl) => (
+                                    <li><a href={workl.url}>{workl.title}</a> </li>
+                                ))}
+                                </ul>
+                            }
+
+                        
                             <h4> Sample Learning Goals </h4>
                                 <ul>
                                     {sampleLearningGoals.map((goal) => (
