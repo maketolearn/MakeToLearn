@@ -5,6 +5,7 @@ import axios from "axios";
 import MainHeader from './MainHeader';
 import { useNavigate } from 'react-router-dom';
 import CategoryHeader from './CategoryHeader';
+import parser from 'html-react-parser';
 import '../Styles/Page.css';
 
 
@@ -60,7 +61,7 @@ const Object = () => {
             setImgUrl("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQI543PLIQIc4To-7vEaHXFBFHwChFBBbEOpQCI1saa02QuDiWz");
             // console.log(imgUrl);
             setTitle("Horse Evolution");
-            setIntroSentence("This dataset of fossil horse teeth published on Morphosource (https://www.morphosource.org/) has been selected by Florida Museum scientists to help K12 students understand concepts related to horse evolution and climate change. ");
+            setIntroSentence("This dataset of fossil horse teeth published on <a href='https://www.morphosource.org/'> Morphosource </a> has been selected by Florida Museum scientists to help K12 students understand concepts related to horse evolution and climate change. ");
             setDesc("Three lessons have been developed in collaboration with science teachers that can be used with the 3D files provided.");
             setInstructionalResourcesUrl("http://www.paleoteach.org/chewing-on-change-exploring-the-evolution-of-horses-in-response-to-climate-change/");
             setDeveloperName("Center for Precollegiate Education and Training, University of Florida");
@@ -268,7 +269,7 @@ const Object = () => {
                                 <br></br>
 
                                 <h4> Big Idea </h4>
-                                {desc}
+                                {parser(`${desc}`)}
                             </div>
 
                             <div class="mobile-object">
@@ -319,16 +320,6 @@ const Object = () => {
                         
                         <div>
                             <br />
-                            {relatedWorkAvail && <h4>Related Articles</h4>}
-                            {relatedWorkAvail && 
-                                <ul>
-                                {relatedWorks.map((workl) => (
-                                    <li><a href={workl.url}>{workl.title}</a> </li>
-                                ))}
-                                </ul>
-                            }
-
-                        
                             <h4> Sample Learning Goals </h4>
                                 <ul>
                                     {sampleLearningGoals.map((goal) => (
@@ -339,6 +330,16 @@ const Object = () => {
                                 
                             <h4> Citation </h4>
                                 <p>{authorsFormmated} ({year}). <em>{title}</em> [Educational Object]. <em>Educational CAD Model Library</em>. Published {pubDate}. NTLS Coalition. doi:10.18130/{dataverseDoi} </p>
+
+                            {relatedWorkAvail && <h4>Related Articles</h4>}
+                            {relatedWorkAvail && 
+                                <ul>
+                                {relatedWorks.map((workl) => (
+                                    <li><a href={workl.url}>{workl.title}</a> </li>
+                                ))}
+                                </ul>
+                            }
+
                         </div>
                     </div>
                 </div>

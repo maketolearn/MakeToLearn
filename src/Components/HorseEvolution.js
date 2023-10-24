@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import MainHeader from './MainHeader';
 import CategoryHeader from './CategoryHeader';
+import parser from 'html-react-parser';
 import '../Styles/Page.css';
 
 
@@ -30,6 +31,7 @@ const HorseEvolution = () => {
     useEffect(() => {
         setImgUrl("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQI543PLIQIc4To-7vEaHXFBFHwChFBBbEOpQCI1saa02QuDiWz");
         setTitle("Horse Evolution");
+        setIntroSentence("This dataset of fossil horse teeth published on <a href='https://www.morphosource.org/'> Morphosource </a> has been selected by Florida Museum scientists to help K12 students understand concepts related to horse evolution and climate change. ")
         setDesc("Three lessons have been developed in collaboration with science teachers that can be used with the 3D files provided.");
         setInstructionalResourcesUrl("http://www.paleoteach.org/chewing-on-change-exploring-the-evolution-of-horses-in-response-to-climate-change/");
         setDeveloperName("Center for Precollegiate Education and Training, University of Florida");
@@ -88,7 +90,7 @@ const HorseEvolution = () => {
 
                             <div>
                                 <img id="img-single" src={imgUrl} alt="Object Thumbnail Not Found" align="left"></img>
-                                This dataset of fossil horse teeth published on  <a href="https://www.morphosource.org/" target="_blank"> Morphosource </a> has been selected by Florida Museum scientists to help K12 students understand concepts related to horse evolution and climate change. "
+                                {parser(introSentence)}
                                 <br></br>
                                 <br></br>
 
