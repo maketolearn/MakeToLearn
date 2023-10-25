@@ -98,10 +98,13 @@ const Object = () => {
                     citationMetadata[key] = citationBlock[i].value;
                 }
 
-                console.log(citationMetadata);
+                //console.log(citationMetadata);
 
                 if("notesText" in citationMetadata){
-                    setForumLink(citationMetadata["notesText"]);
+                    let forumLinkMetadata = citationMetadata["notesText"];
+                    forumLinkMetadata = forumLinkMetadata.substring(forumLinkMetadata.indexOf("http"))
+                    setForumLink(forumLinkMetadata);
+                    
                 }
 
                 if("publication" in citationMetadata){
