@@ -74,7 +74,16 @@ const Subject = ({ subjectArg }) => {
     dois.forEach(doi => {
         axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ doi)
         .then(object => {
-            if(object.data.data.latestVersion.metadataBlocks.educationalcad.fields[3].value[0].discipline.value.toLowerCase() === subject){
+
+           //change the educational cad api response to a dictionary
+          let educationalCADBlock = object.data.data.latestVersion.metadataBlocks.educationalcad.fields;
+          let educationCADMetadata = {};
+          for(let i = 0; i < educationalCADBlock.length; i++){
+              let key = educationalCADBlock[i].typeName;
+              educationCADMetadata[key] = educationalCADBlock[i].value;
+          }
+
+            if(educationCADMetadata['disciplines'][0].discipline.value.toLowerCase() === subject){
                 title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
                 author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
                 desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;

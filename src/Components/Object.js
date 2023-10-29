@@ -87,7 +87,7 @@ const Object = () => {
         
                 setImgUrl("https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID);
 
-                // console.log(object.data.data)
+                console.log(object.data.data)
 
                 //change the citation api response to a dictionary
                 let citationBlock = object.data.data.latestVersion.metadataBlocks.citation.fields;
@@ -134,15 +134,44 @@ const Object = () => {
                 //set the citation metadata fields
                 setTitle(citationMetadata["title"]);
 
-                if(citationMetadata["author"].length === 2){
-                    let author1 = citationMetadata["author"][0].authorName.value;
-                    let author2 = citationMetadata["author"][1].authorName.value;
+                if(citationMetadata["author"].length >= 2){
+                    // get all of the author values
+                    let authorNames = [];
+                    for(let i = 0; i < citationMetadata["author"].length; i++){
+                        authorNames.push(citationMetadata["author"][i].authorName.value);
+                    }
 
-                    let authorLastName1 = author1.substring(0, author1.indexOf(","));
-                    let authorFirstInitial1 = author1.charAt(authorLastName1.length + 2);
-                    let authorLastName2 = author2.substring(0, author2.indexOf(","));
-                    let authorFirstInitial2 = author2.charAt(authorLastName2.length + 2);
-                    setAuthorsFormatted(authorLastName1 + ", " + authorFirstInitial1 + ". & " + authorLastName2 + ", " + authorFirstInitial2 + ".")
+                    //console.log(authorNames);
+
+                    // change the values in authorNames to be dictionarys (firstInitial and lastName)
+                    for(let i = 0; i < authorNames.length; i++){
+                        let currentAuthor = authorNames[i]
+                        let authorLastName =  currentAuthor.substring(0, currentAuthor.indexOf(","));
+                        let authorFirstInitial = currentAuthor.charAt(authorLastName.length + 2);
+                        authorNames[i] = {firstInitial: authorFirstInitial, lastName: authorLastName}
+                    }
+
+                    console.log(authorNames)
+
+                    // construct authorsFormatted string
+
+                    let authorsFormattedString = "";
+                    for(let i = 0; i < authorNames.length - 2; i++){
+                        authorsFormattedString += (authorNames[i].lastName + ", " + authorNames[i].firstInitial + "., ")
+                    }
+                    authorsFormattedString += (authorNames[authorNames.length - 2].lastName + ", " + authorNames[authorNames.length - 2].firstInitial + ". & ")
+                    authorsFormattedString += (authorNames[authorNames.length - 1].lastName + ", " + authorNames[authorNames.length - 1].firstInitial + ". ")
+                    console.log(authorsFormattedString)
+                    setAuthorsFormatted(authorsFormattedString)
+
+                    // let author1 = citationMetadata["author"][0].authorName.value;
+                    // let author2 = citationMetadata["author"][1].authorName.value;
+
+                    // let authorLastName1 = author1.substring(0, author1.indexOf(","));
+                    // let authorFirstInitial1 = author1.charAt(authorLastName1.length + 2);
+                    // let authorLastName2 = author2.substring(0, author2.indexOf(","));
+                    // let authorFirstInitial2 = author2.charAt(authorLastName2.length + 2);
+                    // setAuthorsFormatted(authorLastName1 + ", " + authorFirstInitial1 + ". & " + authorLastName2 + ", " + authorFirstInitial2 + ".")
                 } else {
                     let author = citationMetadata["author"][0].authorName.value;
                     formatAuthors(author);
@@ -241,7 +270,7 @@ const Object = () => {
         let date = publicationDate.split("-");
         let year = date[0];
         let month = date[1];
-        if(date[1].includes("0")){
+        if(date[1].charAt(0) === "0"){
             month = month[1];
         }
         let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
