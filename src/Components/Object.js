@@ -141,8 +141,6 @@ const Object = () => {
                         authorNames.push(citationMetadata["author"][i].authorName.value);
                     }
 
-                    //console.log(authorNames);
-
                     // change the values in authorNames to be dictionarys (firstInitial and lastName)
                     for(let i = 0; i < authorNames.length; i++){
                         let currentAuthor = authorNames[i]
@@ -150,8 +148,6 @@ const Object = () => {
                         let authorFirstInitial = currentAuthor.charAt(authorLastName.length + 2);
                         authorNames[i] = {firstInitial: authorFirstInitial, lastName: authorLastName}
                     }
-
-                    console.log(authorNames)
 
                     // construct authorsFormatted string
 
@@ -161,17 +157,7 @@ const Object = () => {
                     }
                     authorsFormattedString += (authorNames[authorNames.length - 2].lastName + ", " + authorNames[authorNames.length - 2].firstInitial + ". & ")
                     authorsFormattedString += (authorNames[authorNames.length - 1].lastName + ", " + authorNames[authorNames.length - 1].firstInitial + ". ")
-                    console.log(authorsFormattedString)
                     setAuthorsFormatted(authorsFormattedString)
-
-                    // let author1 = citationMetadata["author"][0].authorName.value;
-                    // let author2 = citationMetadata["author"][1].authorName.value;
-
-                    // let authorLastName1 = author1.substring(0, author1.indexOf(","));
-                    // let authorFirstInitial1 = author1.charAt(authorLastName1.length + 2);
-                    // let authorLastName2 = author2.substring(0, author2.indexOf(","));
-                    // let authorFirstInitial2 = author2.charAt(authorLastName2.length + 2);
-                    // setAuthorsFormatted(authorLastName1 + ", " + authorFirstInitial1 + ". & " + authorLastName2 + ", " + authorFirstInitial2 + ".")
                 } else {
                     let author = citationMetadata["author"][0].authorName.value;
                     formatAuthors(author);
