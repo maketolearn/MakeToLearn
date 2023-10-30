@@ -1,8 +1,9 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import MainHeader from './Components/MainHeader';
 import CategoryHeader from './Components/CategoryHeader';
 import CategoryBanner from './Components/CategoryBanner';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import emailjs from '@emailjs/browser';
 import './Styles/Page.css';
 import './Styles/Submission.css'
@@ -22,6 +23,12 @@ const Submission = () => {
     const [message, setMessage] = useState("");
 
     const [showMessage, setShowMessage] = useState(false);
+
+    const [doi, setDoi] = useState("");
+
+    useEffect(() => {
+      submitReview(doi);
+    }, [doi]);
 
     const handleSubjectSelect = (event) => {
       setObjectSubject(event.target.value);
@@ -53,6 +60,160 @@ const Submission = () => {
 
       resetForm();
     }
+
+    async function createDataset() {
+      const API_TOKEN = '04c00114-fb2e-4f0f-9066-bb9bf497db57';
+      const SERVER_URL = 'https://dataverse.lib.virginia.edu';
+      const PARENT = 'CADLibrary';
+
+      const headers = {
+        'Content-Type': 'application/json',
+        'X-Dataverse-key': API_TOKEN,
+      };
+
+      const dataset = {
+          "datasetVersion": {
+            "metadataBlocks": {
+              "citation": {
+                "fields": [
+                  {
+                    "value": "Darwin's Newest Finches",
+                    "typeClass": "primitive",
+                    "multiple": false,
+                    "typeName": "title"
+                  },
+                  {
+                    "value": [
+                      {
+                        "authorName": {
+                          "value": "Finch, Fiona",
+                          "typeClass": "primitive",
+                          "multiple": false,
+                          "typeName": "authorName"
+                        },
+                        "authorAffiliation": {
+                          "value": "Birds Inc.",
+                          "typeClass": "primitive",
+                          "multiple": false,
+                          "typeName": "authorAffiliation"
+                        }
+                      }
+                    ],
+                    "typeClass": "compound",
+                    "multiple": true,
+                    "typeName": "author"
+                  },
+                  {
+                    "value": [ 
+                        { "datasetContactEmail" : {
+                            "typeClass": "primitive",
+                            "multiple": false,
+                            "typeName": "datasetContactEmail",
+                            "value" : "finch@mailinator.com"
+                        },
+                        "datasetContactName" : {
+                            "typeClass": "primitive",
+                            "multiple": false,
+                            "typeName": "datasetContactName",
+                            "value": "Finch, Fiona"
+                        }
+                    }],
+                    "typeClass": "compound",
+                    "multiple": true,
+                    "typeName": "datasetContact"
+                  },
+                  {
+                    "value": [ {
+                       "dsDescriptionValue":{
+                        "value":   "Darwin's finches (also known as the Galápagos finches) are a group of about fifteen species of passerine birds.",
+                        "multiple":false,
+                       "typeClass": "primitive",
+                       "typeName": "dsDescriptionValue"
+                    }}],
+                    "typeClass": "compound",
+                    "multiple": true,
+                    "typeName": "dsDescription"
+                  },
+                  {
+                    "value": [
+                      "Medicine, Health and Life Sciences"
+                    ],
+                    "typeClass": "controlledVocabulary",
+                    "multiple": true,
+                    "typeName": "subject"
+                  },
+                  {
+                    "typeName": "productionDate",
+                    "multiple": false,
+                    "typeClass": "primitive",
+                    "value": "1003-01-01"
+                  },
+                  {
+                    "typeName": "contributor",
+                    "multiple": true,
+                    "typeClass": "compound",
+                    "value": [
+                      {
+                        "contributorType": {
+                          "typeName": "contributorType",
+                          "multiple": false,
+                          "typeClass": "controlledVocabulary",
+                          "value": "Data Collector"
+                        },
+                        "contributorName": {
+                          "typeName": "contributorName",
+                          "multiple": false,
+                          "typeClass": "primitive",
+                          "value": "LastContributor1, FirstContributor1"
+                        }
+                      },
+                    ]
+                  }
+                ],
+                "displayName": "Citation Metadata"
+              }
+            }
+          }
+      }
+
+      const res = await axios.post(`${SERVER_URL}/api/dataverses/${PARENT}/datasets`, dataset, {
+        headers: headers
+      })
+      .then(data => {
+          console.log(data);
+
+          const doi = data.data.data.persistentId;
+
+          setDoi(doi);
+
+          console.log(doi);
+      })
+      .catch(error => {
+          console.error(error);
+      });
+    }
+
+    async function submitReview(doi) {
+      const API_TOKEN = '04c00114-fb2e-4f0f-9066-bb9bf497db57';
+      const SERVER_URL = 'https://dataverse.lib.virginia.edu';
+      const PARENT = 'CADLibrary';
+
+      const headers = {
+        'Content-Type': 'application/json',
+        'X-Dataverse-key': API_TOKEN,
+      };
+
+      const res = await axios.post(`${SERVER_URL}/api/datasets/:persistentId/submitForReview?persistentId=${doi}`, {}, {
+        headers: headers
+      })
+      .then(data => {
+          console.log(data);
+      })
+      .catch(error => {
+          console.error(error);
+      });
+    }
+
   
     return (
       <div>
@@ -68,37 +229,20 @@ const Submission = () => {
                 <li> Do you use physical objects in your teaching?  Would you be interested in publishing an educational object that you have developed in the <em>CAD Library</em>? </li>
                 <li>Do you have other questions about the <em>CAD Library</em> or the submission process?</li>
               </ul>
-              <form ref={form} onSubmit={sendEmail}>
 
-                <p>To inquire, contact one of the following CAD Library curators:</p>
-                <ul>
-                  <input type="radio" name="object_subject" value="science" onChange={handleSubjectSelect} checked={objectSubject === "science"} required></input><label id="checkbox-label">Science Curators&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Joshua Ellis & Sumreen Asim</label>
-                  <br></br>
-                  <input type="radio" name="object_subject" value="technology" onChange={handleSubjectSelect} checked={objectSubject === "technology"}></input><label id="checkbox-label">Technology Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Elizabeth Whitewolf</label>
-                  <br></br>
-                  <input type="radio" name="object_subject" value="engineering" onChange={handleSubjectSelect} checked={objectSubject === "engineering"}></input><label id="checkbox-label">Engineering Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ryan Novitski</label>
-                  <br></br>
-                  <input type="radio" name="object_subject" value="mathematics" onChange={handleSubjectSelect} checked={objectSubject === "mathematics"}></input><label id="checkbox-label">Mathematics Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Steven Greenstein </label>
-                </ul>
 
-                <p>Provide your name, e-mail address, and a short description of your interest.</p>
-                <input type="hidden" name="to_name" value="Rishi"></input>
-                
-                <label>Name</label><br></br>
-                <input type="text" name="from_name" onChange={(e) => setFromName(e.target.value)} value={fromName} required></input><br></br><br></br>
+              <form>
+                <label for="title">Title</label>
+                <input id="title" type="text"/>
 
-                <label>Email</label><br></br>
-                <input type="email" name="from_email" onChange={(e) => setFromEmail(e.target.value)} value={fromEmail} required></input><br></br><br></br>
-
-                <label>Brief description of your interest or query</label><br></br>
-                <textarea name="message" rows="10" cols="100" onChange={(e) => setMessage(e.target.value)} value={message} required></textarea><br></br><br></br>
-
-                {/* <div class="g-recaptcha" data-sitekey={process.env.REACT_APP_SITE_KEY}></div><br></br> */}
-                {showMessage && <p> Submission inquiry succesfully sent.</p>}<br></br>
-
-                <input type="submit" value="Submit Inquiry"/><br></br><br></br>
-                
+                <label for="author">Author</label>
+                <input id="author" type="text"/>
               </form>
+
+              <div>
+                <br />
+                <button onClick={createDataset}> Create Dataset </button>
+              </div>
             </div>
           </div>
         </body>
