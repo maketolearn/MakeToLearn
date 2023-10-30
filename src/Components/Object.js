@@ -44,6 +44,7 @@ const Object = () => {
     const [fabAvail, setFabAvail] = useState(false);
     const [relatedWorkAvail, setRelatedWorkAvail] = useState(false);
     const [relatedWorks, setRelatedWorks] = useState([])
+    const [hasSampleLearningGoals, setHasSampleLearningGoals] = useState(false);
 
     //citation fields
     const [authorsFormmated, setAuthorsFormatted] = useState("");
@@ -202,8 +203,12 @@ const Object = () => {
                 setGradeLevels(gradeLevelsStr);
                 
                 //set sample learning goals
-                setSampleLearningGoals(educationCADMetadata["sampleLearningGoals"]);
+                if("sampleLearningGoals" in educationCADMetadata){
+                    setHasSampleLearningGoals(true);
+                    setSampleLearningGoals(educationCADMetadata["sampleLearningGoals"]);
 
+                }
+               
                 //fabrication and learning packages
                 let instructionalID = -1
                 let fabricationID = -1
@@ -338,13 +343,14 @@ const Object = () => {
                         
                         <div>
                             <br />
-                            <h4> Sample Learning Goals </h4>
+                            {hasSampleLearningGoals && <h4> Sample Learning Goals </h4>}
+                            {hasSampleLearningGoals &&
                                 <ul>
                                     {sampleLearningGoals.map((goal) => (
                                         <li> {goal} </li>
                                     ))}
                                 </ul>
-                                
+                            }
                                 
                             <h4> Citation </h4>
                                 <p>{authorsFormmated} ({year}). <em>{title}</em> [Educational Object]. <em>Educational CAD Model Library</em>. Published {pubDate}. NTLS Coalition. doi:10.18130/{dataverseDoi} </p>
