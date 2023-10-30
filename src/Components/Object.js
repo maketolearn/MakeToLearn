@@ -111,12 +111,13 @@ const Object = () => {
                 if("publication" in citationMetadata){
                     setRelatedWorkAvail(true);
                     citationMetadata["publication"].forEach(publication => {
-                        if("publicationCitation" in publication){
+                        if("publicationCitation" in publication && "publicationURL" in publication){
                             publications = [{title: publication.publicationCitation.value, url: publication.publicationURL.value}, ...publications];
-                        } else {
+                        } else if ("publicationURL" in publication){
                             publications = [{title: publication.publicationURL.value, url: publication.publicationURL.value}, ...publications];
+                        } else {
+                            publications = [{title: publication.publicationCitation.value}, ...publications]
                         }
-                        
                         setRelatedWorks(publications);
                     })
                     // console.log(relatedWorks)
