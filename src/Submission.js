@@ -67,7 +67,7 @@ const Submission = () => {
     }
 
     async function createDataset() {
-      const API_TOKEN = '04c00114-fb2e-4f0f-9066-bb9bf497db57';
+      const API_TOKEN = "04c00114-fb2e-4f0f-9066-bb9bf497db57";
       const SERVER_URL = 'https://dataverse.lib.virginia.edu';
       const PARENT = 'CADLibrary';
 
@@ -82,76 +82,79 @@ const Submission = () => {
               "citation": {
                 "fields": [
                   {
-                    "value": "Darwin's Newest Finches",
+                    "typeName": "title",
                     "typeClass": "primitive",
                     "multiple": false,
-                    "typeName": "title"
+                    "value": document.getElementById("title").value
                   },
                   {
+                    "typeName": "author",
+                    "typeClass": "compound",
+                    "multiple": true,
                     "value": [
                       {
                         "authorName": {
-                          "value": "Finch, Fiona",
+                          "typeName": "authorName",
                           "typeClass": "primitive",
                           "multiple": false,
-                          "typeName": "authorName"
+                          "value": document.getElementById("authorName").value
                         },
                         "authorAffiliation": {
-                          "value": "Birds Inc.",
+                          "typeName": "authorAffiliation",
                           "typeClass": "primitive",
                           "multiple": false,
-                          "typeName": "authorAffiliation"
+                          "value": document.getElementById("department").value
                         }
                       }
-                    ],
-                    "typeClass": "compound",
-                    "multiple": true,
-                    "typeName": "author"
+                    ]
                   },
                   {
+                    "typeName": "datasetContact",
+                    "typeClass": "compound",
+                    "multiple": true,
                     "value": [ 
-                        { "datasetContactEmail" : {
-                            "typeClass": "primitive",
-                            "multiple": false,
-                            "typeName": "datasetContactEmail",
-                            "value" : "finch@mailinator.com"
+                      { 
+                        "datasetContactName": {
+                          "typeClass": "primitive",
+                          "multiple": false,
+                          "typeName": "datasetContactName",
+                          "value": document.getElementById("contactName").value
                         },
-                        "datasetContactName" : {
-                            "typeClass": "primitive",
-                            "multiple": false,
-                            "typeName": "datasetContactName",
-                            "value": "Finch, Fiona"
+                        "datasetContactEmail": {
+                          "typeName": "datasetContactEmail",
+                          "typeClass": "primitive",
+                          "multiple": false,
+                          "value" : document.getElementById("contactEmail").value
+                        },
+                      }
+                    ]
+                  },
+                  {
+                    "typeName": "dsDescription",
+                    "typeClass": "compound",
+                    "multiple": true,
+                    "value": [ 
+                      {
+                        "dsDescriptionValue": {
+                          "typeName": "dsDescriptionValue",
+                          "multiple":false,
+                          "typeClass": "primitive",
+                          "value":  [document.getElementById("objectDescription").value, document.getElementById("bigIdea").value]
                         }
-                    }],
-                    "typeClass": "compound",
-                    "multiple": true,
-                    "typeName": "datasetContact"
+                      }
+                    ]
                   },
                   {
-                    "value": [ {
-                       "dsDescriptionValue":{
-                        "value":   "Darwin's finches (also known as the Galápagos finches) are a group of about fifteen species of passerine birds.",
-                        "multiple":false,
-                       "typeClass": "primitive",
-                       "typeName": "dsDescriptionValue"
-                    }}],
-                    "typeClass": "compound",
-                    "multiple": true,
-                    "typeName": "dsDescription"
-                  },
-                  {
-                    "value": [
-                      "Medicine, Health and Life Sciences"
-                    ],
+                    "typeName": "subject",
                     "typeClass": "controlledVocabulary",
                     "multiple": true,
-                    "typeName": "subject"
+                    "value": ["Other"],
                   },
                   {
                     "typeName": "productionDate",
                     "multiple": false,
                     "typeClass": "primitive",
-                    "value": "1003-01-01"
+                    "value": document.getElementById("creationDate").value
                   },
                   {
                     "typeName": "contributor",
@@ -163,13 +166,13 @@ const Submission = () => {
                           "typeName": "contributorType",
                           "multiple": false,
                           "typeClass": "controlledVocabulary",
-                          "value": "Data Collector"
+                          "value": "Data Curator"
                         },
                         "contributorName": {
                           "typeName": "contributorName",
                           "multiple": false,
                           "typeClass": "primitive",
-                          "value": "LastContributor1, FirstContributor1"
+                          "value": "LastContributor1, FirstContributor1" // should depend on the curator
                         }
                       },
                     ]
@@ -183,7 +186,7 @@ const Submission = () => {
                     "typeName":"sampleLearningGoals",
                     "multiple":true,
                     "typeClass":"primitive",
-                    "value": ["Sample learning goal 1", "Sample learning goal 2"]
+                    "value": [document.getElementById("sampleLearningGoals").value]
                   }
                 ],
                 "displayName": "Educational CAD Model Metadata"
@@ -191,6 +194,8 @@ const Submission = () => {
             }
           }
       }
+
+      console.log(dataset)
 
       const res = await axios.post(`${SERVER_URL}/api/dataverses/${PARENT}/datasets`, dataset, {
         headers: headers
@@ -210,7 +215,7 @@ const Submission = () => {
     }
 
     async function submitReview(doi) {
-      const API_TOKEN = '04c00114-fb2e-4f0f-9066-bb9bf497db57';
+      const API_TOKEN = process.env.DATAVERSE_API_KEY;
       const SERVER_URL = 'https://dataverse.lib.virginia.edu';
       const PARENT = 'CADLibrary';
 
@@ -325,7 +330,7 @@ const Submission = () => {
 
       selectElements.forEach((input) => {
         let object = input.options[input.selectedIndex]
-        if (object == undefined) {
+        if (object === undefined) {
           inputValues[input.id] = "";
         } else {
           inputValues[input.id] = object.value;
@@ -419,7 +424,7 @@ const Submission = () => {
                     </tr>
                     <tr>
                       <td></td>
-                      <td><input id="contactEmail" type="text"/></td>
+                      <td><input id="contactEmail" type="email"/></td>
                       <td></td>
                     </tr>
                     <br />
@@ -433,7 +438,7 @@ const Submission = () => {
                     <tr>
                       <td></td>
                       <td><textarea name="description" id="description" cols="30" rows="3"></textarea></td>
-                      <td><input id="descriptionDate" type="text"/></td>
+                      <td><input id="descriptionDate" type="date"/></td>
                     </tr>
                     <br />
 
@@ -442,7 +447,8 @@ const Submission = () => {
                       <td>
                           <label for="creationDate"> <b className="req">Data Creation Date </b> <span className="toolTip" title={tooltips.creationDate}>?</span></label>
                       </td>
-                      <td><textarea id="creationDate" cols="30" rows="1" type="text" placeholder="YYYY-MM-DD"/></td>
+                      {/* <td><textarea id="creationDate" cols="30" rows="1" type="text" placeholder="YYYY-MM-DD"/></td> */}
+                      <td><input id="creationDate" type="date"/></td>
                     </tr>
                     <br />
 
@@ -665,7 +671,7 @@ const Submission = () => {
                 </table>
 
                 
-                <button type='button' onClick={printInputs}>Print Input Values</button> 
+                <button type='button' onClick={createDataset}>Create Dataset</button> 
               </form>
 
               <div>
