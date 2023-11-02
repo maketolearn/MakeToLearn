@@ -208,7 +208,7 @@ const Submission = () => {
                   {
                     "typeName": "disciplines",
                     "multiple": true,
-                    "typeClass": compound,
+                    "typeClass": "compound",
                     "value": [
                       {
                         "discipline": {
@@ -392,6 +392,12 @@ const Submission = () => {
       "": "",
 
       "": "",
+
+      "fabGuidePackage": "The build details package includes the information needed to replicate a physical artifact, including the bill of materials, supplies, and equipment required to fabricate the object.",
+
+      "instructionalResourcesPackage": "The instructional resources package includes descriptions and links to instructional resources that may be available to support instruction.",
+
+      "instructionalVideosPackage": "The instructional videos package includes associated video files that may be available to support instruction.",
     }
 
     function printInputs() {
@@ -453,11 +459,12 @@ const Submission = () => {
               <br />
               <br />
 
-
               <form>
                 <table>
                   <tbody>
                     {/* 1 column */}
+                    <h4> <u>Object Information</u> </h4>
+                    <br></br>
                     <tr>
                       <td>
                           <label for="title"> <b className="req">Title</b> <span className="toolTip" title={tooltips.title}>?</span></label>
@@ -754,6 +761,33 @@ const Submission = () => {
                           <option value="interactive">interactive</option>
                         </select>
                       </td>
+                    </tr>
+                    <br />
+                    <br></br>
+
+                    <h4> <u>Package Upload</u> </h4>
+                    <br></br>
+                    <tr>
+                        <td>
+                            <label for="fabGuidePackage"> <b className="req">Fabrication Guide Package</b> <span className="toolTip" title={tooltips.fabGuidePackage}>?</span></label>
+                        </td>
+                        <td><input type="file"></input></td>
+                    </tr>
+                    <br />
+
+                    <tr>
+                        <td>
+                            <label for="instructionalResourcesPackage"> <b className="req">Instructional Resources Package</b> <span className="toolTip" title={tooltips.instructionalResourcesPackage}>?</span></label>
+                        </td>
+                        <td><input type="file"></input></td>
+                    </tr>
+                    <br />
+
+                    <tr>
+                        <td>
+                            <label for="instructionalVideosPackage"> <b>Instructional Videos Package</b> <span className="toolTip" title={tooltips.instructionalVideosPackage}>?</span></label>
+                        </td>
+                        <td><input type="file"></input></td>
                     </tr>
                     <br />
 
