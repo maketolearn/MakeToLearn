@@ -176,6 +176,17 @@ const Submission = () => {
                   }
                 ],
                 "displayName": "Citation Metadata"
+              },
+              "educationalcad":{
+                "fields": [
+                  {
+                    "typeName":"sampleLearningGoals",
+                    "multiple":true,
+                    "typeClass":"primitive",
+                    "value": ["Sample learning goal 1", "Sample learning goal 2"]
+                  }
+                ],
+                "displayName": "Educational CAD Model Metadata"
               }
             }
           }
