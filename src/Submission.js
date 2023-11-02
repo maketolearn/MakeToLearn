@@ -26,12 +26,17 @@ const Submission = () => {
 
     const [showMessage, setShowMessage] = useState(false);
 
+    const [fabGuidePackage, setFabGuidePackage] = useState();
+    const [instructResourcePackage, setInstructResourcePackage] = useState();
+
     const [doi, setDoi] = useState("");
 
     useEffect(() => {
       if (doi != "") {
         console.log(doi);
-        submitReview(doi);
+        uploadFiles(doi);
+        // if file upload success --> submit Review
+        // submitReview(doi);
       }
     }, [doi]);
 
@@ -50,6 +55,14 @@ const Submission = () => {
       event.preventDefault();
       setSearchObjects([]);
       navigate(`/browse`, {state: searchTerm});
+    }
+
+    const handleFabGuide = (event) => {
+      setFabGuidePackage(event.target.files[0])
+    }
+
+    const handleInstructResource = (event) => {
+      setInstructResourcePackage(event.target.files[0])
     }
 
     const sendEmail = (e) => {
@@ -90,7 +103,7 @@ const Submission = () => {
                     "typeName": "title",
                     "typeClass": "primitive",
                     "multiple": false,
-                    "value": inputValues["title"]
+                    "value": document.getElementById("title").value
                   },
                   {
                     "typeName": "author",
@@ -300,7 +313,6 @@ const Submission = () => {
     async function submitReview(doi) {
       const API_TOKEN = process.env.DATAVERSE_API_KEY;
       const SERVER_URL = 'https://dataverse.lib.virginia.edu';
-      const PARENT = 'CADLibrary';
 
       const headers = {
         'Content-Type': 'application/json',
@@ -316,6 +328,42 @@ const Submission = () => {
       .catch(error => {
           console.error(error);
       });
+    }
+
+    async function uploadFiles(doi) {
+      const formData = new FormData()
+      formData.append('file', fabGuidePackage)
+      formData.append('fileName', fabGuidePackage.name)
+      const API_TOKEN = "04c00114-fb2e-4f0f-9066-bb9bf497db57";
+      const SERVER_URL = 'https://dataverse.lib.virginia.edu';
+
+      const headers = {
+        'X-Dataverse-key': API_TOKEN,
+      };
+
+      const res = await axios.post(`${SERVER_URL}/api/datasets/:persistentId/add?persistentId=${doi}`, formData, {
+        headers: headers
+      })
+      .then(data => {
+          console.log(data);
+      })
+      .catch(error => {
+          console.error(error);
+      });
+
+      const formData2 = new FormData()
+      formData2.append('file', instructResourcePackage)
+      formData2.append('filename', instructResourcePackage.name)
+      const res2 = await axios.post(`${SERVER_URL}/api/datasets/:persistentId/add?persistentId=${doi}`, formData2, {
+        headers: headers
+      })
+      .then(data => {
+          console.log(data);
+      })
+      .catch(error => {
+          console.error(error);
+      });
+
     }
 
     const tooltips = {
@@ -767,11 +815,16 @@ const Submission = () => {
 
                     <h4> <u>Package Upload</u> </h4>
                     <br></br>
+                    <p> 
+                      Please upload all packages as zip files. To upload files as a zip file, first combine them into a zip file. Then, place that zip file into a second zip file and upload.
+                      The filename of the fabrication guide package should be of the form, “Fabrication_[Object name]” with “_” used instead of spaces. The file name of the instructional resources 
+                      package should be of the form, “Instruction_[Object name]” with “_” used instead of spaces.
+                    </p>
                     <tr>
                         <td>
                             <label for="fabGuidePackage"> <b className="req">Fabrication Guide Package</b> <span className="toolTip" title={tooltips.fabGuidePackage}>?</span></label>
                         </td>
-                        <td><input type="file"></input></td>
+                        <td><input type="file" onChange={handleFabGuide}></input></td>
                     </tr>
                     <br />
 
@@ -779,16 +832,16 @@ const Submission = () => {
                         <td>
                             <label for="instructionalResourcesPackage"> <b className="req">Instructional Resources Package</b> <span className="toolTip" title={tooltips.instructionalResourcesPackage}>?</span></label>
                         </td>
-                        <td><input type="file"></input></td>
+                        <td><input type="file" onChange={handleInstructResource}></input></td>
                     </tr>
                     <br />
 
-                    <tr>
+                    {/* <tr>
                         <td>
                             <label for="instructionalVideosPackage"> <b>Instructional Videos Package</b> <span className="toolTip" title={tooltips.instructionalVideosPackage}>?</span></label>
                         </td>
                         <td><input type="file"></input></td>
-                    </tr>
+                    </tr> */}
                     <br />
 
                     {/* <tr>
@@ -801,7 +854,7 @@ const Submission = () => {
                 </table>
 
                 
-                <button type='button' onClick={printInputs}>Create Dataset</button> 
+                <button type='button' onClick={createDataset}>Create Dataset</button> 
               </form>
 
               <div>
