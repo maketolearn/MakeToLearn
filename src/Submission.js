@@ -295,21 +295,21 @@ const Submission = () => {
 
       console.log(dataset)
 
-      // const res = await axios.post(`${SERVER_URL}/api/dataverses/${PARENT}/datasets`, dataset, {
-      //   headers: headers
-      // })
-      // .then(data => {
-      //     console.log(data);
+      const res = await axios.post(`${SERVER_URL}/api/dataverses/${PARENT}/datasets`, dataset, {
+        headers: headers
+      })
+      .then(data => {
+          console.log(data);
 
-      //     const doi = data.data.data.persistentId;
+          const doi = data.data.data.persistentId;
 
-      //     setDoi(doi);
+          setDoi(doi);
 
-      //     console.log(doi);
-      // })
-      // .catch(error => {
-      //     console.error(error);
-      // });
+          console.log(doi);
+      })
+      .catch(error => {
+          console.error(error);
+      });
     }
 
     async function submitReview(doi) {
@@ -992,7 +992,7 @@ const Submission = () => {
                 </table>
 
                 
-                <button type='button' onClick={createDataset}>Create Dataset</button> 
+                <button type='button' onClick={printInputs}>Create Dataset</button> 
               </form>
 
               <div>
