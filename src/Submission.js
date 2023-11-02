@@ -76,6 +76,8 @@ const Submission = () => {
         'X-Dataverse-key': API_TOKEN,
       };
 
+      // console.log(inputValues["title"])
+
       const dataset = {
           "datasetVersion": {
             "license": {
@@ -208,7 +210,7 @@ const Submission = () => {
                   {
                     "typeName": "disciplines",
                     "multiple": true,
-                    "typeClass": compound,
+                    "typeClass": "compound",
                     "value": [
                       {
                         "discipline": {
@@ -280,21 +282,21 @@ const Submission = () => {
 
       console.log(dataset)
 
-      const res = await axios.post(`${SERVER_URL}/api/dataverses/${PARENT}/datasets`, dataset, {
-        headers: headers
-      })
-      .then(data => {
-          console.log(data);
+      // const res = await axios.post(`${SERVER_URL}/api/dataverses/${PARENT}/datasets`, dataset, {
+      //   headers: headers
+      // })
+      // .then(data => {
+      //     console.log(data);
 
-          const doi = data.data.data.persistentId;
+      //     const doi = data.data.data.persistentId;
 
-          setDoi(doi);
+      //     setDoi(doi);
 
-          console.log(doi);
-      })
-      .catch(error => {
-          console.error(error);
-      });
+      //     console.log(doi);
+      // })
+      // .catch(error => {
+      //     console.error(error);
+      // });
     }
 
     async function submitReview(doi) {
@@ -321,15 +323,45 @@ const Submission = () => {
     const tooltips = {
       "title": "The main title of the dataset",
 
-      "": "",
+      "author": "The entity, e.g. a person or organization, that created the Dataset",
 
-      "": "",
+      "authorName": "The author's Last Name, First Name or the name of the organization responsible for this Dataset.",
 
-      "": "",
+      "authorDepartment": "The UVa Department or organization (if not UVa) with which the author is affiliated.",
 
-      "": "",
+      "contact": "The entity, e.g. a person or organization, that users of the Dataset can contact with questions",
 
-      "": "",
+      "contactName": "The name of the point of contact, e.g. the person's name or the name of an organization",
+
+      "affiliation": "The name of the entity affiliated with the point of contact, e.g. an organization's name",
+
+      "contactEmail": "The point of contact's email address",
+
+      "description": "A summary describing the purpose, nature, and scope of the Dataset. Can also be an abstract of the dataset, not the paper.",
+
+      "descriptionText": "A summary describing the purpose, nature, and scope of the Dataset",
+
+      "descriptionDate": "The date when the description was added to the Dataset. If the Dataset contains more than one description, e.g. the data producer supplied one description and the data repository supplied another, this date is used to distinguish between the descriptions",
+
+      "keyword": "A key term that describes an important aspect of the Dataset and information about any controlled vocabulary used",
+
+      "keywordTerm": "A key term that describes important aspects of the Dataset",
+
+      "controlledVocabName": "The controlled vocabulary used for the keyword term (e.g. LCSH, MeSH)",
+
+      "controlledVocabUrl": "The URL where one can access information about the term's controlled vocabulary",
+
+      "relatedWork": "Article in UVA Libra or published elsewhere that use the data from this dataset.",
+
+      "citation": "The full bibliographic citation for the related publication",
+
+      "relatedWorkIdentifierType": "The type of identifier that uniquely identifies a related publication",
+
+      "relatedWorkIdentifier": "The identifier for a related publication",
+
+      "relatedWorkIdentifierUrl": "The URL form of the identifier entered in the Identifier field, e.g. the DOI URL if a DOI was entered in the Identifier field. Used to display what was entered in the ID Type and ID Number fields as a link. If what was entered in the Identifier field has no URL form, the URL of the publication webpage is used, e.g. a journal article webpage",
+
+      "notes": "Additional information about the Dataset",
 
       "creationDate": "Date when the data collection or other materials were produced/created (NOT distributed, published or deposited).",
 
@@ -339,9 +371,9 @@ const Submission = () => {
 
       "contributorName": "The name of the contributor, e.g. the person's name or the name of an organization",
 
-      "": "",
+      "depositor": "The entity, such as a person or organization, that deposited the Dataset in the repository",
 
-      "": "",
+      "depositDate": "Current Date: The Date that the Dataset was deposited into THIS repository.",
 
       "": "",
 
@@ -395,32 +427,31 @@ const Submission = () => {
     }
 
     function printInputs() {
+      // console.log(document.getElementById("gradeLevels").value);
+
       const inputElements = document.querySelectorAll('input[type="text"]');
       const inputEmailElements = document.querySelectorAll('input[type="email"]');
-      const inputDateElements = document.querySelectorAll('input[type="date]');
+      const inputDateElements = document.querySelectorAll('input[type="date"]');
       const textElements = document.querySelectorAll('textarea');
       const selectElements = document.querySelectorAll('select');
-      const inputValues = {};
+      let inputValues = {};
 
       // Loop through the input elements and populate the inputValues object
       inputElements.forEach((input) => {
-        const id = input.id;
-        inputValues[id] = input.value;
+        inputValues[input.id] = input.value;
       });
 
       inputEmailElements.forEach((input) => {
-        const id = input.id;
-        inputValues[id] = input.value;
+        inputValues[input.id] = input.value;
       });
 
       inputDateElements.forEach((input) => {
-        const id = input.id;
-        inputValues[id] = input.value;
+        // console.log(input.id,input.value)
+        inputValues[input.id] = input.value;
       });
 
       textElements.forEach((input) => {
-        const id = input.id;
-        inputValues[id] = input.value;
+        inputValues[input.id] = input.value;
       });
 
       selectElements.forEach((input) => {
@@ -432,9 +463,9 @@ const Submission = () => {
         }
       });
 
-      inputValues = JSON.stringify(inputValues, null, 2);
+      console.log(JSON.stringify(inputValues, null, 2));
+
       createDataset(inputValues);
-      // console.log(inputValues);
     }
   
     return (
@@ -460,7 +491,7 @@ const Submission = () => {
                     {/* 1 column */}
                     <tr>
                       <td>
-                          <label for="title"> <b className="req">Title</b> <span className="toolTip" title={tooltips.title}>?</span></label>
+                          <label for="title"> <b className="req">Title</b><span className="toolTip" title={tooltips.title}>?</span></label>
                       </td>
                       <td><textarea id="title" cols="30" rows="1" type="text"/></td>
                     </tr>
@@ -469,24 +500,24 @@ const Submission = () => {
 
                     {/* 2 columns */}
                     <tr>
-                      <td> <b className="req">Author</b> </td>
-                      <td><label for="authorName"> <b className="req">Name</b> </label></td>
-                      <td><label for="department"> <b className="req">Department/Affiliation</b> </label></td>
+                      <td> <b className="req">Author</b><span className="toolTip" title={tooltips.author}>?</span></td>
+                      <td><label for="authorName"> <b className="req">Name</b><span className="toolTip" title={tooltips.authorName}>?</span></label></td>
+                      <td><label for="authorDepartment"> <b className="req">Department/Affiliation</b><span className="toolTip" title={tooltips.authorDepartment}>?</span></label></td>
                     </tr>
                     <tr>
                       <td></td>
                       <td><input id="authorName" type="text"/></td>
-                      <td><input id="department" type="text"/></td>
+                      <td><input id="authorDepartment" type="text"/></td>
                     </tr>
-                    <tr>
+                    {/* <tr>
                       <td></td>
-                      <td><label for="identifierType"><b>Identifier Type</b></label></td>
-                      <td><label for="identifier"><b>Identifier</b></label></td>
+                      <td><label for="authorIdentifierType"><b>Identifier Type</b></label></td>
+                      <td><label for="authorIdentifier"><b>Identifier</b></label></td>
                     </tr>
                     <tr>
                       <td></td>
                       <td>
-                        <select name="Identifier Type" id="identifierType">
+                        <select name="Identifier Type" id="authorIdentifierType">
                           <option value=""></option>
                           <option value="ORCID">ORCID</option>
                           <option value="ISNI">ISNI</option>
@@ -498,15 +529,15 @@ const Submission = () => {
                           <option value="ScopusID">ScopusID</option>
                         </select>
                       </td>
-                      <td><input id="identifier" type="text"/></td>
-                    </tr>
+                      <td><input id="authorIdentifier" type="text"/></td>
+                    </tr> */}
                     <br />
 
 
                     <tr>
-                      <td> <b className="req">Point of Contact</b> </td>
-                      <td><label for="contactName"><b>Name</b></label></td>
-                      <td><label for="affiliation"><b>Affiliation</b></label></td>
+                      <td> <b className="req">Point of Contact </b><span className="toolTip" title={tooltips.contact}>?</span></td>
+                      <td><label for="contactName"><b>Name </b><span className="toolTip" title={tooltips.contactName}>?</span></label></td>
+                      <td><label for="affiliation"><b>Affiliation </b><span className="toolTip" title={tooltips.affiliation}>?</span></label></td>
                     </tr>
                     <tr>
                       <td></td>
@@ -515,7 +546,7 @@ const Submission = () => {
                     </tr>
                     <tr>
                       <td></td>
-                      <td><label for="contactEmail"> <b className="req">Email</b> </label></td>
+                      <td><label for="contactEmail"> <b className="req">Email</b><span className="toolTip" title={tooltips.contactEmail}>?</span></label></td>
                       <td></td>
                     </tr>
                     <tr>
@@ -527,14 +558,101 @@ const Submission = () => {
                     
 
                     <tr>
-                      <td> <b className="req">Dataset Description</b> </td>
-                      <td><label for="descriptionText"> <b className="req">Text</b> </label></td>
-                      <td><label for="descriptionDate"><b>Date of Description</b></label></td>
+                      <td> <b className="req">Dataset Description </b><span className="toolTip" title={tooltips.description}>?</span></td>
+                      <td><label for="descriptionText"> <b className="req">Text </b><span className="toolTip" title={tooltips.descriptionText}>?</span></label></td>
+                      <td><label for="descriptionDate"><b>Date of Description </b><span className="toolTip" title={tooltips.descriptionDate}>?</span></label></td>
                     </tr>
                     <tr>
                       <td></td>
                       <td><textarea name="description" id="description" cols="30" rows="3"></textarea></td>
                       <td><input id="descriptionDate" type="date"/></td>
+                    </tr>
+                    <br />
+
+
+                    <tr>
+                      <td><b>Keyword </b><span className="toolTip" title={tooltips.keyword}>?</span></td>
+                      <td><label for="keywordTerm"><b>Term </b><span className="toolTip" title={tooltips.keywordTerm}>?</span></label></td>
+                      <td><label for="controlledVocabName"><b>Controlled Vocabulary Name </b><span className="toolTip" title={tooltips.controlledVocabName}>?</span></label></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td><input id="keywordTerm" type="text"/></td>
+                      <td><input id="controlledVocabName" type="text"/></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td><label for="controlledVocabUrl"><b>Controlled Vocabulary URL </b><span className="toolTip" title={tooltips.controlledVocabUrl}>?</span></label></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td><input id="controlledVocabUrl" placeholder="https://"/></td>
+                      <td></td>
+                    </tr>
+                    <br />
+
+                    <tr>
+                      <td> <b>Related Work/Article </b><span className="toolTip" title={tooltips.relatedWork}>?</span></td>
+                      <td><label for="citation"><b>Citation </b><span className="toolTip" title={tooltips.citation}>?</span></label></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td><textarea name="citation" id="citation" cols="30" rows="3"></textarea></td>
+                      <td></td>
+                    </tr>
+                   <tr>
+                      <td></td>
+                      <td><label for="relatedWorkIdentifierType"><b>Identifier Type </b><span className="toolTip" title={tooltips.relatedWorkIdentifierType}>?</span></label></td>
+                      <td><label for="relatedWorkIdentifier"><b>Identifier </b><span className="toolTip" title={tooltips.relatedWorkIdentifier}>?</span></label></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td>
+                        <select name="Identifier Type" id="relatedWorkIdentifierType">
+                          <option value=""></option>
+                          <option value="ark">ark</option>
+                          <option value="arXiv">arXiv</option>
+                          <option value="bibcode">bibcode</option>
+                          <option value="cstr">cstr</option>
+                          <option value="doi">doi</option>
+                          <option value="ean13">ean13</option>
+                          <option value="eissn">eissn</option>
+                          <option value="handle">handle</option>
+                          <option value="isbn">isbn</option>
+                          <option value="issn">issn</option>
+                          <option value="istc">istc</option>
+                          <option value="lissn">lissn</option>
+                          <option value="lsid">lsid</option>
+                          <option value="pmid">pmid</option>
+                          <option value="purl">purl</option>
+                          <option value="upc">upc</option>
+                          <option value="url">url</option>
+                          <option value="urn">urn</option>
+                          <option value="DASH-NRS">DASH-NRS</option>
+                        </select>
+                      </td>
+                      <td><input id="relatedWorkIdentifier" type="text"/></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td><label for="relatedWorkIdentifierUrl"><b>URL </b><span className="toolTip" title={tooltips.relatedWorkIdentifierUrl}>?</span></label></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td><input id="relatedWorkIdentifierUrl" placeholder="https://"/></td>
+                      <td></td>
+                    </tr>
+                    <br />
+
+
+                    <tr>
+                      <td>
+                          <label for="notes"> <b>Notes </b> <span className="toolTip" title={tooltips.notes}>?</span></label>
+                      </td>
+                      <td><textarea id="notes" cols="30" rows="3" type="text"/></td>
                     </tr>
                     <br />
 
@@ -559,6 +677,26 @@ const Submission = () => {
                       <td><input id="contributionType" type="text"/></td>
                       <td><input id="contributorName" type="text"/></td>
                     </tr>
+                    <br />
+
+
+                    <tr>
+                      <td>
+                          <label for="depositor"> <b>Depositor </b> <span className="toolTip" title={tooltips.depositor}>?</span></label>
+                      </td>
+                      <td><input id="depositor" type="text"/></td>
+                    </tr>
+                    <br />
+
+
+                    <tr>
+                      <td>
+                          <label for="depositDate"> <b>Deposit Date </b> <span className="toolTip" title={tooltips.depositDate}>?</span></label>
+                      </td>
+                      <td><input id="depositDate" type="date"/></td>
+                    </tr>
+                    <br />
+                    
 
 
                     <br />
