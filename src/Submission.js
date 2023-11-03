@@ -633,13 +633,13 @@ const Submission = () => {
 
 
                     <tr>
-                      <td> <b className="req"> Email Address </b><span className="toolTip" title={tooltips.contact}>?</span></td>
+                      <td> <b className="req"> Email Address </b><span className="toolTip" title={tooltips.contactEmail}>?</span></td>
                     </tr>
-                    <tr>
+                    {/* <tr>
                       <td></td>
                       <td><label for="contactEmail"> <b className="req">Email</b><span className="toolTip" title={tooltips.contactEmail}>?</span></label></td>
                       <td></td>
-                    </tr>
+                    </tr> */}
                     <tr>
                       <td></td>
                       <td><input id="contactEmail" type="email"/></td>
@@ -996,13 +996,11 @@ const Submission = () => {
                     <h4> <u>Files</u> </h4>
                     <br></br>
                     <p> 
-                      Please upload all packages as zip files. To upload files as a zip file, first combine them into a zip file. Then, place that zip file into a second zip file and upload.
-                      The filename of the fabrication guide package should be of the form, “Fabrication_[Object name]” with “_” used instead of spaces. The file name of the instructional resources 
-                      package should be of the form, “Instruction_[Object name]” with “_” used instead of spaces.
+                      Related Instructional Resource files should be combined into a single .zip file. Related Fabrication Guide files should also be combined into a second .zip file.  The file name of the instructional resources .zip file should be, “Instruction_[Object name]” with “_” used instead of spaces. The filename of the fabrication guide .zip file should be, “Fabrication_[Object name]” with “_” used instead of spaces. These two .zip files should be combined into a single .zip file before uploading. 
                     </p>
                     <tr>
                         <td>
-                            <label for="fabGuidePackage"> <b className="req">Fabrication Guide Package</b> <span className="toolTip" title={tooltips.fabGuidePackage}>?</span></label>
+                            <label for="fabGuidePackage"> <b className="req">Fabrication Guide</b> <span className="toolTip" title={tooltips.fabGuidePackage}>?</span></label>
                         </td>
                         <td><input type="file" onChange={handleFabGuide}></input></td>
                     </tr>
@@ -1010,7 +1008,7 @@ const Submission = () => {
 
                     <tr>
                         <td>
-                            <label for="instructionalResourcesPackage"> <b className="req">Instructional Resources Package</b> <span className="toolTip" title={tooltips.instructionalResourcesPackage}>?</span></label>
+                            <label for="instructionalResourcesPackage"> <b className="req">Instructional Resources</b> <span className="toolTip" title={tooltips.instructionalResourcesPackage}>?</span></label>
                         </td>
                         <td><input type="file" onChange={handleInstructResource}></input></td>
                     </tr>
