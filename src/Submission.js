@@ -79,7 +79,7 @@ const Submission = () => {
       resetForm();
     }
 
-    async function createDataset(inputValues) {
+    async function createDataset() {
       const API_TOKEN = "04c00114-fb2e-4f0f-9066-bb9bf497db57";
       const SERVER_URL = 'https://dataverse.lib.virginia.edu';
       const PARENT = 'CADLibrary';
@@ -117,13 +117,13 @@ const Submission = () => {
                           "typeName": "authorName",
                           "typeClass": "primitive",
                           "multiple": false,
-                          "value": inputValues["authorName"]
+                          "value": document.getElementById("authorName").value
                         },
                         "authorAffiliation": {
                           "typeName": "authorAffiliation",
                           "typeClass": "primitive",
                           "multiple": false,
-                          "value": inputValues["department"]
+                          "value": document.getElementById("authorDepartment").value
                         }
                       }
                     ]
@@ -138,13 +138,13 @@ const Submission = () => {
                           "typeClass": "primitive",
                           "multiple": false,
                           "typeName": "datasetContactName",
-                          "value": inputValues["contactName"]
+                          "value": document.getElementById("contactName").value
                         },
                         "datasetContactEmail": {
                           "typeName": "datasetContactEmail",
                           "typeClass": "primitive",
                           "multiple": false,
-                          "value" : inputValues["contactEmail"]
+                          "value" : document.getElementById("contactEmail").value
                         },
                       }
                     ]
@@ -157,9 +157,9 @@ const Submission = () => {
                       {
                         "dsDescriptionValue": {
                           "typeName": "dsDescriptionValue",
-                          "multiple":false,
+                          "multiple": false,
                           "typeClass": "primitive",
-                          "value":  inputValues["description"]
+                          "value":  document.getElementById("description").value
                         }
                       }
                     ]
@@ -206,19 +206,19 @@ const Submission = () => {
                     "typeName": "sampleLearningGoals",
                     "multiple": true,
                     "typeClass": "primitive",
-                    "value": [inputValues["sampleLearningGoals"]]
+                    "value": [document.getElementById("sampleLearningGoals").value]
                   }, 
                   {
                     "typeName": "contentStandards",
                     "multiple": true,
                     "typeClass": "primitive",
-                    "value": [inputValues["contentAlignment"]]
+                    "value": [document.getElementById("contentAlignment").value]
                   },
                   {
                     "typeName": "gradeLevel",
                     "multiple": true,
                     "typeClass": "controlledVocabulary",
-                    "value": document.getElementById("gradeLevels").value
+                    "value": [document.getElementById("gradeLevels").value]
                   }, 
                   {
                     "typeName": "disciplines",
@@ -230,7 +230,7 @@ const Submission = () => {
                           "typeName": "discipline",
                           "multiple": false,
                           "typeClass": "controlledVocabulary",
-                          "value": inputValues["discipline"]
+                          "value": document.getElementById("discipline").value
                         }
                       }
                     ]
@@ -239,25 +239,25 @@ const Submission = () => {
                     "typeName": "CADFormat",
                     "multiple": true,
                     "typeClass": "primitive",
-                    "value": [inputValues["cadFormat"]]
+                    "value": [document.getElementById("cadFormat").value]
                   },
                   {
                     "typeName": "fabEquipment",
                     "multiple": true,
                     "typeClass": "primitive",
-                    "value": [inputValues["equipment"]]
+                    "value": [document.getElementById("equipment").value]
                   },
                   {
                     "typeName": "fabTime",
                     "multiple": false,
                     "typeClass": "primitive",
-                    "value": inputValues["fabricationTime"]
+                    "value": document.getElementById("fabricationTime").value
                   },
                   {
                     "typeName": "assemTime",
                     "multiple": false,
                     "typeClass": "primitive",
-                    "value": inputValues["assemblyTime"]
+                    "value": document.getElementById("assemblyTime").value
                   },
                   {
                     "typeName": "externalContrib",
@@ -269,13 +269,13 @@ const Submission = () => {
                           "typeName": "externalAgency",
                           "multiple": false,
                           "typeClass": "primitive",
-                          "value": inputValues["agency"]
+                          "value": document.getElementById("agency").value
                         },
                         "externalIdValue": {
                           "typeName": "externalIdValue",
                           "multiple": false,
                           "typeClass": "primitive",
-                          "value": inputValues["identifier"]
+                          "value": document.getElementById("identifier").value
                         }
                       }
                     ]
@@ -284,7 +284,7 @@ const Submission = () => {
                     "typeName": "objectType",
                     "multiple": false,
                     "typeClass": "controlledVocabulary",
-                    "value": inputValues["objectType"]
+                    "value": document.getElementById("objectType").value
                   }
                 ],
                 "displayName": "Educational CAD Model Metadata"
@@ -518,8 +518,6 @@ const Submission = () => {
       });
 
       console.log(JSON.stringify(inputValues, null, 2));
-
-      createDataset(inputValues);
     }
   
     return (
@@ -992,7 +990,7 @@ const Submission = () => {
                 </table>
 
                 
-                <button type='button' onClick={printInputs}>Create Dataset</button> 
+                <button type='button' onClick={createDataset}>Create Dataset</button> 
               </form>
 
               <div>
