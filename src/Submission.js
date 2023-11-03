@@ -28,6 +28,7 @@ const Submission = () => {
 
     const [fabGuidePackage, setFabGuidePackage] = useState();
     const [instructResourcePackage, setInstructResourcePackage] = useState();
+    const [thumbnailImage, setThumbnailImage] = useState();
 
     const [doi, setDoi] = useState("");
 
@@ -63,6 +64,10 @@ const Submission = () => {
 
     const handleInstructResource = (event) => {
       setInstructResourcePackage(event.target.files[0])
+    }
+
+    const handleThumbnailImage = (event) => {
+      setThumbnailImage(event.target.files[0])
     }
 
     const sendEmail = (e) => {
@@ -549,6 +554,8 @@ const Submission = () => {
       "instructionalResourcesPackage": "The instructional resources package includes descriptions and links to instructional resources that may be available to support instruction.",
 
       "instructionalVideosPackage": "The instructional videos package includes associated video files that may be available to support instruction.",
+
+      "thumbnailImage": "Upload a thumbnail image for your object as a .png, .jpg, or .jpeg file."
     }
 
   
@@ -1001,6 +1008,19 @@ const Submission = () => {
                             <label for="instructionalResourcesPackage"> <b className="req">Instructional Resources Package</b> <span className="toolTip" title={tooltips.instructionalResourcesPackage}>?</span></label>
                         </td>
                         <td><input type="file" onChange={handleInstructResource}></input></td>
+                    </tr>
+                    <br />
+
+                    <h4> <u>Image Upload</u> </h4>
+                    <br></br>
+                    <p> 
+                      Please upload a thumbnail image for your object as a .png, .jpg, or .jpeg file.  
+                    </p>
+                    <tr>
+                        <td>
+                            <label for="thumbnailImage"> <b className="req">Thumbnail Image</b> <span className="toolTip" title={tooltips.thumbnailImage}>?</span></label>
+                        </td>
+                        <td><input type="file" onChange={handleThumbnailImage}></input></td>
                     </tr>
                     <br />
 
