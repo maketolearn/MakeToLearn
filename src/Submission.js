@@ -409,38 +409,43 @@ const Submission = () => {
     }
 
     async function uploadFiles(doi) {
-      const formData = new FormData()
-      formData.append('file', fabGuidePackage)
-      formData.append('fileName', fabGuidePackage.name)
       const API_TOKEN = "04c00114-fb2e-4f0f-9066-bb9bf497db57";
       const SERVER_URL = 'https://dataverse.lib.virginia.edu';
-
       const headers = {
         'X-Dataverse-key': API_TOKEN,
       };
 
-      const res = await axios.post(`${SERVER_URL}/api/datasets/:persistentId/add?persistentId=${doi}`, formData, {
-        headers: headers
-      })
-      .then(data => {
-          console.log(data);
-      })
-      .catch(error => {
-          console.error(error);
-      });
+      if (fabGuidePackage) {
+        const formData = new FormData()
+        formData.append('file', fabGuidePackage)
+        formData.append('fileName', fabGuidePackage.name)
 
-      const formData2 = new FormData()
-      formData2.append('file', instructResourcePackage)
-      formData2.append('filename', instructResourcePackage.name)
-      const res2 = await axios.post(`${SERVER_URL}/api/datasets/:persistentId/add?persistentId=${doi}`, formData2, {
-        headers: headers
-      })
-      .then(data => {
-          console.log(data);
-      })
-      .catch(error => {
-          console.error(error);
-      });
+        const res = await axios.post(`${SERVER_URL}/api/datasets/:persistentId/add?persistentId=${doi}`, formData, {
+          headers: headers
+        })
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+      }
+
+      if (instructResourcePackage) {
+        const formData2 = new FormData()
+        formData2.append('file', instructResourcePackage)
+        formData2.append('filename', instructResourcePackage.name)
+        const res2 = await axios.post(`${SERVER_URL}/api/datasets/:persistentId/add?persistentId=${doi}`, formData2, {
+          headers: headers
+        })
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+      }
+      
 
     }
 
@@ -826,7 +831,7 @@ const Submission = () => {
                       </td>
                       <td>
                         <select style={{width:'100px', textAlign: 'center'}} name="Grade Levels" id="gradeLevels" multiple>
-                          <option value="k">K</option>
+                          <option value="K">K</option>
                           <option value="1">1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
