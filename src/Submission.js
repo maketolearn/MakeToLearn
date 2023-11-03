@@ -64,6 +64,7 @@ const Submission = () => {
 
     const handleInstructResource = (event) => {
       setInstructResourcePackage(event.target.files[0])
+      console.log(instructResourcePackage.name)
     }
 
     const handleThumbnailImage = (event) => {
@@ -176,6 +177,14 @@ const Submission = () => {
                           "multiple": false,
                           "typeClass": "primitive",
                           "value":  document.getElementById("description").value
+                        }
+                      },
+                      {
+                        "dsDescriptionValue": {
+                          "typeName": "dsDescriptionValue",
+                          "multiple": false,
+                          "typeClass": "primitive",
+                          "value":  document.getElementById("bigIdea").value
                         }
                       }
                     ]
@@ -294,7 +303,7 @@ const Submission = () => {
                     "typeName": "gradeLevel",
                     "multiple": true,
                     "typeClass": "controlledVocabulary",
-                    "value": [document.getElementById("gradeLevels").value]
+                    "value": Array.from(document.getElementById("gradeLevels").selectedOptions, option => option.value)
                   }, 
                   {
                     "typeName": "disciplines",
@@ -307,7 +316,7 @@ const Submission = () => {
                           "multiple": false,
                           "typeClass": "controlledVocabulary",
                           "value": document.getElementById("discipline").value
-                        }
+                        },
                       }
                     ]
                   },
@@ -446,6 +455,20 @@ const Submission = () => {
         });
       }
       
+      if (thumbnailImage) {
+        const formData3 = new FormData()
+        formData3.append('file', thumbnailImage)
+        formData3.append('filename', thumbnailImage.name)
+        const res3 = await axios.post(`${SERVER_URL}/api/datasets/:persistentId/add?persistentId=${doi}`, formData3, {
+          headers: headers
+        })
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+      }
 
     }
 
@@ -471,6 +494,8 @@ const Submission = () => {
       "descriptionText": "A summary describing the purpose, nature, and scope of the Dataset",
 
       "descriptionDate": "The date when the description was added to the Dataset. If the Dataset contains more than one description, e.g. the data producer supplied one description and the data repository supplied another, this date is used to distinguish between the descriptions",
+
+      "bigIdea": "Description of the big idea underlying the lesson",
 
       "keyword": "A key term that describes an important aspect of the Dataset and information about any controlled vocabulary used",
 
@@ -554,13 +579,13 @@ const Submission = () => {
 
       "": "",
 
-      "fabGuidePackage": "The build details package includes the information needed to replicate a physical artifact, including the bill of materials, supplies, and equipment required to fabricate the object.",
+      "fabGuidePackage": "The build details package includes the information needed to replicate a physical artifact, including the bill of materials, supplies, and equipment required to fabricate the object",
 
-      "instructionalResourcesPackage": "The instructional resources package includes descriptions and links to instructional resources that may be available to support instruction.",
+      "instructionalResourcesPackage": "The instructional resources package includes descriptions and links to instructional resources that may be available to support instruction",
 
-      "instructionalVideosPackage": "The instructional videos package includes associated video files that may be available to support instruction.",
+      "instructionalVideosPackage": "The instructional videos package includes associated video files that may be available to support instruction",
 
-      "thumbnailImage": "Upload a thumbnail image for your object as a .png, .jpg, or .jpeg file."
+      "thumbnailImage": "Upload a thumbnail image for your object as a .png, .jpg, or .jpeg file"
     }
 
   
@@ -666,6 +691,14 @@ const Submission = () => {
                     </tr>
                     <br />
 
+                    <tr>
+                      <td> <b className="req">Big Idea </b><span className="toolTip" title={tooltips.bigIdea}>?</span></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td><textarea name="bigIdea" id="bigIdea" cols="30" rows="3"></textarea></td>
+                    </tr>
+                    <br />
 
                     <tr>
                       <td><b>Keyword </b><span className="toolTip" title={tooltips.keyword}>?</span></td>
