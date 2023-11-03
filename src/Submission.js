@@ -29,6 +29,7 @@ const Submission = () => {
     const [fabGuidePackage, setFabGuidePackage] = useState();
     const [instructResourcePackage, setInstructResourcePackage] = useState();
     const [thumbnailImage, setThumbnailImage] = useState();
+    const [grades, setGrades] = useState(["K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"])
 
     const [doi, setDoi] = useState("");
 
@@ -574,8 +575,8 @@ const Submission = () => {
             <CategoryBanner subject="Submissions"></CategoryBanner>
   
             <div id="page">
-              <p>Publish your educational object in the CAD Library:</p>
-              <b className="req">Asterisks indicate required fields</b>
+              <p>Submit your educational object to the CAD Library:</p>
+              {/* <b className="req">Asterisks indicate required fields</b> */}
               <br />
               <b>Hover over question marks for more information </b> <span className="toolTip" title="Just like that!">?</span>
               <br />
@@ -599,13 +600,13 @@ const Submission = () => {
                     {/* 2 columns */}
                     <tr>
                       <td> <b className="req">Author</b><span className="toolTip" title={tooltips.author}>?</span></td>
-                      <td><label for="authorName"> <b className="req">Name</b><span className="toolTip" title={tooltips.authorName}>?</span></label></td>
-                      <td><label for="authorDepartment"> <b className="req">Department/Affiliation</b><span className="toolTip" title={tooltips.authorDepartment}>?</span></label></td>
+                      {/* <td><label for="authorName"> <b className="req">Name</b><span className="toolTip" title={tooltips.authorName}>?</span></label></td>
+                      <td><label for="authorDepartment"> <b className="req">Department/Affiliation</b><span className="toolTip" title={tooltips.authorDepartment}>?</span></label></td> */}
                     </tr>
                     <tr>
                       <td></td>
                       <td><input id="authorName" type="text"/></td>
-                      <td><input id="authorDepartment" type="text"/></td>
+                      {/* <td><input id="authorDepartment" type="text"/></td> */}
                     </tr>
                     {/* <tr>
                       <td></td>
@@ -650,7 +651,7 @@ const Submission = () => {
 
                     <tr>
                       <td> <b className="req"> Description </b><span className="toolTip" title={tooltips.description}>?</span></td>
-                      <td><label for="descriptionText"> <b className="req">Text </b><span className="toolTip" title={tooltips.descriptionText}>?</span></label></td>
+                      {/* <td><label for="descriptionText"> <b className="req">Text </b><span className="toolTip" title={tooltips.descriptionText}>?</span></label></td> */}
                       {/* <td><label for="descriptionDate"><b>Date of Description </b><span className="toolTip" title={tooltips.descriptionDate}>?</span></label></td> */}
                     </tr>
                     <tr>
@@ -804,7 +805,7 @@ const Submission = () => {
                     <tr>
                       <td>
                         <b>
-                          <label for="sampleLearningGoals">Sample Learning Goal <span className="toolTip" title={tooltips.sampleLearningGoals}>?</span> </label>
+                          <label className="req" for="sampleLearningGoals">Sample Learning Goal <span className="toolTip" title={tooltips.sampleLearningGoals}>?</span> </label>
                         </b>
                       </td>
                       <td><textarea id="sampleLearningGoals" cols="30" rows="1" type="text" placeholder="Sample learning goal"/></td>
@@ -815,7 +816,7 @@ const Submission = () => {
                     <tr>
                       <td>
                         <b>
-                          <label for="contentAlignment">Content Standard <span className="toolTip" title={tooltips.contentAlignment}>?</span> </label>
+                          <label className="req" for="contentAlignment">Content Standard <span className="toolTip" title={tooltips.contentAlignment}>?</span> </label>
                         </b>
                       </td>
                       <td><textarea id="contentAlignment" cols="30" rows="1" type="text" placeholder="e.g. CCSS.MATH.CONTEXT.6.NS.A.1"/></td>
@@ -826,11 +827,11 @@ const Submission = () => {
                     <tr>
                       <td>
                         <b>
-                          <label for="gradeLevels">Grade Levels <span className="toolTip" title={tooltips.gradeLevels}>?</span> </label>
+                          <label className="req" for="gradeLevels">Grade Levels <span className="toolTip" title={tooltips.gradeLevels}>?</span> </label>
                         </b>
                       </td>
                       <td>
-                        <select style={{width:'100px', textAlign: 'center'}} name="Grade Levels" id="gradeLevels" multiple>
+                        {/* <select style={{width:'100px', textAlign: 'center'}} name="Grade Levels" id="gradeLevels" multiple>
                           <option value="K">K</option>
                           <option value="1">1</option>
                           <option value="2">2</option>
@@ -844,7 +845,17 @@ const Submission = () => {
                           <option value="10">10</option>
                           <option value="11">11</option>
                           <option value="12">12</option>
-                        </select>
+                        </select> */}
+                        <div class="grade-checkboxes">
+                          {grades.map((grade) =>
+                          <label id="checkbox" key={grade}>
+                              <input className="subject-filter" type="checkbox" onChange={() => setGrades([...grades, grade])}>
+                              </input>
+                              {grade}
+                          </label> 
+                          )}
+                        </div>
+          
                       </td>
                       <td><p>Hold down the Ctrl (Windows) or Command (Mac) button to select multiple options.</p></td>
                     </tr>
@@ -852,7 +863,7 @@ const Submission = () => {
 
 
                     <tr>
-                      <td> <b>Discipline </b><span className="toolTip" title={tooltips.disciplines}>?</span> </td>
+                      <td> <b className="req">Discipline </b><span className="toolTip" title={tooltips.disciplines}>?</span> </td>
                       <td><label for="discipline"><b>Discipline </b><span className="toolTip" title={tooltips.discipline}>?</span> </label></td>
                       <td><label for="subdiscipline"><b>Subdiscipline </b><span className="toolTip" title={tooltips.subdiscipline}>?</span> </label></td>
                     </tr>

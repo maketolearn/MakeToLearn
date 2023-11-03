@@ -42,8 +42,14 @@ td {
     cursor: pointer;
 }
 
-.req:after {
+/* .req:after {
     content: " * ";
     font-weight: bold;
     color: red;
+ } */
+
+ .subject-filter {
+    width: 20px;
  }
+
+ 
