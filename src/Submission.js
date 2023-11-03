@@ -90,6 +90,17 @@ const Submission = () => {
       };
 
       // console.log(inputValues["title"])
+      const discipline = document.getElementById("discipline").value;
+      let curator = "";
+      if (discipline === "Science") {
+        curator = "Joshua Ellis";
+      } else if (discipline === "Technology") {
+        curator = "Elizabeth Whitewolf";
+      } else if (discipline === "Engineering") {
+        curator = "Ryan Novitski";
+      } else if (discipline === "Mathematics") {
+        curator = "Steven Greenstein";
+      }
 
       const dataset = {
           "datasetVersion": {
@@ -171,6 +182,54 @@ const Submission = () => {
                     "value": ["Other"],
                   },
                   {
+                    "typeName": "keyword",
+                    "multiple": true,
+                    "typeClass": "compound",
+                    "value": [
+                      {
+                        "keywordValue": {
+                          "typeName": "keywordValue",
+                          "multiple": false,
+                          "typeClass": "primitive",
+                          "value": document.getElementById("keywordTerm").value
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "typeName": "notesText",
+                    "multiple": false,
+                    "typeClass": "primitive",
+                    "value": document.getElementById("notes").value
+                  },
+                  {
+                    "typeName": "publication",
+                    "multiple": true,
+                    "typeClass": "compound",
+                    "value": [
+                      {
+                        "publicationCitation": {
+                          "typeName": "publicationCitation",
+                          "multiple": false,
+                          "typeClass": "primitive",
+                          "value": document.getElementById("citation").value
+                        },
+                        "publicationIDType": {
+                          "typeName": "publicationIDType",
+                          "multiple": false,
+                          "typeClass": "controlledVocabulary",
+                          "value": document.getElementById("relatedWorkIdentifierType").value
+                        },
+                        "publicationURL": {
+                          "typeName": "publicationURL",
+                          "multiple": false,
+                          "typeClass": "primitive",
+                          "value": document.getElementById("relatedWorkUrl").value
+                        }
+                      }
+                    ]
+                  },
+                  {
                     "typeName": "productionDate",
                     "multiple": false,
                     "typeClass": "primitive",
@@ -192,10 +251,22 @@ const Submission = () => {
                           "typeName": "contributorName",
                           "multiple": false,
                           "typeClass": "primitive",
-                          "value": "LastContributor1, FirstContributor1" // should depend on the curator
+                          "value": curator // should depend on the curator
                         }
                       },
                     ]
+                  },
+                  {
+                    "typeName": "depositor",
+                    "multiple": false,
+                    "typeClass": "primitive",
+                    "value": document.getElementById("depositor").value
+                  },
+                  {
+                    "typeName": "dateOfDeposit",
+                    "multiple": false,
+                    "typeClass": "primitive",
+                    "value": document.getElementById("depositDate").value
                   }
                 ],
                 "displayName": "Citation Metadata"
@@ -407,7 +478,7 @@ const Submission = () => {
 
       "relatedWorkIdentifier": "The identifier for a related publication",
 
-      "relatedWorkIdentifierUrl": "The URL form of the identifier entered in the Identifier field, e.g. the DOI URL if a DOI was entered in the Identifier field. Used to display what was entered in the ID Type and ID Number fields as a link. If what was entered in the Identifier field has no URL form, the URL of the publication webpage is used, e.g. a journal article webpage",
+      "relatedWorkUrl": "The URL form of the identifier entered in the Identifier field, e.g. the DOI URL if a DOI was entered in the Identifier field. Used to display what was entered in the ID Type and ID Number fields as a link. If what was entered in the Identifier field has no URL form, the URL of the publication webpage is used, e.g. a journal article webpage",
 
       "notes": "Additional information about the Dataset",
 
@@ -480,45 +551,6 @@ const Submission = () => {
       "instructionalVideosPackage": "The instructional videos package includes associated video files that may be available to support instruction.",
     }
 
-    function printInputs() {
-      // console.log(document.getElementById("gradeLevels").value);
-
-      const inputElements = document.querySelectorAll('input[type="text"]');
-      const inputEmailElements = document.querySelectorAll('input[type="email"]');
-      const inputDateElements = document.querySelectorAll('input[type="date"]');
-      const textElements = document.querySelectorAll('textarea');
-      const selectElements = document.querySelectorAll('select');
-      let inputValues = {};
-
-      // Loop through the input elements and populate the inputValues object
-      inputElements.forEach((input) => {
-        inputValues[input.id] = input.value;
-      });
-
-      inputEmailElements.forEach((input) => {
-        inputValues[input.id] = input.value;
-      });
-
-      inputDateElements.forEach((input) => {
-        // console.log(input.id,input.value)
-        inputValues[input.id] = input.value;
-      });
-
-      textElements.forEach((input) => {
-        inputValues[input.id] = input.value;
-      });
-
-      selectElements.forEach((input) => {
-        let object = input.options[input.selectedIndex]
-        if (object === undefined) {
-          inputValues[input.id] = "";
-        } else {
-          inputValues[input.id] = object.value;
-        }
-      });
-
-      console.log(JSON.stringify(inputValues, null, 2));
-    }
   
     return (
       <div>
@@ -690,12 +722,12 @@ const Submission = () => {
                     </tr>
                     <tr>
                       <td></td>
-                      <td><label for="relatedWorkIdentifierUrl"><b>URL </b><span className="toolTip" title={tooltips.relatedWorkIdentifierUrl}>?</span></label></td>
+                      <td><label for="relatedWorkUrl"><b>URL </b><span className="toolTip" title={tooltips.relatedWorkUrl}>?</span></label></td>
                       <td></td>
                     </tr>
                     <tr>
                       <td></td>
-                      <td><input id="relatedWorkIdentifierUrl" placeholder="https://"/></td>
+                      <td><input id="relatedWorkUrl" placeholder="https://"/></td>
                       <td></td>
                     </tr>
                     <br />
@@ -720,7 +752,7 @@ const Submission = () => {
                     <br />
 
 
-                    <tr>
+                    {/* <tr>
                       <td><b className="req">Contributor</b><span className="toolTip" title={tooltips.contributor}>?</span></td>
                       <td><label for="contributionType"> <b className="req">Type</b> <span className="toolTip" title={tooltips.contributionType}>?</span></label></td>
                       <td><label for="contributorName"> <b className="req">Department/Affiliation</b> <span className="toolTip" title={tooltips.contributorName}>?</span></label></td>
@@ -730,7 +762,7 @@ const Submission = () => {
                       <td><input id="contributionType" type="text"/></td>
                       <td><input id="contributorName" type="text"/></td>
                     </tr>
-                    <br />
+                    <br /> */}
 
 
                     <tr>
