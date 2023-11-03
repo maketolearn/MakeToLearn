@@ -211,12 +211,6 @@ const Submission = () => {
                     ]
                   },
                   {
-                    "typeName": "notesText",
-                    "multiple": false,
-                    "typeClass": "primitive",
-                    "value": document.getElementById("notes").value
-                  },
-                  {
                     "typeName": "publication",
                     "multiple": true,
                     "typeClass": "compound",
@@ -227,12 +221,6 @@ const Submission = () => {
                           "multiple": false,
                           "typeClass": "primitive",
                           "value": document.getElementById("citation").value
-                        },
-                        "publicationIDType": {
-                          "typeName": "publicationIDType",
-                          "multiple": false,
-                          "typeClass": "controlledVocabulary",
-                          "value": document.getElementById("relatedWorkIdentifierType").value
                         },
                         "publicationURL": {
                           "typeName": "publicationURL",
@@ -247,7 +235,7 @@ const Submission = () => {
                     "typeName": "productionDate",
                     "multiple": false,
                     "typeClass": "primitive",
-                    "value": document.getElementById("creationDate").value
+                    "value": "2023-11-03"
                   },
                   {
                     "typeName": "contributor",
@@ -270,18 +258,6 @@ const Submission = () => {
                       },
                     ]
                   },
-                  {
-                    "typeName": "depositor",
-                    "multiple": false,
-                    "typeClass": "primitive",
-                    "value": document.getElementById("depositor").value
-                  },
-                  {
-                    "typeName": "dateOfDeposit",
-                    "multiple": false,
-                    "typeClass": "primitive",
-                    "value": document.getElementById("depositDate").value
-                  }
                 ],
                 "displayName": "Citation Metadata"
               },
@@ -613,7 +589,7 @@ const Submission = () => {
                     <br></br>
                     <tr>
                       <td>
-                          <label for="title"> <b className="req">Title</b><span className="toolTip" title={tooltips.title}>?</span></label>
+                          <label for="title"> <b className="req">Name of Object</b><span className="toolTip" title={tooltips.title}>?</span></label>
                       </td>
                       <td><textarea id="title" cols="30" rows="1" type="text"/></td>
                     </tr>
@@ -657,14 +633,7 @@ const Submission = () => {
 
 
                     <tr>
-                      <td> <b className="req">Point of Contact </b><span className="toolTip" title={tooltips.contact}>?</span></td>
-                      <td><label for="contactName"><b>Name </b><span className="toolTip" title={tooltips.contactName}>?</span></label></td>
-                      <td><label for="affiliation"><b>Affiliation </b><span className="toolTip" title={tooltips.affiliation}>?</span></label></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td><input id="contactName" type="text"/></td>
-                      <td><input id="affiliation" type="text"/></td>
+                      <td> <b className="req"> Email Address </b><span className="toolTip" title={tooltips.contact}>?</span></td>
                     </tr>
                     <tr>
                       <td></td>
@@ -680,14 +649,14 @@ const Submission = () => {
                     
 
                     <tr>
-                      <td> <b className="req">Dataset Description </b><span className="toolTip" title={tooltips.description}>?</span></td>
+                      <td> <b className="req"> Description </b><span className="toolTip" title={tooltips.description}>?</span></td>
                       <td><label for="descriptionText"> <b className="req">Text </b><span className="toolTip" title={tooltips.descriptionText}>?</span></label></td>
-                      <td><label for="descriptionDate"><b>Date of Description </b><span className="toolTip" title={tooltips.descriptionDate}>?</span></label></td>
+                      {/* <td><label for="descriptionDate"><b>Date of Description </b><span className="toolTip" title={tooltips.descriptionDate}>?</span></label></td> */}
                     </tr>
                     <tr>
                       <td></td>
                       <td><textarea name="description" id="description" cols="30" rows="3"></textarea></td>
-                      <td><input id="descriptionDate" type="date"/></td>
+                      {/* <td><input id="descriptionDate" type="date"/></td> */}
                     </tr>
                     <br />
 
@@ -703,14 +672,14 @@ const Submission = () => {
                     <tr>
                       <td><b>Keyword </b><span className="toolTip" title={tooltips.keyword}>?</span></td>
                       <td><label for="keywordTerm"><b>Term </b><span className="toolTip" title={tooltips.keywordTerm}>?</span></label></td>
-                      <td><label for="controlledVocabName"><b>Controlled Vocabulary Name </b><span className="toolTip" title={tooltips.controlledVocabName}>?</span></label></td>
+                      {/* <td><label for="controlledVocabName"><b>Controlled Vocabulary Name </b><span className="toolTip" title={tooltips.controlledVocabName}>?</span></label></td> */}
                     </tr>
                     <tr>
                       <td></td>
                       <td><input id="keywordTerm" type="text"/></td>
-                      <td><input id="controlledVocabName" type="text"/></td>
+                      {/* <td><input id="controlledVocabName" type="text"/></td> */}
                     </tr>
-                    <tr>
+                    {/* <tr>
                       <td></td>
                       <td><label for="controlledVocabUrl"><b>Controlled Vocabulary URL </b><span className="toolTip" title={tooltips.controlledVocabUrl}>?</span></label></td>
                       <td></td>
@@ -719,7 +688,7 @@ const Submission = () => {
                       <td></td>
                       <td><input id="controlledVocabUrl" placeholder="https://"/></td>
                       <td></td>
-                    </tr>
+                    </tr> */}
                     <br />
 
                     <tr>
@@ -732,7 +701,7 @@ const Submission = () => {
                       <td><textarea name="citation" id="citation" cols="30" rows="3"></textarea></td>
                       <td></td>
                     </tr>
-                   <tr>
+                   {/* <tr>
                       <td></td>
                       <td><label for="relatedWorkIdentifierType"><b>Identifier Type </b><span className="toolTip" title={tooltips.relatedWorkIdentifierType}>?</span></label></td>
                       <td><label for="relatedWorkIdentifier"><b>Identifier </b><span className="toolTip" title={tooltips.relatedWorkIdentifier}>?</span></label></td>
@@ -764,7 +733,7 @@ const Submission = () => {
                         </select>
                       </td>
                       <td><input id="relatedWorkIdentifier" type="text"/></td>
-                    </tr>
+                    </tr> */}
                     <tr>
                       <td></td>
                       <td><label for="relatedWorkUrl"><b>URL </b><span className="toolTip" title={tooltips.relatedWorkUrl}>?</span></label></td>
@@ -778,23 +747,21 @@ const Submission = () => {
                     <br />
 
 
-                    <tr>
+                    {/* <tr>
                       <td>
                           <label for="notes"> <b>Notes </b> <span className="toolTip" title={tooltips.notes}>?</span></label>
                       </td>
                       <td><textarea id="notes" cols="30" rows="3" type="text"/></td>
                     </tr>
-                    <br />
+                    <br /> */}
 
-
-                    <tr>
+                    {/* <tr>
                       <td>
                           <label for="creationDate"> <b className="req">Data Creation Date </b> <span className="toolTip" title={tooltips.creationDate}>?</span></label>
                       </td>
-                      {/* <td><textarea id="creationDate" cols="30" rows="1" type="text" placeholder="YYYY-MM-DD"/></td> */}
                       <td><input id="creationDate" type="date"/></td>
                     </tr>
-                    <br />
+                    <br /> */}
 
 
                     {/* <tr>
@@ -810,7 +777,7 @@ const Submission = () => {
                     <br /> */}
 
 
-                    <tr>
+                    {/* <tr>
                       <td>
                           <label for="depositor"> <b>Depositor </b> <span className="toolTip" title={tooltips.depositor}>?</span></label>
                       </td>
@@ -825,7 +792,7 @@ const Submission = () => {
                       </td>
                       <td><input id="depositDate" type="date"/></td>
                     </tr>
-                    <br />
+                    <br /> */}
                     
 
 
@@ -837,10 +804,10 @@ const Submission = () => {
                     <tr>
                       <td>
                         <b>
-                          <label for="sampleLearningGoals">Sample Learning Goals <span className="toolTip" title={tooltips.sampleLearningGoals}>?</span> </label>
+                          <label for="sampleLearningGoals">Sample Learning Goal <span className="toolTip" title={tooltips.sampleLearningGoals}>?</span> </label>
                         </b>
                       </td>
-                      <td><textarea id="sampleLearningGoals" cols="30" rows="1" type="text" placeholder="Learning Objective - one per line"/></td>
+                      <td><textarea id="sampleLearningGoals" cols="30" rows="1" type="text" placeholder="Sample learning goal"/></td>
                     </tr>
                     <br />
 
@@ -848,7 +815,7 @@ const Submission = () => {
                     <tr>
                       <td>
                         <b>
-                          <label for="contentAlignment">Alignment with Content Standards <span className="toolTip" title={tooltips.contentAlignment}>?</span> </label>
+                          <label for="contentAlignment">Content Standard <span className="toolTip" title={tooltips.contentAlignment}>?</span> </label>
                         </b>
                       </td>
                       <td><textarea id="contentAlignment" cols="30" rows="1" type="text" placeholder="e.g. CCSS.MATH.CONTEXT.6.NS.A.1"/></td>
@@ -885,7 +852,7 @@ const Submission = () => {
 
 
                     <tr>
-                      <td> <b>Disciplines </b><span className="toolTip" title={tooltips.disciplines}>?</span> </td>
+                      <td> <b>Discipline </b><span className="toolTip" title={tooltips.disciplines}>?</span> </td>
                       <td><label for="discipline"><b>Discipline </b><span className="toolTip" title={tooltips.discipline}>?</span> </label></td>
                       <td><label for="subdiscipline"><b>Subdiscipline </b><span className="toolTip" title={tooltips.subdiscipline}>?</span> </label></td>
                     </tr>
@@ -972,11 +939,11 @@ const Submission = () => {
 
 
                     <tr>
-                      <td> <b>External Contributor </b><span className="toolTip" title={tooltips.externalContributor}>?</span> </td>
+                      <td> <b>Developer (Institution) </b><span className="toolTip" title={tooltips.externalContributor}>?</span> </td>
                       
-                      <td><label for="agency"><b>Agency </b><span className="toolTip" title={tooltips.agency}>?</span> </label></td>
+                      <td><label for="agency"><b>Institution</b><span className="toolTip" title={tooltips.agency}>?</span> </label></td>
 
-                      <td><label for="identifier"><b>Identifier </b><span className="toolTip" title={tooltips.identifier}>?</span> </label></td>
+                      <td><label for="identifier"><b>URL</b><span className="toolTip" title={tooltips.identifier}>?</span> </label></td>
                     </tr>
                     <tr>
                       <td></td>
@@ -986,7 +953,7 @@ const Submission = () => {
                     <br />
 
 
-                    <tr>
+                    {/* <tr>
                       <td>
                         <b>
                           <label for="provenanceRemixed">Provenance Remixed Objects <span className="toolTip" title={tooltips.provenanceRemixed}>?</span> </label>
@@ -1005,7 +972,7 @@ const Submission = () => {
                       </td>
                       <td><textarea id="incorporatingMechanisms" cols="30" rows="1" type="text" placeholder="https://"/></td>
                     </tr>
-                    <br />
+                    <br /> */}
 
 
                     <tr>
@@ -1026,7 +993,7 @@ const Submission = () => {
                     <br />
                     <br></br>
 
-                    <h4> <u>Package Upload</u> </h4>
+                    <h4> <u>Files</u> </h4>
                     <br></br>
                     <p> 
                       Please upload all packages as zip files. To upload files as a zip file, first combine them into a zip file. Then, place that zip file into a second zip file and upload.
