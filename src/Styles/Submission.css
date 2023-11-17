@@ -11,6 +11,7 @@ label {
     padding-right: 24px;
 }
 input {
+    /* width: calc(100% - 200px); */
     width: 260px;
     margin-right: 24px;
     float: left;
@@ -36,6 +37,7 @@ td {
     /* font-size: 5; */
     color: #fff; /* Text color */
     font-weight: bold; /* Optional, adjust font styles as needed */
+    margin-left: 5px;
 }
 
 .toolTip:hover {
@@ -52,4 +54,7 @@ td {
     width: 20px;
  }
 
+#checkbox {
+    width: 50px;
+}
  

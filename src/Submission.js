@@ -394,6 +394,38 @@ const Submission = () => {
       });
     }
 
+    async function discourseUser(doi) {
+      const API_TOKEN = 'e36416426efe1a864d3edbf2da99226a683ec223e7d9ded06b76b8d2098584f2';
+      const SERVER_URL = 'https://forum.cadlibrary.org/users.json';
+
+      const headers = {
+        'Content-Type': 'application/json',
+        'Api-Key': API_TOKEN,
+        'Api-Username': 'rishimukherjee',
+      };
+
+      const payload = {
+        "name": "Test Name",
+        "email": "mukherjee_rishi@outlook.com",
+        "password": "12345678",
+        "username": "testName",
+        "active": false,
+        "approved": false,
+        "user_fields[1]": true,
+        "external_ids": { }
+      };
+
+      const res = await axios.post(SERVER_URL, payload, {
+        headers: headers
+      })
+      .then(data => {
+          console.log(data);
+      })
+      .catch(error => {
+          console.error(error);
+      });
+    }
+
     async function uploadFiles(doi) {
       const API_TOKEN = "04c00114-fb2e-4f0f-9066-bb9bf497db57";
       const SERVER_URL = 'https://dataverse.lib.virginia.edu';
@@ -578,7 +610,7 @@ const Submission = () => {
               <p>Submit your educational object to the CAD Library:</p>
               {/* <b className="req">Asterisks indicate required fields</b> */}
               <br />
-              <b>Hover over question marks for more information </b> <span className="toolTip" title="Just like that!">?</span>
+              <b>Hover over question marks for more information</b><span className="toolTip" title="Just like that!">?</span>
               <br />
               <br />
 
@@ -600,101 +632,39 @@ const Submission = () => {
                     {/* 2 columns */}
                     <tr>
                       <td> <b className="req">Author</b><span className="toolTip" title={tooltips.author}>?</span></td>
-                      {/* <td><label for="authorName"> <b className="req">Name</b><span className="toolTip" title={tooltips.authorName}>?</span></label></td>
-                      <td><label for="authorDepartment"> <b className="req">Department/Affiliation</b><span className="toolTip" title={tooltips.authorDepartment}>?</span></label></td> */}
-                    </tr>
-                    <tr>
-                      <td></td>
                       <td><input id="authorName" type="text"/></td>
-                      {/* <td><input id="authorDepartment" type="text"/></td> */}
                     </tr>
-                    {/* <tr>
-                      <td></td>
-                      <td><label for="authorIdentifierType"><b>Identifier Type</b></label></td>
-                      <td><label for="authorIdentifier"><b>Identifier</b></label></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td>
-                        <select name="Identifier Type" id="authorIdentifierType">
-                          <option value=""></option>
-                          <option value="ORCID">ORCID</option>
-                          <option value="ISNI">ISNI</option>
-                          <option value="LCNA">LCNA</option>
-                          <option value="VIAF">VIAF</option>
-                          <option value="GND">GND</option>
-                          <option value="DAI">DAI</option>
-                          <option value="ResearcherID">ResearcherID</option>
-                          <option value="ScopusID">ScopusID</option>
-                        </select>
-                      </td>
-                      <td><input id="authorIdentifier" type="text"/></td>
-                    </tr> */}
                     <br />
 
 
                     <tr>
-                      <td> <b className="req"> Email Address </b><span className="toolTip" title={tooltips.contactEmail}>?</span></td>
-                    </tr>
-                    {/* <tr>
-                      <td></td>
-                      <td><label for="contactEmail"> <b className="req">Email</b><span className="toolTip" title={tooltips.contactEmail}>?</span></label></td>
-                      <td></td>
-                    </tr> */}
-                    <tr>
-                      <td></td>
+                      <td> <b className="req">Email Address</b><span className="toolTip" title={tooltips.contactEmail}>?</span></td>
                       <td><input id="contactEmail" type="email"/></td>
-                      <td></td>
                     </tr>
                     <br />
                     
 
                     <tr>
-                      <td> <b className="req"> Description </b><span className="toolTip" title={tooltips.description}>?</span></td>
-                      {/* <td><label for="descriptionText"> <b className="req">Text </b><span className="toolTip" title={tooltips.descriptionText}>?</span></label></td> */}
-                      {/* <td><label for="descriptionDate"><b>Date of Description </b><span className="toolTip" title={tooltips.descriptionDate}>?</span></label></td> */}
-                    </tr>
-                    <tr>
-                      <td></td>
+                      <td> <b className="req">Description</b><span className="toolTip" title={tooltips.description}>?</span></td>
                       <td><textarea name="description" id="description" cols="30" rows="3"></textarea></td>
-                      {/* <td><input id="descriptionDate" type="date"/></td> */}
                     </tr>
                     <br />
 
                     <tr>
-                      <td> <b className="req">Big Idea </b><span className="toolTip" title={tooltips.bigIdea}>?</span></td>
-                    </tr>
-                    <tr>
-                      <td></td>
+                      <td> <b className="req">Big Idea</b><span className="toolTip" title={tooltips.bigIdea}>?</span></td>
                       <td><textarea name="bigIdea" id="bigIdea" cols="30" rows="3"></textarea></td>
                     </tr>
                     <br />
 
                     <tr>
-                      <td><b>Keyword </b><span className="toolTip" title={tooltips.keyword}>?</span></td>
-                      <td><label for="keywordTerm"><b>Term </b><span className="toolTip" title={tooltips.keywordTerm}>?</span></label></td>
-                      {/* <td><label for="controlledVocabName"><b>Controlled Vocabulary Name </b><span className="toolTip" title={tooltips.controlledVocabName}>?</span></label></td> */}
-                    </tr>
-                    <tr>
-                      <td></td>
+                      <td><b>Keyword</b><span className="toolTip" title={tooltips.keyword}>?</span></td>
                       <td><input id="keywordTerm" type="text"/></td>
-                      {/* <td><input id="controlledVocabName" type="text"/></td> */}
                     </tr>
-                    {/* <tr>
-                      <td></td>
-                      <td><label for="controlledVocabUrl"><b>Controlled Vocabulary URL </b><span className="toolTip" title={tooltips.controlledVocabUrl}>?</span></label></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td><input id="controlledVocabUrl" placeholder="https://"/></td>
-                      <td></td>
-                    </tr> */}
                     <br />
 
                     <tr>
-                      <td> <b>Related Work/Article </b><span className="toolTip" title={tooltips.relatedWork}>?</span></td>
-                      <td><label for="citation"><b>Citation </b><span className="toolTip" title={tooltips.citation}>?</span></label></td>
+                      <td> <b>Related Work/Article</b><span className="toolTip" title={tooltips.relatedWork}>?</span></td>
+                      <td><label for="citation"><b>Citation</b><span className="toolTip" title={tooltips.citation}>?</span></label></td>
                       <td></td>
                     </tr>
                     <tr>
@@ -702,42 +672,9 @@ const Submission = () => {
                       <td><textarea name="citation" id="citation" cols="30" rows="3"></textarea></td>
                       <td></td>
                     </tr>
-                   {/* <tr>
-                      <td></td>
-                      <td><label for="relatedWorkIdentifierType"><b>Identifier Type </b><span className="toolTip" title={tooltips.relatedWorkIdentifierType}>?</span></label></td>
-                      <td><label for="relatedWorkIdentifier"><b>Identifier </b><span className="toolTip" title={tooltips.relatedWorkIdentifier}>?</span></label></td>
-                    </tr>
                     <tr>
                       <td></td>
-                      <td>
-                        <select name="Identifier Type" id="relatedWorkIdentifierType">
-                          <option value=""></option>
-                          <option value="ark">ark</option>
-                          <option value="arXiv">arXiv</option>
-                          <option value="bibcode">bibcode</option>
-                          <option value="cstr">cstr</option>
-                          <option value="doi">doi</option>
-                          <option value="ean13">ean13</option>
-                          <option value="eissn">eissn</option>
-                          <option value="handle">handle</option>
-                          <option value="isbn">isbn</option>
-                          <option value="issn">issn</option>
-                          <option value="istc">istc</option>
-                          <option value="lissn">lissn</option>
-                          <option value="lsid">lsid</option>
-                          <option value="pmid">pmid</option>
-                          <option value="purl">purl</option>
-                          <option value="upc">upc</option>
-                          <option value="url">url</option>
-                          <option value="urn">urn</option>
-                          <option value="DASH-NRS">DASH-NRS</option>
-                        </select>
-                      </td>
-                      <td><input id="relatedWorkIdentifier" type="text"/></td>
-                    </tr> */}
-                    <tr>
-                      <td></td>
-                      <td><label for="relatedWorkUrl"><b>URL </b><span className="toolTip" title={tooltips.relatedWorkUrl}>?</span></label></td>
+                      <td><label for="relatedWorkUrl"><b>URL</b><span className="toolTip" title={tooltips.relatedWorkUrl}>?</span></label></td>
                       <td></td>
                     </tr>
                     <tr>
@@ -748,55 +685,6 @@ const Submission = () => {
                     <br />
 
 
-                    {/* <tr>
-                      <td>
-                          <label for="notes"> <b>Notes </b> <span className="toolTip" title={tooltips.notes}>?</span></label>
-                      </td>
-                      <td><textarea id="notes" cols="30" rows="3" type="text"/></td>
-                    </tr>
-                    <br /> */}
-
-                    {/* <tr>
-                      <td>
-                          <label for="creationDate"> <b className="req">Data Creation Date </b> <span className="toolTip" title={tooltips.creationDate}>?</span></label>
-                      </td>
-                      <td><input id="creationDate" type="date"/></td>
-                    </tr>
-                    <br /> */}
-
-
-                    {/* <tr>
-                      <td><b className="req">Contributor</b><span className="toolTip" title={tooltips.contributor}>?</span></td>
-                      <td><label for="contributionType"> <b className="req">Type</b> <span className="toolTip" title={tooltips.contributionType}>?</span></label></td>
-                      <td><label for="contributorName"> <b className="req">Department/Affiliation</b> <span className="toolTip" title={tooltips.contributorName}>?</span></label></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td><input id="contributionType" type="text"/></td>
-                      <td><input id="contributorName" type="text"/></td>
-                    </tr>
-                    <br /> */}
-
-
-                    {/* <tr>
-                      <td>
-                          <label for="depositor"> <b>Depositor </b> <span className="toolTip" title={tooltips.depositor}>?</span></label>
-                      </td>
-                      <td><input id="depositor" type="text"/></td>
-                    </tr>
-                    <br />
-
-
-                    <tr>
-                      <td>
-                          <label for="depositDate"> <b>Deposit Date </b> <span className="toolTip" title={tooltips.depositDate}>?</span></label>
-                      </td>
-                      <td><input id="depositDate" type="date"/></td>
-                    </tr>
-                    <br /> */}
-                    
-
-
                     <br />
                     {/* !!!!!!!!!!!!!!!!!!!!!CAD METADATA!!!!!!!!!!!!!!!!!!!!! */}
                     <br />
@@ -805,7 +693,7 @@ const Submission = () => {
                     <tr>
                       <td>
                         <b>
-                          <label className="req" for="sampleLearningGoals">Sample Learning Goal <span className="toolTip" title={tooltips.sampleLearningGoals}>?</span> </label>
+                          <label className="req" for="sampleLearningGoals">Sample Learning Goal<span className="toolTip" title={tooltips.sampleLearningGoals}>?</span> </label>
                         </b>
                       </td>
                       <td><textarea id="sampleLearningGoals" cols="30" rows="1" type="text" placeholder="Sample learning goal"/></td>
@@ -816,7 +704,7 @@ const Submission = () => {
                     <tr>
                       <td>
                         <b>
-                          <label className="req" for="contentAlignment">Content Standard <span className="toolTip" title={tooltips.contentAlignment}>?</span> </label>
+                          <label className="req" for="contentAlignment">Content Standard<span className="toolTip" title={tooltips.contentAlignment}>?</span> </label>
                         </b>
                       </td>
                       <td><textarea id="contentAlignment" cols="30" rows="1" type="text" placeholder="e.g. CCSS.MATH.CONTEXT.6.NS.A.1"/></td>
@@ -827,25 +715,10 @@ const Submission = () => {
                     <tr>
                       <td>
                         <b>
-                          <label className="req" for="gradeLevels">Grade Levels <span className="toolTip" title={tooltips.gradeLevels}>?</span> </label>
+                          <label className="req" for="gradeLevels">Grade Levels<span className="toolTip" title={tooltips.gradeLevels}>?</span> </label>
                         </b>
                       </td>
                       <td>
-                        {/* <select style={{width:'100px', textAlign: 'center'}} name="Grade Levels" id="gradeLevels" multiple>
-                          <option value="K">K</option>
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5</option>
-                          <option value="6">6</option>
-                          <option value="7">7</option>
-                          <option value="8">8</option>
-                          <option value="9">9</option>
-                          <option value="10">10</option>
-                          <option value="11">11</option>
-                          <option value="12">12</option>
-                        </select> */}
                         <div class="grade-checkboxes">
                           {grades.map((grade) =>
                           <label id="checkbox" key={grade}>
@@ -863,9 +736,8 @@ const Submission = () => {
 
 
                     <tr>
-                      <td> <b className="req">Discipline </b><span className="toolTip" title={tooltips.disciplines}>?</span> </td>
-                      <td><label for="discipline"><b>Discipline </b><span className="toolTip" title={tooltips.discipline}>?</span> </label></td>
-                      <td><label for="subdiscipline"><b>Subdiscipline </b><span className="toolTip" title={tooltips.subdiscipline}>?</span> </label></td>
+                      <td> <b className="req">Discipline</b><span className="toolTip" title={tooltips.disciplines}>?</span> </td>
+                      <td><label for="discipline"><b>Discipline</b><span className="toolTip" title={tooltips.discipline}>?</span> </label></td>
                     </tr>
                     <tr>
                       <td></td>
@@ -878,6 +750,13 @@ const Submission = () => {
                           <option value="Mathematics">Mathematics</option>
                         </select>
                       </td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td><label for="subdiscipline"><b>Subdiscipline</b><span className="toolTip" title={tooltips.subdiscipline}>?</span> </label></td>
+                    </tr>
+                    <tr>
+                      <td></td>
                       <td><input id="subdiscipline" type="text"/></td>
                     </tr>
                     <br />
@@ -886,7 +765,7 @@ const Submission = () => {
                     <tr>
                       <td>
                         <b>
-                          <label for="cadFormat">CAD Format <span className="toolTip" title={tooltips.cadFormat}>?</span> </label>
+                          <label for="cadFormat">CAD Format<span className="toolTip" title={tooltips.cadFormat}>?</span> </label>
                         </b>
                       </td>
                       <td><textarea id="cadFormat" cols="30" rows="1" type="text"/></td>
@@ -897,7 +776,7 @@ const Submission = () => {
                     <tr>
                       <td>
                         <b>
-                          <label for="consumableCost">Estimated Material Cost (Consumable) <span className="toolTip" title={tooltips.consumableCost}>?</span> </label>
+                          <label for="consumableCost">Estimated Material Cost (Consumable)<span className="toolTip" title={tooltips.consumableCost}>?</span> </label>
                         </b>
                       </td>
                       <td><textarea id="consumableCost" cols="30" rows="1" type="text" placeholder="e.g., 10.5, 20, etc"/></td>
@@ -908,7 +787,7 @@ const Submission = () => {
                     <tr>
                       <td>
                         <b>
-                          <label for="reusableCost">Estimated Material Cost (Reusable) <span className="toolTip" title={tooltips.reusableCost}>?</span> </label>
+                          <label for="reusableCost">Estimated Material Cost (Reusable)<span className="toolTip" title={tooltips.reusableCost}>?</span> </label>
                         </b>
                       </td>
                       <td><textarea id="reusableCost" cols="30" rows="1" type="text" placeholder="e.g., 10.5, 20, etc"/></td>
@@ -919,7 +798,7 @@ const Submission = () => {
                     <tr>
                       <td>
                         <b>
-                          <label for="equipment">Fabrication Equipment <span className="toolTip" title={tooltips.equipment}>?</span> </label>
+                          <label for="equipment">Fabrication Equipment<span className="toolTip" title={tooltips.equipment}>?</span> </label>
                         </b>
                       </td>
                       <td><textarea id="equipment" cols="30" rows="1" type="text"/></td>
@@ -930,7 +809,7 @@ const Submission = () => {
                     <tr>
                       <td>
                         <b>
-                          <label for="fabricationTime">Fabrication Time <span className="toolTip" title={tooltips.fabricationTime}>?</span> </label>
+                          <label for="fabricationTime">Fabrication Time<span className="toolTip" title={tooltips.fabricationTime}>?</span> </label>
                         </b>
                       </td>
                       <td><textarea id="fabricationTime" cols="30" rows="2" type="text" placeholder="to the nearest tenth of an hour; i.e., 1.5 hours"/></td>
@@ -941,7 +820,7 @@ const Submission = () => {
                     <tr>
                       <td>
                         <b>
-                          <label for="assemblyTime">Assembly Time <span className="toolTip" title={tooltips.assemblyTime}>?</span> </label>
+                          <label for="assemblyTime">Assembly Time<span className="toolTip" title={tooltips.assemblyTime}>?</span> </label>
                         </b>
                       </td>
                       <td><textarea id="assemblyTime" cols="30" rows="2" type="text" placeholder="to the nearest tenth of an hour; i.e., 1.5 hours"/></td>
@@ -950,7 +829,7 @@ const Submission = () => {
 
 
                     <tr>
-                      <td> <b>Developer (Institution) </b><span className="toolTip" title={tooltips.externalContributor}>?</span> </td>
+                      <td> <b>Developer (Institution)</b><span className="toolTip" title={tooltips.externalContributor}>?</span> </td>
                       
                       <td><label for="agency"><b>Institution</b><span className="toolTip" title={tooltips.agency}>?</span> </label></td>
 
@@ -964,32 +843,10 @@ const Submission = () => {
                     <br />
 
 
-                    {/* <tr>
-                      <td>
-                        <b>
-                          <label for="provenanceRemixed">Provenance Remixed Objects <span className="toolTip" title={tooltips.provenanceRemixed}>?</span> </label>
-                        </b>
-                      </td>
-                      <td><textarea id="provenanceRemixed" cols="30" rows="1" type="text" placeholder="https://"/></td>
-                    </tr>
-                    <br />
-
-
                     <tr>
                       <td>
                         <b>
-                          <label for="incorporatingMechanisms">Object Incorporated into Other Mechanisms <span className="toolTip" title={tooltips.incorporatingMechanisms}>?</span> </label>
-                        </b>
-                      </td>
-                      <td><textarea id="incorporatingMechanisms" cols="30" rows="1" type="text" placeholder="https://"/></td>
-                    </tr>
-                    <br /> */}
-
-
-                    <tr>
-                      <td>
-                        <b>
-                          <label for="objectType">Object Type <span className="toolTip" title={tooltips.objectType}>?</span> </label>
+                          <label for="objectType">Object Type<span className="toolTip" title={tooltips.objectType}>?</span> </label>
                         </b>
                       </td>
                       <td>
@@ -1011,7 +868,7 @@ const Submission = () => {
                     </p>
                     <tr>
                         <td>
-                            <label for="fabGuidePackage"> <b className="req">Fabrication Guide</b> <span className="toolTip" title={tooltips.fabGuidePackage}>?</span></label>
+                            <label for="fabGuidePackage"> <b className="req">Fabrication Guide</b><span className="toolTip" title={tooltips.fabGuidePackage}>?</span></label>
                         </td>
                         <td><input type="file" onChange={handleFabGuide}></input></td>
                     </tr>
@@ -1019,7 +876,7 @@ const Submission = () => {
 
                     <tr>
                         <td>
-                            <label for="instructionalResourcesPackage"> <b className="req">Instructional Resources</b> <span className="toolTip" title={tooltips.instructionalResourcesPackage}>?</span></label>
+                            <label for="instructionalResourcesPackage"> <b className="req">Instructional Resources</b><span className="toolTip" title={tooltips.instructionalResourcesPackage}>?</span></label>
                         </td>
                         <td><input type="file" onChange={handleInstructResource}></input></td>
                     </tr>
@@ -1032,25 +889,13 @@ const Submission = () => {
                     </p>
                     <tr>
                         <td>
-                            <label for="thumbnailImage"> <b className="req">Thumbnail Image</b> <span className="toolTip" title={tooltips.thumbnailImage}>?</span></label>
+                            <label for="thumbnailImage"> <b className="req">Thumbnail Image</b><span className="toolTip" title={tooltips.thumbnailImage}>?</span></label>
                         </td>
                         <td><input type="file" onChange={handleThumbnailImage}></input></td>
                     </tr>
                     <br />
 
-                    {/* <tr>
-                        <td>
-                            <label for="instructionalVideosPackage"> <b>Instructional Videos Package</b> <span className="toolTip" title={tooltips.instructionalVideosPackage}>?</span></label>
-                        </td>
-                        <td><input type="file"></input></td>
-                    </tr> */}
                     <br />
-
-                    {/* <tr>
-                      <td></td>
-                      <td><DynamicField></DynamicField></td>
-                      <td></td>
-                    </tr> */}
 
                   </tbody>
                 </table>
@@ -1058,10 +903,9 @@ const Submission = () => {
                 
                 <button type='button' onClick={createDataset}>Submit Object for Review</button> 
               </form>
+              <button type='button' onClick={discourseUser}>Create Discourse User</button> 
 
               <div>
-                <br />
-                {/* <button id="createDataset" onClick={createDataset}> Create Dataset </button> */}
               </div>
             </div>
           </div>
