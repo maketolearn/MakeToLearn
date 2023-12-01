@@ -374,6 +374,38 @@ const Submission = () => {
       });
     }
 
+    async function checkForThread() {
+      const link = document.getElementById("discourseLink").value;
+      const segments = link.split('/');
+      const id = segments[segments.length-1];
+      console.log("id", id);
+
+      const url = `https://forum.cadlibrary.org/t/${id}.json`;
+
+      // Axios GET request
+      axios.get(url)
+        .then(response => {
+          // Handle the successful response here
+          if (response.data.title != null) {
+            console.log("Discourse Article Title: ", response.data.title);
+            const title = document.getElementById("title").value;
+            if (title === response.data.title) {
+              createDataset();
+            } else {
+              console.log("Object name doesn't match forum link object.");
+            }
+          }
+        })
+        .catch(error => {
+          // Handle errors here
+          if (error.response.status === 404) {
+            console.error("Invalid Link");
+          } else {
+            console.error('Error fetching data:', error);
+          }
+        });
+    }
+
     async function submitReview(doi) {
       const API_TOKEN = process.env.DATAVERSE_API_KEY;
       const SERVER_URL = 'https://dataverse.lib.virginia.edu';
@@ -393,39 +425,7 @@ const Submission = () => {
           console.error(error);
       });
     }
-
-    async function discourseUser(doi) {
-      const API_TOKEN = 'e36416426efe1a864d3edbf2da99226a683ec223e7d9ded06b76b8d2098584f2';
-      const SERVER_URL = 'https://forum.cadlibrary.org/users.json';
-
-      const headers = {
-        'Content-Type': 'application/json',
-        'Api-Key': API_TOKEN,
-        'Api-Username': 'rishimukherjee',
-      };
-
-      const payload = {
-        "name": "Test Name",
-        "email": "mukherjee_rishi@outlook.com",
-        "password": "12345678",
-        "username": "testName",
-        "active": false,
-        "approved": false,
-        "user_fields[1]": true,
-        "external_ids": { }
-      };
-
-      const res = await axios.post(SERVER_URL, payload, {
-        headers: headers
-      })
-      .then(data => {
-          console.log(data);
-      })
-      .catch(error => {
-          console.error(error);
-      });
-    }
-
+    
     async function uploadFiles(doi) {
       const API_TOKEN = "04c00114-fb2e-4f0f-9066-bb9bf497db57";
       const SERVER_URL = 'https://dataverse.lib.virginia.edu';
@@ -482,9 +482,11 @@ const Submission = () => {
     }
 
     const tooltips = {
-      "title": "The main title of the dataset",
+      "discourseLink": "A link to a thread on the CAD Library Forum that corresponds to the object.",
 
-      "author": "The entity, e.g. a person or organization, that created the Dataset",
+      "title": "The main title of the dataset.",
+
+      "author": "The entity, e.g. a person or organization, that created the Dataset.",
 
       "authorName": "The author's Last Name, First Name or the name of the organization responsible for this Dataset.",
 
@@ -596,7 +598,6 @@ const Submission = () => {
 
       "thumbnailImage": "Upload a thumbnail image for your object as a .png, .jpg, or .jpeg file"
     }
-
   
     return (
       <div>
@@ -628,6 +629,13 @@ const Submission = () => {
                     </tr>
                     <br />
 
+                    <tr>
+                      <td>
+                          <label for="discourseLink"> <b className="req">Link to Discourse Thread</b><span className="toolTip" title={tooltips.discourseLink}>?</span></label>
+                      </td>
+                      <td><textarea id="discourseLink" cols="30" rows="1" type="text"/></td>
+                    </tr>
+                    <br />
 
                     {/* 2 columns */}
                     <tr>
@@ -901,9 +909,8 @@ const Submission = () => {
                 </table>
 
                 
-                <button type='button' onClick={createDataset}>Submit Object for Review</button> 
+                <button type='button' onClick={checkForThread}>Submit Object for Review</button> 
               </form>
-              <button type='button' onClick={discourseUser}>Create Discourse User</button> 
 
               <div>
               </div>
