@@ -7,7 +7,6 @@ import axios from 'axios';
 import emailjs from '@emailjs/browser';
 import './Styles/Page.css';
 import './Styles/Submission.css'
-import DynamicField from './Components/DynamicField';
 
 
 const Submission = () => {
