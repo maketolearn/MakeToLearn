@@ -398,6 +398,7 @@ const Submission = () => {
         })
         .catch(error => {
           // Handle errors here
+          console.log(error.response)
           if (error.response.status === 404) {
             console.error("Invalid Link");
           } else {
