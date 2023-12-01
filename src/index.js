@@ -7,6 +7,7 @@ import Subject from './Subject'
 import SearchLibrary from './SearchLibrary';
 import HorseEvolution from './Components/HorseEvolution';
 import Submission from './Submission'
+import Inquiry from './Inquiry'
 import Bio from './Components/Bio'
 
 import { BrowserRouter} from "react-router-dom";
@@ -28,6 +29,7 @@ ReactDOM.render(
       <Route path="/objects/:doi" element={<Object/>}></Route>
       <Route path="/objects/00000C144" element={<HorseEvolution/>}></Route>
       <Route path="/submission" element={<Submission/>}></Route>
+      <Route path="/inquire" element={<Inquiry/>}></Route>
       <Route path="/people/:name" element={<Bio/>}></Route>
     </Routes>
   </BrowserRouter>,

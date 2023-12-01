@@ -35,7 +35,7 @@ const MainHeader = ({ input, setInput, handleSubmit, subject, showComponent, han
                         <br></br>
                         <div>
                             <ul aria-expanded="false">
-                                <li><Link to="/submission">Submissions</Link></li>
+                                <li><Link to="/inquire">Inquire</Link></li>
                             </ul>
                         </div>
                     </nav>

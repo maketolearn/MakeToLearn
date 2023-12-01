@@ -35,7 +35,7 @@ const App = () => {
             </p>
 
             <p>
-              We welcome <Link to="/submission">submission</Link> of educational objects designed for K-12 teaching and learning for review and publication in the <em>CAD Library</em>.
+              We welcome <Link to="/inquire">submission</Link> of educational objects designed for K-12 teaching and learning for review and publication in the <em>CAD Library</em>.
             </p>
 
             <ul>

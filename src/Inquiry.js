@@ -3,13 +3,11 @@ import MainHeader from './Components/MainHeader';
 import CategoryHeader from './Components/CategoryHeader';
 import CategoryBanner from './Components/CategoryBanner';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import emailjs from '@emailjs/browser';
 import './Styles/Page.css';
-import './Styles/Submission.css'
 
 
-const Submission = () => {
+const Inquiry = () => {
 
     const navigate = useNavigate();
     const form = useRef();
@@ -17,40 +15,6 @@ const Submission = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [searchObjects, setSearchObjects] = useState([]);
     const [subject, setSubject] = useState("Library");
-
-    const [objectSubject, setObjectSubject] = useState("");
-    const [fromName, setFromName] = useState("");
-    const [fromEmail, setFromEmail] = useState("");
-    const [message, setMessage] = useState("");
-
-    const [showMessage, setShowMessage] = useState(false);
-
-    const [fabGuidePackage, setFabGuidePackage] = useState();
-    const [instructResourcePackage, setInstructResourcePackage] = useState();
-    const [thumbnailImage, setThumbnailImage] = useState();
-    const [grades, setGrades] = useState(["K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"])
-
-    const [doi, setDoi] = useState("");
-
-    useEffect(() => {
-      if (doi != "") {
-        console.log(doi);
-        uploadFiles(doi);
-        // if file upload success --> submit Review
-        // submitReview(doi);
-      }
-    }, [doi]);
-
-    const handleSubjectSelect = (event) => {
-      setObjectSubject(event.target.value);
-    }
-
-    const resetForm = () => {
-      setObjectSubject("");
-      setFromName("");
-      setFromEmail("");
-      setMessage("");
-    }
   
     const handleSubmit = (event) => {
       event.preventDefault();
@@ -63,13 +27,10 @@ const Submission = () => {
       
       emailjs.sendForm('service_41f3fg5', 'template_nprqnh3', form.current, 'MIqeZxkpcd7inecb4')
       .then((result) => {
-          setShowMessage(true);
           console.log(result.text);
       }, (error) => {
           console.log(error.text);
       });
-
-      resetForm();
     }
   
     return (
@@ -89,7 +50,7 @@ const Submission = () => {
               <form ref={form} onSubmit={sendEmail}>
 
                 <p>To inquire, contact one of the following CAD Library curators:</p>
-                <ul>
+                <ul >
                   <input type="radio" name="object_subject" value="Science"></input><label id="checkbox-label">Science Curators&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Joshua Ellis & Sumreen Asim</label>
                   <br></br>
                   <input type="radio" name="object_subject" value="Technology"></input><label id="checkbox-label">Technology Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Elizabeth Whitewolf</label>
