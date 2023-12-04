@@ -739,7 +739,7 @@ const Submission = () => {
                         </div>
           
                       </td>
-                      <td><p>Hold down the Ctrl (Windows) or Command (Mac) button to select multiple options.</p></td>
+                      {/* <td><p>Hold down the Ctrl (Windows) or Command (Mac) button to select multiple options.</p></td> */}
                     </tr>
                     <br />
 
@@ -872,9 +872,9 @@ const Submission = () => {
 
                     <h4> <u>Files</u> </h4>
                     <br></br>
-                    <p> 
+                    {/* <p> 
                       Related Instructional Resource files should be combined into a single .zip file. Related Fabrication Guide files should also be combined into a second .zip file.  The file name of the instructional resources .zip file should be, “Instruction_[Object name]” with “_” used instead of spaces. The filename of the fabrication guide .zip file should be, “Fabrication_[Object name]” with “_” used instead of spaces. These two .zip files should be combined into a single .zip file before uploading. 
-                    </p>
+                    </p> */}
                     <tr>
                         <td>
                             <label for="fabGuidePackage"> <b className="req">Fabrication Guide</b><span className="toolTip" title={tooltips.fabGuidePackage}>?</span></label>

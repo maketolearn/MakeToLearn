@@ -5,16 +5,19 @@ textarea {
 form {
     overflow: hidden;
 }
+
 label {
-    float: left;
+    /* float: left; */
     width: 260px;
     padding-right: 24px;
+    display:inline;
 }
+
 input {
     /* width: calc(100% - 200px); */
     width: 260px;
     margin-right: 24px;
-    float: left;
+    /* float: left; */
     /* width: calc(100% - 200px); */
 }
 button #createDataset{
@@ -58,3 +61,6 @@ td {
     width: 50px;
 }
  
+.inquire-label {
+    float: none;
+}

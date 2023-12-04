@@ -57,7 +57,7 @@ const Inquiry = () => {
                   <br></br>
                   <input type="radio" name="object_subject" value="Engineering"></input><label id="checkbox-label">Engineering Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ryan Novitski</label>
                   <br></br>
-                  <input type="radio" name="object_subject" value="Mathematics"></input><label id="checkbox-label">Mathematics Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Steven Greenstein </label>
+                  <input type="radio" name="object_subject" value="Mathematics"></input><label id="checkbox-label">Mathematics Curators&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Steven Greenstein & Allison McCulloch</label>
                 </ul>
 
                 <p>Provide your name, e-mail address, and a short description of your interest.</p>

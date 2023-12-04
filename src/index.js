@@ -28,7 +28,7 @@ ReactDOM.render(
       <Route path="/forum" element={<Forum/>}></Route>
       <Route path="/objects/:doi" element={<Object/>}></Route>
       <Route path="/objects/00000C144" element={<HorseEvolution/>}></Route>
-      <Route path="/submission" element={<Submission/>}></Route>
+      <Route path="/submit" element={<Submission/>}></Route>
       <Route path="/inquire" element={<Inquiry/>}></Route>
       <Route path="/people/:name" element={<Bio/>}></Route>
     </Routes>

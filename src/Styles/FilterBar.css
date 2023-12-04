@@ -1,6 +1,6 @@
 #filter-box {
-    border-style:solid;
-    height: 520px;
+    border-right-style:solid;
+    /* height: 500px */
     /* width: 230px; */
     padding: 10px;
     justify-content: space-evenly;
@@ -17,8 +17,9 @@
 }
 
 #filter-box-subject {
-    border-style:solid;
-    height: 380px;
+    /* border-style:solid; */
+    border-right-style:solid;
+    /* height: 380px; */
     padding: 10px;
     margin-top: 10px;
 }
@@ -35,4 +36,8 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
+}
+
+.filter-bar-labels {
+    float:none;
 }
