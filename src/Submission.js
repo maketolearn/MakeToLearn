@@ -1,30 +1,19 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import MainHeader from './Components/MainHeader';
 import CategoryHeader from './Components/CategoryHeader';
 import CategoryBanner from './Components/CategoryBanner';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import emailjs from '@emailjs/browser';
 import './Styles/Page.css';
 import './Styles/Submission.css'
-import DynamicField from './Components/DynamicField';
-
 
 const Submission = () => {
 
     const navigate = useNavigate();
-    const form = useRef();
   
     const [searchTerm, setSearchTerm] = useState("");
     const [searchObjects, setSearchObjects] = useState([]);
     const [subject, setSubject] = useState("Library");
-
-    const [objectSubject, setObjectSubject] = useState("");
-    const [fromName, setFromName] = useState("");
-    const [fromEmail, setFromEmail] = useState("");
-    const [message, setMessage] = useState("");
-
-    const [showMessage, setShowMessage] = useState(false);
 
     const [fabGuidePackage, setFabGuidePackage] = useState();
     const [instructResourcePackage, setInstructResourcePackage] = useState();
@@ -41,17 +30,6 @@ const Submission = () => {
         // submitReview(doi);
       }
     }, [doi]);
-
-    const handleSubjectSelect = (event) => {
-      setObjectSubject(event.target.value);
-    }
-
-    const resetForm = () => {
-      setObjectSubject("");
-      setFromName("");
-      setFromEmail("");
-      setMessage("");
-    }
   
     const handleSubmit = (event) => {
       event.preventDefault();
@@ -70,20 +48,6 @@ const Submission = () => {
 
     const handleThumbnailImage = (event) => {
       setThumbnailImage(event.target.files[0])
-    }
-
-    const sendEmail = (e) => {
-      e.preventDefault();
-      
-      emailjs.sendForm('service_41f3fg5', 'template_nprqnh3', form.current, 'MIqeZxkpcd7inecb4')
-      .then((result) => {
-          setShowMessage(true);
-          console.log(result.text);
-      }, (error) => {
-          console.log(error.text);
-      });
-
-      resetForm();
     }
 
     async function createDataset() {
@@ -362,11 +326,8 @@ const Submission = () => {
       })
       .then(data => {
           console.log(data);
-
           const doi = data.data.data.persistentId;
-
           setDoi(doi);
-
           console.log(doi);
       })
       .catch(error => {
@@ -619,96 +580,96 @@ const Submission = () => {
               <form>
                 <table>
                   <tbody>
-                    {/* 1 column */}
-                    <h4> <u>Object Information</u> </h4>
+                    <h4><u>Object Information</u></h4>
                     <br></br>
                     <tr>
                       <td>
                           <label for="title"> <b className="req">Name of Object</b><span className="toolTip" title={tooltips.title}>?</span></label>
-                      </td>
-                      <td><textarea id="title" cols="30" rows="1" type="text"/></td>
+                        </td>
+                        <td><input id="title" cols="40" rows="1" type="text"/></td>
                     </tr>
-                    <br />
+                    <br></br>
 
                     <tr>
                       <td>
                           <label for="discourseLink"> <b className="req">Link to Discourse Thread</b><span className="toolTip" title={tooltips.discourseLink}>?</span></label>
                       </td>
-                      <td><textarea id="discourseLink" cols="30" rows="1" type="text"/></td>
+                      <td><input id="discourseLink" cols="40" rows="1" type="text"/></td>
                     </tr>
-                    <br />
+                    <br></br>
 
-                    {/* 2 columns */}
                     <tr>
-                      <td> <b className="req">Author</b><span className="toolTip" title={tooltips.author}>?</span></td>
+                      <td> 
+                        <b className="req">Author</b><span className="toolTip" title={tooltips.author}>?</span>
+                      </td>
                       <td><input id="authorName" type="text"/></td>
                     </tr>
-                    <br />
-
+                    <br></br>
 
                     <tr>
-                      <td> <b className="req">Email Address</b><span className="toolTip" title={tooltips.contactEmail}>?</span></td>
+                      <td> 
+                        <b className="req">Email Address</b><span className="toolTip" title={tooltips.contactEmail}>?</span>
+                      </td>
                       <td><input id="contactEmail" type="email"/></td>
                     </tr>
-                    <br />
-                    
+                    <br></br>
 
                     <tr>
-                      <td> <b className="req">Description</b><span className="toolTip" title={tooltips.description}>?</span></td>
-                      <td><textarea name="description" id="description" cols="30" rows="3"></textarea></td>
+                      <td> 
+                        <b className="req">Description</b><span className="toolTip" title={tooltips.description}>?</span>
+                      </td>
+                      <td><textarea name="description" id="description" cols="40" rows="4"></textarea></td>
                     </tr>
-                    <br />
+                    <br></br>
 
                     <tr>
-                      <td> <b className="req">Big Idea</b><span className="toolTip" title={tooltips.bigIdea}>?</span></td>
-                      <td><textarea name="bigIdea" id="bigIdea" cols="30" rows="3"></textarea></td>
+                      <td> 
+                        <b className="req">Big Idea</b><span className="toolTip" title={tooltips.bigIdea}>?</span>
+                      </td>
+                      <td><textarea name="bigIdea" id="bigIdea" cols="40" rows="4"></textarea></td>
                     </tr>
-                    <br />
+                    <br></br>
 
                     <tr>
-                      <td><b>Keyword</b><span className="toolTip" title={tooltips.keyword}>?</span></td>
+                      <td>
+                        <b>Keyword</b><span className="toolTip" title={tooltips.keyword}>?</span>
+                      </td>
                       <td><input id="keywordTerm" type="text"/></td>
                     </tr>
-                    <br />
+                    <br></br>
 
                     <tr>
                       <td> <b>Related Work/Article</b><span className="toolTip" title={tooltips.relatedWork}>?</span></td>
                       <td><label for="citation"><b>Citation</b><span className="toolTip" title={tooltips.citation}>?</span></label></td>
-                      <td></td>
+                      
                     </tr>
                     <tr>
                       <td></td>
-                      <td><textarea name="citation" id="citation" cols="30" rows="3"></textarea></td>
-                      <td></td>
+                      <td><textarea name="citation" id="citation" cols="40" rows="4"></textarea></td>
+                      
                     </tr>
                     <tr>
                       <td></td>
                       <td><label for="relatedWorkUrl"><b>URL</b><span className="toolTip" title={tooltips.relatedWorkUrl}>?</span></label></td>
-                      <td></td>
+                      
                     </tr>
                     <tr>
                       <td></td>
                       <td><input id="relatedWorkUrl" placeholder="https://"/></td>
-                      <td></td>
                     </tr>
-                    <br />
+                    <br></br>
 
-
-                    <br />
                     {/* !!!!!!!!!!!!!!!!!!!!!CAD METADATA!!!!!!!!!!!!!!!!!!!!! */}
-                    <br />
-
-
+            
                     <tr>
                       <td>
                         <b>
                           <label className="req" for="sampleLearningGoals">Sample Learning Goal<span className="toolTip" title={tooltips.sampleLearningGoals}>?</span> </label>
                         </b>
                       </td>
-                      <td><textarea id="sampleLearningGoals" cols="30" rows="1" type="text" placeholder="Sample learning goal"/></td>
+                      <td><input id="sampleLearningGoals" type="text" placeholder="Sample learning goal"/></td>
                     </tr>
-                    <br />
-
+                    <br></br>
 
                     <tr>
                       <td>
@@ -716,9 +677,9 @@ const Submission = () => {
                           <label className="req" for="contentAlignment">Content Standard<span className="toolTip" title={tooltips.contentAlignment}>?</span> </label>
                         </b>
                       </td>
-                      <td><textarea id="contentAlignment" cols="30" rows="1" type="text" placeholder="e.g. CCSS.MATH.CONTEXT.6.NS.A.1"/></td>
+                      <td><input id="contentAlignment" type="text" placeholder="e.g. CCSS.MATH.CONTEXT.6.NS.A.1"/></td>
                     </tr>
-                    <br />
+                    <br></br>
 
 
                     <tr>
@@ -737,12 +698,9 @@ const Submission = () => {
                           </label> 
                           )}
                         </div>
-          
                       </td>
-                      {/* <td><p>Hold down the Ctrl (Windows) or Command (Mac) button to select multiple options.</p></td> */}
                     </tr>
-                    <br />
-
+                    <br></br>
 
                     <tr>
                       <td> <b className="req">Discipline</b><span className="toolTip" title={tooltips.disciplines}>?</span> </td>
@@ -768,8 +726,7 @@ const Submission = () => {
                       <td></td>
                       <td><input id="subdiscipline" type="text"/></td>
                     </tr>
-                    <br />
-
+                    <br></br>
 
                     <tr>
                       <td>
@@ -777,10 +734,9 @@ const Submission = () => {
                           <label for="cadFormat">CAD Format<span className="toolTip" title={tooltips.cadFormat}>?</span> </label>
                         </b>
                       </td>
-                      <td><textarea id="cadFormat" cols="30" rows="1" type="text"/></td>
+                      <td><input id="cadFormat" type="text"/></td>
                     </tr>
-                    <br />
-
+                    <br></br>
 
                     <tr>
                       <td>
@@ -788,10 +744,9 @@ const Submission = () => {
                           <label for="consumableCost">Estimated Material Cost (Consumable)<span className="toolTip" title={tooltips.consumableCost}>?</span> </label>
                         </b>
                       </td>
-                      <td><textarea id="consumableCost" cols="30" rows="1" type="text" placeholder="e.g., 10.5, 20, etc"/></td>
+                      <td><input id="consumableCost" type="text" placeholder="e.g., 10.5, 20, etc"/></td>
                     </tr>
-                    <br />
-
+                    <br></br>
 
                     <tr>
                       <td>
@@ -799,10 +754,9 @@ const Submission = () => {
                           <label for="reusableCost">Estimated Material Cost (Reusable)<span className="toolTip" title={tooltips.reusableCost}>?</span> </label>
                         </b>
                       </td>
-                      <td><textarea id="reusableCost" cols="30" rows="1" type="text" placeholder="e.g., 10.5, 20, etc"/></td>
+                      <td><input id="reusableCost" type="text" placeholder="e.g., 10.5, 20, etc"/></td>
                     </tr>
                     <br />
-
 
                     <tr>
                       <td>
@@ -810,10 +764,9 @@ const Submission = () => {
                           <label for="equipment">Fabrication Equipment<span className="toolTip" title={tooltips.equipment}>?</span> </label>
                         </b>
                       </td>
-                      <td><textarea id="equipment" cols="30" rows="1" type="text"/></td>
+                      <td><input id="equipment" type="text"/></td>
                     </tr>
-                    <br />
-
+                    <br></br>
 
                     <tr>
                       <td>
@@ -821,9 +774,9 @@ const Submission = () => {
                           <label for="fabricationTime">Fabrication Time<span className="toolTip" title={tooltips.fabricationTime}>?</span> </label>
                         </b>
                       </td>
-                      <td><textarea id="fabricationTime" cols="30" rows="2" type="text" placeholder="to the nearest tenth of an hour; i.e., 1.5 hours"/></td>
+                      <td><textarea id="fabricationTime" cols="40" rows="2" type="text" placeholder="to the nearest tenth of an hour; i.e., 1.5 hours"/></td>
                     </tr>
-                    <br />
+                    <br></br>
 
 
                     <tr>
@@ -832,21 +785,26 @@ const Submission = () => {
                           <label for="assemblyTime">Assembly Time<span className="toolTip" title={tooltips.assemblyTime}>?</span> </label>
                         </b>
                       </td>
-                      <td><textarea id="assemblyTime" cols="30" rows="2" type="text" placeholder="to the nearest tenth of an hour; i.e., 1.5 hours"/></td>
+                      <td><textarea id="assemblyTime" cols="40" rows="2" type="text" placeholder="to the nearest tenth of an hour; i.e., 1.5 hours"/></td>
                     </tr>
                     <br />
 
 
                     <tr>
                       <td> <b>Developer (Institution)</b><span className="toolTip" title={tooltips.externalContributor}>?</span> </td>
-                      
-                      <td><label for="agency"><b>Institution</b><span className="toolTip" title={tooltips.agency}>?</span> </label></td>
 
-                      <td><label for="identifier"><b>URL</b><span className="toolTip" title={tooltips.identifier}>?</span> </label></td>
+                      <td><label for="agency"><b>Institution</b><span className="toolTip" title={tooltips.agency}>?</span> </label></td>
                     </tr>
                     <tr>
                       <td></td>
                       <td><input id="agency" type="text"/></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td><label for="identifier"><b>URL</b><span className="toolTip" title={tooltips.identifier}>?</span> </label></td>
+                    </tr>
+                    <tr>
+                      <td></td>
                       <td><input id="identifier" type="text"/></td>
                     </tr>
                     <br />
@@ -867,14 +825,11 @@ const Submission = () => {
                         </select>
                       </td>
                     </tr>
-                    <br />
+                    <br></br>
                     <br></br>
 
-                    <h4> <u>Files</u> </h4>
+                    <h4><u>Files</u> </h4>
                     <br></br>
-                    {/* <p> 
-                      Related Instructional Resource files should be combined into a single .zip file. Related Fabrication Guide files should also be combined into a second .zip file.  The file name of the instructional resources .zip file should be, “Instruction_[Object name]” with “_” used instead of spaces. The filename of the fabrication guide .zip file should be, “Fabrication_[Object name]” with “_” used instead of spaces. These two .zip files should be combined into a single .zip file before uploading. 
-                    </p> */}
                     <tr>
                         <td>
                             <label for="fabGuidePackage"> <b className="req">Fabrication Guide</b><span className="toolTip" title={tooltips.fabGuidePackage}>?</span></label>
@@ -904,17 +859,10 @@ const Submission = () => {
                     </tr>
                     <br />
 
-                    <br />
-
                   </tbody>
                 </table>
-
-                
                 <button type='button' onClick={checkForThread}>Submit Object for Review</button> 
               </form>
-
-              <div>
-              </div>
             </div>
           </div>
         </body>

@@ -43,6 +43,7 @@ const Object = () => {
     const [instructAvail, setInstructAvail] = useState(false);
     const [fabAvail, setFabAvail] = useState(false);
     const [relatedWorkAvail, setRelatedWorkAvail] = useState(false);
+    const [relatedWorkAvailURL, setRelatedWorkAvailURL] = useState(false);
     const [relatedWorks, setRelatedWorks] = useState([])
 
     //citation fields
@@ -110,10 +111,18 @@ const Object = () => {
                 if("publication" in citationMetadata){
                     setRelatedWorkAvail(true);
                     citationMetadata["publication"].forEach(publication => {
-                        if("publicationCitation" in publication){
-                            publications = [{title: publication.publicationCitation.value, url: publication.publicationURL.value}, ...publications];
+                        if("publicationURL" in publication){
+                            setRelatedWorkAvailURL(true);
+                            if("publicationCitation" in publication){
+                                // publication citation and url avail
+                                publications = [{title: publication.publicationCitation.value, url: publication.publicationURL.value}, ...publications];
+                            } else {
+                                // only pub url available
+                                publications = [{title: publication.publicationURL.value, url: publication.publicationURL.value}, ...publications];
+                            }
                         } else {
-                            publications = [{title: publication.publicationURL.value, url: publication.publicationURL.value}, ...publications];
+                            // only pub citation avail
+                            publications = [{title: publication.publicationCitation.value}, ...publications]
                         }
                         
                         setRelatedWorks(publications);
@@ -350,10 +359,17 @@ const Object = () => {
                                 <p>{authorsFormmated} ({year}). <em>{title}</em> [Educational Object]. <em>Educational CAD Model Library</em>. Published {pubDate}. NTLS Coalition. doi:10.18130/{dataverseDoi} </p>
 
                             {relatedWorkAvail && <h4>Related Articles</h4>}
-                            {relatedWorkAvail && 
+                            {relatedWorkAvailURL && 
                                 <ul>
                                 {relatedWorks.map((workl) => (
                                     <li><a href={workl.url}>{workl.title}</a> </li>
+                                ))}
+                                </ul>
+                            }
+                            {!relatedWorkAvailURL &&
+                                <ul>
+                                {relatedWorks.map((workl) => (
+                                    <li>{workl.title}</li>
                                 ))}
                                 </ul>
                             }
