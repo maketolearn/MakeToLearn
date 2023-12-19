@@ -62,21 +62,21 @@ const Submission = () => {
       });
     }
 
-    const handleFabGuide = (event) => {
-      console.log("Handling Fab guide")
+    const handleZipping = (event, prefix) => {
+      console.log("Handling", prefix)
       console.log(event.target.files)
-      let selectedFabFiles = event.target.files
-      let folderName = "Fabrication_" + replaceSpacesWithUnderscores(document.getElementById("title").value)
+      let selectedFiles = event.target.files;
+      let folderName = prefix + replaceSpacesWithUnderscores(document.getElementById("title").value)
       // zip the files
       var zip = new JSZip();
-      var fabricationZip = zip.folder(folderName)
+      var mainZip = zip.folder(folderName)
 
       // Array to store promises for each file
       var promises = [];
 
-      // Iterate over selected files and add them to the fabricationZip folder
-      for (let i = 0; i < selectedFabFiles.length; i++) {
-        promises.push(addFileToZip(fabricationZip, selectedFabFiles[i]));
+      // Iterate over selected files and add them to the mainZip folder
+      for (let i = 0; i < selectedFiles.length; i++) {
+        promises.push(addFileToZip(mainZip, selectedFiles[i]));
       }
 
       Promise.all(promises).then(() => {
@@ -91,44 +91,11 @@ const Submission = () => {
           // Generate the nested zip file
           nestedZip.generateAsync({ type: "blob" }).then(function (nestedZipContent) {
             // Call the provided callback function with the nested zip content
-            setFabGuidePackage(nestedZipContent);
-          });
-        });
-      });
-    }
-
-    const handleInstructResource = (event) => {
-      // setInstructResourcePackage(event.target.files[0])
-      // console.log(instructResourcePackage.name)
-      console.log("Handling Instruct Resource")
-      console.log(event.target.files)
-      let selectedInstructionFiles = event.target.files
-      let folderName = "Instruction_" + replaceSpacesWithUnderscores(document.getElementById("title").value)
-      // zip the files
-      var zip = new JSZip();
-      var instructionZip = zip.folder(folderName)
-
-      // Array to store promises for each file
-      var promises = [];
-
-      // Iterate over selected files and add them to the instructionZip folder
-      for (let i = 0; i < selectedInstructionFiles.length; i++) {
-        promises.push(addFileToZip(instructionZip, selectedInstructionFiles[i]));
-      }
-
-      Promise.all(promises).then(() => {
-        // Generate the main zip file
-        zip.generateAsync({ type: "blob" }).then(function (mainZipContent) {
-          // Create a new instance of JSZip for the nested zip
-          var nestedZip = new JSZip();
-      
-          // Add the main zip file to the nested zip with the desired folder name
-          nestedZip.file(folderName + ".zip", mainZipContent);
-      
-          // Generate the nested zip file
-          nestedZip.generateAsync({ type: "blob" }).then(function (nestedZipContent) {
-            // Call the provided callback function with the nested zip content
-            setInstructResourcePackage(nestedZipContent);
+            if (prefix === 'Fabrication_') {
+              setFabGuidePackage(nestedZipContent);
+            } else if (prefix === 'Instruction_') {
+              setInstructResourcePackage(nestedZipContent);
+            }
           });
         });
       });
@@ -920,7 +887,7 @@ const Submission = () => {
                         <td>
                             <label for="fabGuidePackage"> <b className="req">Fabrication Guide</b><span className="toolTip" title={tooltips.fabGuidePackage}>?</span></label>
                         </td>
-                        <td><input type="file" onChange={handleFabGuide} multiple></input></td>
+                        <td><input type="file" onChange={(event) => handleZipping(event, 'Fabrication_')} multiple></input></td>
                     </tr>
                     <br />
 
@@ -928,7 +895,7 @@ const Submission = () => {
                         <td>
                             <label for="instructionalResourcesPackage"> <b className="req">Instructional Resources</b><span className="toolTip" title={tooltips.instructionalResourcesPackage}>?</span></label>
                         </td>
-                        <td><input type="file" onChange={handleInstructResource} multiple></input></td>
+                        <td><input type="file" onChange={(event) => handleZipping(event, 'Instruction_')} multiple></input></td>
                     </tr>
                     <br />
 
