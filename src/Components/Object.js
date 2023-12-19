@@ -100,13 +100,24 @@ const Object = () => {
                     citationMetadata[key] = citationBlock[i].value;
                 }
 
+                //change the educational cad api response to a dictionary
+                let educationalCADBlock = object.data.data.latestVersion.metadataBlocks.educationalcad.fields;
+                let educationCADMetadata = {};
+                for(let i = 0; i < educationalCADBlock.length; i++){
+                    let key = educationalCADBlock[i].typeName;
+                    educationCADMetadata[key] = educationalCADBlock[i].value;
+                }
+                
+                // console.log(educationCADMetadata);
+
                 //console.log(citationMetadata);
 
                 if("notesText" in citationMetadata){
                     let forumLinkMetadata = citationMetadata["notesText"];
                     forumLinkMetadata = forumLinkMetadata.substring(forumLinkMetadata.indexOf("http"))
                     setForumLink(forumLinkMetadata);
-                    
+                } else if("forumLink" in educationCADMetadata){
+                    setForumLink(educationCADMetadata["forumLink"])
                 }
 
                 if("publication" in citationMetadata){
@@ -129,16 +140,6 @@ const Object = () => {
                     })
                     // console.log(relatedWorks)
                 }
-
-                //change the educational cad api response to a dictionary
-                let educationalCADBlock = object.data.data.latestVersion.metadataBlocks.educationalcad.fields;
-                let educationCADMetadata = {};
-                for(let i = 0; i < educationalCADBlock.length; i++){
-                    let key = educationalCADBlock[i].typeName;
-                    educationCADMetadata[key] = educationalCADBlock[i].value;
-                }
-                
-                // console.log(educationCADMetadata);
 
                 //set the citation metadata fields
                 setTitle(citationMetadata["title"]);
@@ -173,7 +174,11 @@ const Object = () => {
                 }
 
                 setIntroSentence(citationMetadata["dsDescription"][0].dsDescriptionValue.value);
-                setDesc(citationMetadata["dsDescription"][1].dsDescriptionValue.value);
+                if("bigIdea" in educationCADMetadata){
+                    setDesc(educationCADMetadata["bigIdea"])
+                } else {
+                    setDesc(citationMetadata["dsDescription"][1].dsDescriptionValue.value);
+                }
 
                 let publicationDate = object.data.data.latestVersion.lastUpdateTime.substring(0,10);
                 setYear(publicationDate.substring(0, 4));
