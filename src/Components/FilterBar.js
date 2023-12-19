@@ -36,7 +36,7 @@ const FilterBar = ({filters, subjects, fabEquipment, grades, onFilterChange}) =>
             <div>
                 <h4> Subject </h4>
                 {subjects.map((subject) =>
-                    <label id="checkbox" key={subject}>
+                    <label class="filter-bar-labels" id="checkbox" key={subject}>
                         <input id="subject-filter" type="checkbox" checked={selected.includes(subject)} onChange={() => handleFilterChange(subject)}>
                         </input>
                         {subject}
@@ -49,7 +49,7 @@ const FilterBar = ({filters, subjects, fabEquipment, grades, onFilterChange}) =>
             <div>
                 <h4> Fabrication Equipment </h4>
                 {fabEquipment.map((equipment) =>
-                    <label id="checkbox" key={equipment}>
+                    <label class="filter-bar-labels" id="checkbox" key={equipment}>
                         <input id="subject-filter" type="checkbox" checked={selected.includes(equipment)} onChange={() => handleFilterChange(equipment)}>
                         </input>
                         {equipment}

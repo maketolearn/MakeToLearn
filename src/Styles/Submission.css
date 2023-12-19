@@ -1,3 +1,63 @@
 textarea {
     resize: none;
 }
+
+form {
+    overflow: hidden;
+}
+
+label {
+    /* float: left; */
+    width: 260px;
+    padding-right: 24px;
+    display:inline;
+}
+
+input {
+    width: 316px;
+    margin-right: 24px;
+}
+button #createDataset{
+    float: right;
+    width: calc(100% - 200px);
+}
+
+td {
+    vertical-align: top; /* Set vertical alignment to top */
+}
+
+.toolTip {
+    display: inline-block; 
+    width: 14px; /* Adjust the width and height as needed for your circle size */
+    height: 14px;
+    background-color: #8fbdee; /* Background color of the circle */
+    border-radius: 50%; /* Makes the element a circle */
+    text-align: center; /* Optional, to center content within the circle */
+    line-height: 12px; /* Should match the circle's height to center text vertically */
+    /* font-size: 5; */
+    color: #fff; /* Text color */
+    font-weight: bold; /* Optional, adjust font styles as needed */
+    margin-left: 5px;
+}
+
+.toolTip:hover {
+    cursor: pointer;
+}
+
+/* .req:after {
+    content: " * ";
+    font-weight: bold;
+    color: red;
+ } */
+
+ .subject-filter {
+    width: 20px;
+ }
+
+#checkbox {
+    width: 50px;
+}
+ 
+.inquire-label {
+    float: none;
+}
