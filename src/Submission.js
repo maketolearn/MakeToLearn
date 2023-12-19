@@ -19,6 +19,7 @@ const Submission = () => {
     const [instructResourcePackage, setInstructResourcePackage] = useState();
     const [thumbnailImage, setThumbnailImage] = useState();
     const [grades, setGrades] = useState(["K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"])
+    const [gradesSelected, setGradesSelected] = useState([]);
 
     const [doi, setDoi] = useState("");
 
@@ -38,6 +39,7 @@ const Submission = () => {
     }
 
     const handleFabGuide = (event) => {
+      console.log(event.target.files)
       setFabGuidePackage(event.target.files[0])
     }
 
@@ -101,12 +103,6 @@ const Submission = () => {
                           "multiple": false,
                           "value": document.getElementById("authorName").value
                         },
-                        "authorAffiliation": {
-                          "typeName": "authorAffiliation",
-                          "typeClass": "primitive",
-                          "multiple": false,
-                          "value": document.getElementById("authorDepartment").value
-                        }
                       }
                     ]
                   },
@@ -120,7 +116,7 @@ const Submission = () => {
                           "typeClass": "primitive",
                           "multiple": false,
                           "typeName": "datasetContactName",
-                          "value": document.getElementById("contactName").value
+                          "value": document.getElementById("authorName").value
                         },
                         "datasetContactEmail": {
                           "typeName": "datasetContactEmail",
@@ -144,14 +140,6 @@ const Submission = () => {
                           "value":  document.getElementById("description").value
                         }
                       },
-                      {
-                        "dsDescriptionValue": {
-                          "typeName": "dsDescriptionValue",
-                          "multiple": false,
-                          "typeClass": "primitive",
-                          "value":  document.getElementById("bigIdea").value
-                        }
-                      }
                     ]
                   },
                   {
@@ -244,7 +232,7 @@ const Submission = () => {
                     "typeName": "gradeLevel",
                     "multiple": true,
                     "typeClass": "controlledVocabulary",
-                    "value": Array.from(document.getElementById("gradeLevels").selectedOptions, option => option.value)
+                    "value": gradesSelected
                   }, 
                   {
                     "typeName": "disciplines",
@@ -311,6 +299,18 @@ const Submission = () => {
                     "multiple": false,
                     "typeClass": "controlledVocabulary",
                     "value": document.getElementById("objectType").value
+                  },
+                  {
+                    "typeName": "bigIdea",
+                    "multiple": false,
+                    "typeClass": "primitive",
+                    "value":  document.getElementById("bigIdea").value
+                  },
+                  {
+                    "typeName": "forumLink",
+                    "multiple": false,
+                    "typeClass": "primitive",
+                    "value": document.getElementById("discourseLink").value
                   }
                 ],
                 "displayName": "Educational CAD Model Metadata"
@@ -692,7 +692,7 @@ const Submission = () => {
                         <div class="grade-checkboxes">
                           {grades.map((grade) =>
                           <label id="checkbox" key={grade}>
-                              <input className="subject-filter" type="checkbox" onChange={() => setGrades([...grades, grade])}>
+                              <input className="subject-filter" type="checkbox" onChange={() => setGradesSelected([...gradesSelected, grade], console.log(gradesSelected))}>
                               </input>
                               {grade}
                           </label> 
@@ -834,7 +834,7 @@ const Submission = () => {
                         <td>
                             <label for="fabGuidePackage"> <b className="req">Fabrication Guide</b><span className="toolTip" title={tooltips.fabGuidePackage}>?</span></label>
                         </td>
-                        <td><input type="file" onChange={handleFabGuide}></input></td>
+                        <td><input type="file" onChange={handleFabGuide} multiple></input></td>
                     </tr>
                     <br />
 
@@ -842,7 +842,7 @@ const Submission = () => {
                         <td>
                             <label for="instructionalResourcesPackage"> <b className="req">Instructional Resources</b><span className="toolTip" title={tooltips.instructionalResourcesPackage}>?</span></label>
                         </td>
-                        <td><input type="file" onChange={handleInstructResource}></input></td>
+                        <td><input type="file" onChange={handleInstructResource} multiple></input></td>
                     </tr>
                     <br />
 
@@ -861,7 +861,7 @@ const Submission = () => {
 
                   </tbody>
                 </table>
-                <button type='button' onClick={checkForThread}>Submit Object for Review</button> 
+                <button type='button' onClick={createDataset}>Submit Object for Review</button> 
               </form>
             </div>
           </div>
