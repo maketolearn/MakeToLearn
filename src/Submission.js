@@ -4,6 +4,7 @@ import CategoryHeader from './Components/CategoryHeader';
 import CategoryBanner from './Components/CategoryBanner';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import JSZip from 'jszip';
 import './Styles/Page.css';
 import './Styles/Submission.css'
 
@@ -38,8 +39,69 @@ const Submission = () => {
       navigate(`/browse`, {state: searchTerm});
     }
 
+    // const replaceSpacesWithUnderscores = (string) => {
+    //   // Use a regular expression to replace spaces with underscores
+    //   var resultString = string.replace(/ /g, '_');
+    //   return resultString;
+    // }
+
+    // function addFileToZip(fabricationZip, file) {
+    //   return new Promise((resolve) => {
+    //     const reader = new FileReader();
+    
+    //     // Read the content of the file
+    //     reader.onload = function (event) {
+    //       // Add the file to the fabricationZip folder
+    //       fabricationZip.file(file.name, event.target.result);
+    
+    //       // Resolve the promise once the file has been added
+    //       resolve();
+    //     };
+    
+    //     reader.readAsArrayBuffer(file);
+    //   });
+    // }
+
     const handleFabGuide = (event) => {
-      console.log(event.target.files)
+      // console.log(event.target.files)
+      // let selectedFabFiles = event.target.files
+      // let folderName = "Fabrication_" + replaceSpacesWithUnderscores(document.getElementById("title").value)
+      // // zip the files
+      // var zip = new JSZip();
+      // var fabricationZip = zip.folder(folderName)
+      // // for(let i = 0; i < selectedFabFiles.length; i++) {
+      // //   fabricationZip.file(selectedFabFiles[i].name, selectedFabFiles[i]);
+      // // }
+
+      // // Array to store promises for each file
+      // var promises = [];
+
+      // // Iterate over selected files and add them to the fabricationZip folder
+      // for (let i = 0; i < selectedFabFiles.length; i++) {
+      //   promises.push(addFileToZip(fabricationZip, selectedFabFiles[i]));
+      // }
+
+      // Promise.all(promises).then(() => {
+      //   // Generate the nested zip file
+      //   zip.generateAsync({ type: "blob" }).then(function (nestedZipContent) {
+      //     // Call the provided callback function with the nested zip content
+      //     setFabGuidePackage(nestedZipContent);
+      //   });
+      // });
+
+      // // Generate the first zip file
+      // zip.generateAsync({ type: "blob" }).then(function (firstZipContent) {
+      //   // Create a new instance of JSZip for the nested zip
+      //   var nestedZip = new JSZip();
+      //   // Add the first zip file to the nested zip
+      //   nestedZip.file(folderName + ".zip", firstZipContent);
+
+      //   // Generate the nested zip file
+      //   nestedZip.generateAsync({ type: "blob" }).then(function (nestedZipContent) {
+      //     // Call the provided callback function with the nested zip content
+      //     setFabGuidePackage(nestedZipContent);
+      //   });
+      // });
       setFabGuidePackage(event.target.files[0])
     }
 
