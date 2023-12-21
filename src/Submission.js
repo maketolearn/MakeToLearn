@@ -410,6 +410,7 @@ const Submission = () => {
           const doi = data.data.data.persistentId;
           setDoi(doi);
           console.log(doi);
+          navigate(`/success`);
       })
       .catch(error => {
           console.error(error);
