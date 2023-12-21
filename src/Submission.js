@@ -105,6 +105,15 @@ const Submission = () => {
       setThumbnailImage(event.target.files[0])
     }
 
+    const generateJSONObject = (typeName, multiple, typeClass, value) => {
+      var jsonObject = {};
+      jsonObject["typeName"] = typeName;
+      jsonObject["multiple"] = multiple;
+      jsonObject["typeClass"] = typeClass;
+      jsonObject["value"] = value;
+      return jsonObject;
+    }
+
     async function createDataset() {
       const API_TOKEN = "04c00114-fb2e-4f0f-9066-bb9bf497db57";
       const SERVER_URL = 'https://dataverse.lib.virginia.edu';
@@ -128,6 +137,43 @@ const Submission = () => {
         curator = "Steven Greenstein";
       }
 
+      // need to parse through multi-field entries
+      // multiple authors
+      let authorValues = document.getElementById("authorName").value
+      let authorValuesParsed = authorValues.split(";")
+      let authorArray = [];
+      authorValuesParsed.forEach(authorName => {
+        let authorsJSON = {};
+        authorsJSON.authorName = generateJSONObject("authorName", false, "primitive", authorName)
+        authorArray.push(authorsJSON)
+      })
+
+      // multiple keywords
+      let keywordValues = document.getElementById("keywordTerm").value
+      let keywordValuesParsed = keywordValues.split(";")
+      let keywordArray = [];
+      keywordValuesParsed.forEach(keywordValue => {
+        let keywordsJSON = {};
+        keywordsJSON.keywordValue = generateJSONObject("keywordValue", false, "primitive", keywordValue)
+        keywordArray.push(keywordsJSON)
+      })
+
+      // multiple sample learning goals
+      let sampleLearningGoalValues = document.getElementById("sampleLearningGoals").value
+      let sampleLearningGoalsParsed = sampleLearningGoalValues.split(";")
+
+      // multiple content standards
+      let contentStandardValues = document.getElementById("contentAlignment").value
+      let contentStandardsParsed = contentStandardValues.split(";")
+
+      // multiple CAD format
+      let cadFormatValues = document.getElementById("cadFormat").value
+      let cadFormatValuesParsed = cadFormatValues.split(";")
+
+      // multiple fabrication equipment
+      let fabEquipValues = document.getElementById("equipment").value
+      let fabEquipValuesParsed = fabEquipValues.split(";")
+
       const dataset = {
           "datasetVersion": {
             "license": {
@@ -148,16 +194,7 @@ const Submission = () => {
                     "typeName": "author",
                     "typeClass": "compound",
                     "multiple": true,
-                    "value": [
-                      {
-                        "authorName": {
-                          "typeName": "authorName",
-                          "typeClass": "primitive",
-                          "multiple": false,
-                          "value": document.getElementById("authorName").value
-                        },
-                      }
-                    ]
+                    "value": authorArray
                   },
                   {
                     "typeName": "datasetContact",
@@ -205,16 +242,7 @@ const Submission = () => {
                     "typeName": "keyword",
                     "multiple": true,
                     "typeClass": "compound",
-                    "value": [
-                      {
-                        "keywordValue": {
-                          "typeName": "keywordValue",
-                          "multiple": false,
-                          "typeClass": "primitive",
-                          "value": document.getElementById("keywordTerm").value
-                        }
-                      }
-                    ]
+                    "value": keywordArray
                   },
                   {
                     "typeName": "publication",
@@ -273,13 +301,13 @@ const Submission = () => {
                     "typeName": "sampleLearningGoals",
                     "multiple": true,
                     "typeClass": "primitive",
-                    "value": [document.getElementById("sampleLearningGoals").value]
+                    "value": sampleLearningGoalsParsed
                   }, 
                   {
                     "typeName": "contentStandards",
                     "multiple": true,
                     "typeClass": "primitive",
-                    "value": [document.getElementById("contentAlignment").value]
+                    "value": contentStandardsParsed
                   },
                   {
                     "typeName": "gradeLevel",
@@ -306,13 +334,13 @@ const Submission = () => {
                     "typeName": "CADFormat",
                     "multiple": true,
                     "typeClass": "primitive",
-                    "value": [document.getElementById("cadFormat").value]
+                    "value": cadFormatValuesParsed
                   },
                   {
                     "typeName": "fabEquipment",
                     "multiple": true,
                     "typeClass": "primitive",
-                    "value": [document.getElementById("equipment").value]
+                    "value": fabEquipValuesParsed
                   },
                   {
                     "typeName": "fabTime",
