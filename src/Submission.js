@@ -206,7 +206,7 @@ const Submission = () => {
                           "typeClass": "primitive",
                           "multiple": false,
                           "typeName": "datasetContactName",
-                          "value": document.getElementById("authorName").value
+                          "value": document.getElementById("contactName").value
                         },
                         "datasetContactEmail": {
                           "typeName": "datasetContactEmail",
@@ -528,61 +528,29 @@ const Submission = () => {
     const tooltips = {
       "discourseLink": "A link to a thread on the CAD Library Forum that corresponds to the object.",
 
-      "title": "The main title of the dataset.",
+      "title": "The name of the object as it will be displayed in the CAD Library.",
 
-      "author": "The entity, e.g. a person or organization, that created the Dataset.",
+      "author": "Name of individual (or individuals) who created this object. Separate multiple authors with semicolons.",
 
       "authorName": "The author's Last Name, First Name or the name of the organization responsible for this Dataset.",
 
-      "authorDepartment": "The UVa Department or organization (if not UVa) with which the author is affiliated.",
+      "pointOfContact": "Primary Author or Designated Representative.",
 
-      "contact": "The entity, e.g. a person or organization, that users of the Dataset can contact with questions",
+      "contactEmail": "Email address at educational institution or school of primary author.",
 
-      "contactName": "The name of the point of contact, e.g. the person's name or the name of an organization",
+      "description": "A brief description of the object and its purpose.",
 
-      "affiliation": "The name of the entity affiliated with the point of contact, e.g. an organization's name",
+      "bigIdea": "A brief description of the key concepts or ideas central to the lesson in which this object will be used.",
 
-      "contactEmail": "The point of contact's email address",
+      "keyword": "Key terms related to this object, separated by semicolons.",
 
-      "description": "A summary describing the purpose, nature, and scope of the Dataset. Can also be an abstract of the dataset, not the paper.",
+      "relatedWork": "Published work related to this object (if any).",
 
-      "descriptionText": "A summary describing the purpose, nature, and scope of the Dataset",
+      "citation": "The full bibliographic citation for the related publication.",
 
-      "descriptionDate": "The date when the description was added to the Dataset. If the Dataset contains more than one description, e.g. the data producer supplied one description and the data repository supplied another, this date is used to distinguish between the descriptions",
+      "relatedWorkUrl": "Link to the related work/article.",
 
-      "bigIdea": "Description of the big idea underlying the lesson",
-
-      "keyword": "A key term that describes an important aspect of the Dataset and information about any controlled vocabulary used",
-
-      "keywordTerm": "A key term that describes important aspects of the Dataset",
-
-      "controlledVocabName": "The controlled vocabulary used for the keyword term (e.g. LCSH, MeSH)",
-
-      "controlledVocabUrl": "The URL where one can access information about the term's controlled vocabulary",
-
-      "relatedWork": "Article in UVA Libra or published elsewhere that use the data from this dataset.",
-
-      "citation": "The full bibliographic citation for the related publication",
-
-      "relatedWorkIdentifierType": "The type of identifier that uniquely identifies a related publication",
-
-      "relatedWorkIdentifier": "The identifier for a related publication",
-
-      "relatedWorkUrl": "The URL form of the identifier entered in the Identifier field, e.g. the DOI URL if a DOI was entered in the Identifier field. Used to display what was entered in the ID Type and ID Number fields as a link. If what was entered in the Identifier field has no URL form, the URL of the publication webpage is used, e.g. a journal article webpage",
-
-      "notes": "Additional information about the Dataset",
-
-      "creationDate": "Date when the data collection or other materials were produced/created (NOT distributed, published or deposited).",
-
-      "contributor": "The entity, such as a person or organization, responsible for collecting, managing, or otherwise contributing to the development of the Dataset",
-
-      "contributionType": "Indicates the type of contribution made to the dataset",
-
-      "contributorName": "The name of the contributor, e.g. the person's name or the name of an organization",
-
-      "depositor": "The entity, such as a person or organization, that deposited the Dataset in the repository",
-
-      "depositDate": "Current Date: The Date that the Dataset was deposited into THIS repository.",
+      "": "",
 
       "": "",
 
@@ -592,15 +560,15 @@ const Submission = () => {
 
       "sampleLearningGoals": "Describes the learning objective; e.g., The Fraction Orange manipulative is a tool for exploring the measurement meaning of division.",
 
-      "contentAlignment": "Identifies relevant educational standards addressed: e.g., CCSS.MATH.CONTENT.6.NS.A.1 Interpret and compute quotients of fractions, and solve word problems involving division of fractions by fractions, e.g., by using visual fraction models and equations to represent the problem. The content standards will also include an associated field that describes the grade level(s) for which the content standard applies.",
+      "contentAlignment": "Identifies relevant educational standards addressed: e.g., CCSS.MATH.CONTENT.6.NS.A.1 Interpret and compute quotients of fractions, and solve word problems involving division of fractions by fractions.",
 
       "gradeLevels": "Select all grade levels from K through 12 for which this object may be used.",
 
-      "disciplines": "The discipline field identifies the discipline(s) taught. Multiple discipline and subdiscipline fields may be added for objects that touch on more than one content area.",
+      "disciplines": "The discipline field identifies the discipline(s) taught.",
 
-      "discipline": "Identifies the discipline taught. (In most cases, this corresponds to the area of teacher licensure and accreditation.) The primary discipline in the case of the Fraction Orange would be mathematics. The subdiscipline would be arithmetic.",
+      "discipline": "Identifies the discipline taught. (In most cases, this corresponds to the area of teacher licensure and accreditation.)",
 
-      "subdiscipline": "Identifies a sub discipline that may be addressed.",
+      "subdiscipline": "For example, physics or biology for science or algebra or geometry for math, etc.",
 
       "cadFormat": "The file type of CAD files associated with this object (e.g., SVG, STL, etc...)",
 
@@ -610,21 +578,17 @@ const Submission = () => {
 
       "equipment": "Equipment needed for fabricate this object (e.g., scissors, 3D printer, etc...)",
 
-      "fabricationTime": "Time required to 3D print, laser-cut, etc. the components of the object and assemble them. Estimated time requirements should be listed to the nearest tenth of an hour. For example, one and one-half hours would be entered as 1.5 hours.",
+      "fabricationTime": "Time required to 3D print, laser-cut, etc. the components of the object. Estimated time requirements should be listed to the nearest tenth of an hour. For example, one and one-half hours would be entered as 1.5 hours.",
 
       "assemblyTime": "Time required to assemble and test the components and install software. Estimated time requirements should be listed to the nearest tenth of an hour. For example, one and one-half hours would be entered as 1.5 hours.",
 
       "externalContributor": "The external developer site or contributor web site.",
 
-      "agency": "The name of the Contributor where the objects are from",
+      "agency": "Institution or organization responsible for developing the object.",
 
-      "identifier": "The URL where the object is from ",
+      "identifier": "Link to the website for the institution or organization responsible for developing the object.",
 
-      "provenanceRemixed": "When an object is remixed, the DOI(s) of the remixed object(s) are listed in this field. This field will provide a sense of objects that spark innovation and invention. This will also ensure that authors of such objects receive appropriate credit.",
-
-      "incorporatingMechanisms": "In cases in which an object such as a solenoid or a linear motor has been incorporated into another mechanism, the DOI(s) of the object(s) are listed in this field.  This field will provide a sense of objects that often serve as building blocks for creation of other mechanisms.",
-
-      "objectType": "Used to classify objects as (a) static, (2) dynamic, or (3) interactive",
+      "objectType": "See Metadata Standards documentation for description of object types: https://citejournal.org/volume-23/issue-3-23/objects-to-think-with/metadata-standards-for-educational-objects/",
 
       "": "",
 
@@ -634,13 +598,13 @@ const Submission = () => {
 
       "": "",
 
-      "fabGuidePackage": "The build details package includes the information needed to replicate a physical artifact, including the bill of materials, supplies, and equipment required to fabricate the object",
+      "fabGuidePackage": "The Fabrication Guide includes all files and information needed enable a teacher to replicate the object.",
 
-      "instructionalResourcesPackage": "The instructional resources package includes descriptions and links to instructional resources that may be available to support instruction",
+      "instructionalResourcesPackage": "The Instructional Resources that a teacher would need to successfully implement a class using the object.",
 
       "instructionalVideosPackage": "The instructional videos package includes associated video files that may be available to support instruction",
 
-      "thumbnailImage": "Upload a thumbnail image for your object as a .png, .jpg, or .jpeg file"
+      "thumbnailImage": "Upload a 300px by 300px thumbnail image for your object as a .png, .jpg, or .jpeg file. "
     }
   
     return (
@@ -685,6 +649,14 @@ const Submission = () => {
                         <b className="req">Author</b><span className="toolTip" title={tooltips.author}>?</span>
                       </td>
                       <td><input id="authorName" type="text"/></td>
+                    </tr>
+                    <br></br>
+
+                    <tr>
+                      <td> 
+                        <b className="req">Point of Contact</b><span className="toolTip" title={tooltips.pointOfContact}>?</span>
+                      </td>
+                      <td><input id="contactName" type="text"/></td>
                     </tr>
                     <br></br>
 
@@ -887,7 +859,7 @@ const Submission = () => {
                     </tr>
                     <tr>
                       <td></td>
-                      <td><input id="identifier" type="text"/></td>
+                      <td><input id="identifier" type="text" placeholder="https://"/></td>
                     </tr>
                     <br />
 
