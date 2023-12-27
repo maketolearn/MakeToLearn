@@ -118,6 +118,21 @@
     align-items: center;
 }
 
+#-banner {
+    background-color:  #2f3c4f;
+    font-size:18px;
+    display: flex;
+    color: white;
+    font-family: Cabin,Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+    display: flex;
+    justify-content: space-between; /* This pushes the items apart */
+    align-items: center;
+}
+
 .background-forum{
     background-color:  #2092e7;
 }

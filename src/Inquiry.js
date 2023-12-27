@@ -28,6 +28,8 @@ const Inquiry = () => {
       emailjs.sendForm('service_41f3fg5', 'template_nprqnh3', form.current, 'MIqeZxkpcd7inecb4')
       .then((result) => {
           console.log(result.text);
+          // alert("Thank you, your inquiry has been successfully submitted.")
+          navigate(`/success`);
       }, (error) => {
           console.log(error.text);
       });
