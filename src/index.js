@@ -8,6 +8,7 @@ import SearchLibrary from './SearchLibrary';
 import HorseEvolution from './Components/HorseEvolution';
 import Submission from './Submission'
 import Inquiry from './Inquiry'
+import Confirmation from './Confirmation';
 import Bio from './Components/Bio'
 
 import { BrowserRouter} from "react-router-dom";
@@ -31,6 +32,7 @@ ReactDOM.render(
       <Route path="/submit" element={<Submission/>}></Route>
       <Route path="/inquire" element={<Inquiry/>}></Route>
       <Route path="/people/:name" element={<Bio/>}></Route>
+      <Route path="/success" element={<Confirmation/>}></Route>
     </Routes>
   </BrowserRouter>,
   document.getElementById('root')
