@@ -26,18 +26,6 @@ const Submission = () => {
     const [doi, setDoi] = useState("");
 
     const [loggedIn, setLoggedIn] = useState(false);
-
-    useEffect(() => {
-      // Access the URL query parameters
-      const queryParams = new URLSearchParams(window.location.search);
-  
-      // Check if a specific parameter exists
-      if (queryParams.has('sso') && queryParams.has('sig')) {
-        authVerify(queryParams.get('sso'), queryParams.get('sig'))
-      } else {
-        discourseAuth();
-      }
-    }, []); // Empty dependency array ensures this effect runs once after the initial render
   
 
     useEffect(() => {
@@ -129,50 +117,6 @@ const Submission = () => {
       jsonObject["value"] = value;
       return jsonObject;
     }
-
-    async function discourseAuth() {
-      // const authURL = 'https://feasible-amazingly-rat.ngrok-free.app/auth';
-      const authURL = 'https://205f-45-85-145-206.ngrok-free.app/auth';
-
-      await fetch(authURL, {
-        headers: {
-          'ngrok-skip-browser-warning': true,
-          'Accept':'application/JSON',
-          'Content-type':'application/json',
-
-        }
-      }).then( res=>res.json() )
-      .then(link => {
-        // console.log(link);
-        window.location.href = link.url;
-      })
-      .catch((error) => console.log("Error: ", error))
-
-    };
-
-    async function authVerify(sso, sig) {
-      // const authURL = 'https://feasible-amazingly-rat.ngrok-free.app/auth';
-      const authURL = `https://205f-45-85-145-206.ngrok-free.app/verification?sso=${sso}&sig=${sig}`;
-
-      await fetch(authURL, {
-        headers: {
-          'ngrok-skip-browser-warning': true,
-          'Accept':'application/JSON',
-          'Content-type':'application/json',
-
-        }
-      }).then( res=>res.json() )
-      .then(status => {
-        if (status.status === 'Nonce verification successful.') {
-          setLoggedIn(true);
-        } else {
-          discourseAuth();
-        }
-      })
-      .catch((error) => console.log("Error: ", error))
-
-    };
-    
 
     async function createDataset() {
       const API_TOKEN = "04c00114-fb2e-4f0f-9066-bb9bf497db57";
@@ -675,9 +619,22 @@ const Submission = () => {
             <CategoryHeader></CategoryHeader>
             <CategoryBanner subject="Submissions"></CategoryBanner>
 
-            { loggedIn ?
             <div id="page">
-              <p>Submit your educational object to the CAD Library:</p>
+              <p>
+              Before submitting an object for review:
+              </p>
+
+              <ol>
+                <li>You must meet with a curator to discuss submission of the object.</li>
+                <li>You must have a valid CAD Library Forum account.</li>
+                <li>You must have a valid thread in the CAD Library Forum that will be used for feedback when the object is reviewed.</li>
+              </ol>
+              
+              <p>Thanks so much for contributing to the CAD Library. We're looking forward to working with you.</p>
+              <p>- CAD Library Curators</p>
+              
+
+              {/* <p>Submit your educational object to the CAD Library:</p> */}
               {/* <b className="req">Asterisks indicate required fields</b> */}
               {/* <button type='button' onClick={discourseAuth}>Test Discourse</button>  */}
               <br />
@@ -980,11 +937,6 @@ const Submission = () => {
                 <button type='button' onClick={createDataset}>Submit Object for Review</button> 
               </form>
             </div>
-            :
-            <div id="page">
-              {/* <p>Please log in to the CAD Library Forum to continue.</p> */}
-            </div>
-            }
           </div>
         </body>
       </div>
