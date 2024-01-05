@@ -421,7 +421,7 @@ const Submission = () => {
       });
     }
 
-    async function checkForThread() {
+    async function checkForThread(userID) {
       const link = document.getElementById("discourseLink").value;
       const segments = link.split('/');
       const id = segments[segments.length-1];
@@ -433,25 +433,49 @@ const Submission = () => {
       axios.get(url)
         .then(response => {
           // Handle the successful response here
-          if (response.data.title != null) {
-            console.log("Discourse Article Title: ", response.data.title);
-            const title = document.getElementById("title").value;
-            if (title === response.data.title) {
+          if (response.data.user_id === null) {
+            showError("No Such Forum Thread Exists");
+          } else {
+            console.log("Discourse Article Author: ", response.data.user_id);
+            // console.log("Discourse Article Title: ", response.data.title);
+            // const title = document.getElementById("title").value;
+            if (userID === response.data.user_id) {
+              clearError();
+              // alert("Creating Dataset.")
               createDataset();
             } else {
-              console.log("Object name doesn't match forum link object.");
+              showError("The email address should match that of the forum thread's author.");
             }
           }
         })
         .catch(error => {
           // Handle errors here
           console.log(error.response)
-          if (error.response.status === 404) {
-            console.error("Invalid Link");
-          } else {
-            console.error('Error fetching data:', error);
-          }
         });
+    }
+
+    async function checkForUser() {
+      const userEmail = document.getElementById("contactEmail").value;
+
+      const emailURL =  'https://205f-45-85-145-206.ngrok-free.app/email';
+
+      // Axios POST request for security
+      axios.post(emailURL, {
+        email: userEmail
+      }).then(response => {
+        // console.log(response);
+        // console.log(response.data.message);
+        if (response.data.success) {
+          console.log(response.data.message);
+          checkForThread(response.data.message);
+        } else {
+          showError(response.data.message)
+        }
+      })
+      .catch(error => {
+        // Handle errors here
+        console.log(error.response)
+      });
     }
 
     async function submitReview(doi) {
@@ -610,6 +634,16 @@ const Submission = () => {
 
       "thumbnailImage": "Upload a 300px by 300px thumbnail image for your object as a .png, .jpg, or .jpeg file. "
     }
+
+    const [errorMessage, setErrorMessage] = useState(null);
+
+    const showError = (message) => {
+      setErrorMessage(message);
+    };
+
+    const clearError = () => {
+      setErrorMessage(null);
+    };
   
     return (
       <div>
@@ -934,8 +968,12 @@ const Submission = () => {
 
                   </tbody>
                 </table>
-                <button type='button' onClick={createDataset}>Submit Object for Review</button> 
+                {errorMessage && (
+                  <p style={{color: "red"}}>{errorMessage}</p>
+                )}
+                <button type='button' onClick={checkForUser}>Submit Object for Review</button> 
               </form>
+              
             </div>
           </div>
         </body>
