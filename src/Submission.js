@@ -69,8 +69,9 @@ const Submission = () => {
     const handleZipping = (event, prefix) => {
       console.log("Handling", prefix)
       console.log(event.target.files)
-      let selectedFiles = event.target.files;
+      let file = event.target.files[0];
       let folderName = prefix + replaceSpacesWithUnderscores(document.getElementById("title").value)
+      let renamedFile = new File([file], `${folderName}.zip`, { type: file.type });
       // zip the files
       var zip = new JSZip();
       var mainZip = zip.folder(folderName)
@@ -79,28 +80,29 @@ const Submission = () => {
       var promises = [];
 
       // Iterate over selected files and add them to the mainZip folder
-      for (let i = 0; i < selectedFiles.length; i++) {
-        promises.push(addFileToZip(mainZip, selectedFiles[i]));
-      }
+      // for (let i = 0; i < selectedFiles.length; i++) {
+      //   promises.push(addFileToZip(mainZip, selectedFiles[i]));
+      // }
+      promises.push(addFileToZip(mainZip, renamedFile));
 
       Promise.all(promises).then(() => {
         // Generate the main zip file
         zip.generateAsync({ type: "blob" }).then(function (mainZipContent) {
-          // Create a new instance of JSZip for the nested zip
-          var nestedZip = new JSZip();
+          // // Create a new instance of JSZip for the nested zip
+          // var nestedZip = new JSZip();
       
-          // Add the main zip file to the nested zip with the desired folder name
-          nestedZip.file(folderName + ".zip", mainZipContent);
+          // // Add the main zip file to the nested zip with the desired folder name
+          // nestedZip.file(folderName + ".zip", mainZipContent);
       
-          // Generate the nested zip file
-          nestedZip.generateAsync({ type: "blob" }).then(function (nestedZipContent) {
+          // // Generate the nested zip file
+          // nestedZip.generateAsync({ type: "blob" }).then(function (nestedZipContent) {
             // Call the provided callback function with the nested zip content
-            if (prefix === 'Fabrication_') {
-              setFabGuidePackage(nestedZipContent);
-            } else if (prefix === 'Instruction_') {
-              setInstructResourcePackage(nestedZipContent);
-            }
-          });
+          // });
+          if (prefix === 'Fabrication_') {
+            setFabGuidePackage(mainZipContent);
+          } else if (prefix === 'Instruction_') {
+            setInstructResourcePackage(mainZipContent);
+          }
         });
       });
     }
@@ -467,7 +469,7 @@ const Submission = () => {
         // console.log(response.data.message);
         if (response.data.success) {
           console.log(response.data.message);
-          checkForThread(response.data.message);
+          // checkForThread(response.data.message);
         } else {
           showError(response.data.message)
         }
@@ -971,7 +973,7 @@ const Submission = () => {
                 {errorMessage && (
                   <p style={{color: "red"}}>{errorMessage}</p>
                 )}
-                <button type='button' onClick={checkForUser}>Submit Object for Review</button> 
+                <button type='button' onClick={createDataset}>Submit Object for Review</button> 
               </form>
               
             </div>
