@@ -53,7 +53,7 @@ const Inquiry = () => {
 
                 <p>To inquire, contact one of the following CAD Library curators:</p>
                 <ul >
-                  <input type="radio" name="object_subject" value="Science"></input><label id="checkbox-label">Science Curators&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Joshua Ellis & Sumreen Asim</label>
+                  <input type="radio" name="object_subject" value="Science"></input><label id="checkbox-label">Science Curators&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sumreen Asim</label>
                   <br></br>
                   <input type="radio" name="object_subject" value="Technology"></input><label id="checkbox-label">Technology Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Elizabeth Whitewolf</label>
                   <br></br>
