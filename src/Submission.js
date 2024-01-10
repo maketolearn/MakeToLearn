@@ -457,7 +457,7 @@ const Submission = () => {
     async function checkForUser() {
       const userEmail = document.getElementById("contactEmail").value;
 
-      const emailURL =  'https://205f-45-85-145-206.ngrok-free.app/email';
+      const emailURL =  'https://feasible-amazingly-rat.ngrok-free.app/email';
 
       // Axios POST request for security
       axios.post(emailURL, {
@@ -572,9 +572,9 @@ const Submission = () => {
 
       "keyword": "Key terms related to this object, separated by semicolons.",
 
-      "relatedWork": "Published work related to this object (if any).",
+      "relatedWork": "Optional Field: Published work related to this object (if any).",
 
-      "citation": "The full bibliographic citation for the related publication.",
+      "citation": "The full citation in APA format for the related publication.",
 
       "relatedWorkUrl": "Link to the related work/article.",
 
@@ -586,9 +586,9 @@ const Submission = () => {
 
       "": "",
 
-      "sampleLearningGoals": "Describes the learning objective; e.g., The Fraction Orange manipulative is a tool for exploring the measurement meaning of division.",
+      "sampleLearningGoals": 'Describes the learning objective; e.g., "The Fraction Orange manipulative is a tool for exploring the measurement meaning of division."',
 
-      "contentAlignment": "Identifies relevant educational standards addressed: e.g., CCSS.MATH.CONTENT.6.NS.A.1 Interpret and compute quotients of fractions, and solve word problems involving division of fractions by fractions.",
+      "contentAlignment": 'Identifies relevant local, national, or international educational standards addressed: e.g., "CCSS.MATH.CONTENT.6.NS.A.1 Interpret and compute quotients of fractions, and solve word problems involving division of fractions by fractions."',
 
       "gradeLevels": "Select all grade levels from K through 12 for which this object may be used.",
 
@@ -598,19 +598,19 @@ const Submission = () => {
 
       "subdiscipline": "For example, physics or biology for science or algebra or geometry for math, etc.",
 
-      "cadFormat": "The file type of CAD files associated with this object (e.g., SVG, STL, etc...)",
+      "cadFormat": "The file type of CAD files associated with this object (e.g., SVG, STL, etc.)",
 
-      "consumableCost": "The estimated cost of non-reusable materials needed to fabricate this object. This value should be entered as a numerical value in USD (e.g., 10.5, 20, etc...).",
+      "consumableCost": "The estimated cost of non-reusable materials needed to fabricate this object. This value should be entered as a numerical value in USD (e.g., 10.5, 20, etc.).",
 
-      "reusableCost": "The estimated cost of reusable materials needed to fabricate this object. This value should be entered as a numerical value in USD (e.g., 10.5, 20, etc...).",
+      "reusableCost": "The estimated cost of reusable materials needed to fabricate this object. This value should be entered as a numerical value in USD (e.g., 10.5, 20, etc.).",
 
-      "equipment": "Equipment needed for fabricate this object (e.g., scissors, 3D printer, etc...)",
+      "equipment": "Equipment needed for fabricate this object (e.g., scissors, 3D printer, etc.)",
 
       "fabricationTime": "Time required to 3D print, laser-cut, etc. the components of the object. Estimated time requirements should be listed to the nearest tenth of an hour. For example, one and one-half hours would be entered as 1.5 hours.",
 
       "assemblyTime": "Time required to assemble and test the components and install software. Estimated time requirements should be listed to the nearest tenth of an hour. For example, one and one-half hours would be entered as 1.5 hours.",
 
-      "externalContributor": "The external developer site or contributor web site.",
+      "externalContributor": "Optional Field: The external developer site or contributor web site.",
 
       "agency": "Institution or organization responsible for developing the object.",
 
@@ -626,7 +626,7 @@ const Submission = () => {
 
       "": "",
 
-      "fabGuidePackage": "The Fabrication Guide includes all files and information needed enable a teacher to replicate the object.",
+      "fabGuidePackage": "The Fabrication Guide includes all files and information needed to enable a teacher to replicate the object.",
 
       "instructionalResourcesPackage": "The Instructional Resources that a teacher would need to successfully implement a class using the object.",
 
@@ -691,7 +691,7 @@ const Submission = () => {
 
                     <tr>
                       <td>
-                          <label for="discourseLink"> <b className="req">Link to Discourse Thread</b><span className="toolTip" title={tooltips.discourseLink}>?</span></label>
+                          <label for="discourseLink"> <b className="req">Link to CAD Library Forum Thread</b><span className="toolTip" title={tooltips.discourseLink}>?</span></label>
                       </td>
                       <td><input id="discourseLink" cols="40" rows="1" type="text"/></td>
                     </tr>
@@ -771,7 +771,7 @@ const Submission = () => {
                     <tr>
                       <td>
                         <b>
-                          <label className="req" for="sampleLearningGoals">Sample Learning Goal<span className="toolTip" title={tooltips.sampleLearningGoals}>?</span> </label>
+                          <label for="sampleLearningGoals">Sample Learning Goal<span className="toolTip" title={tooltips.sampleLearningGoals}>?</span> </label>
                         </b>
                       </td>
                       <td><input id="sampleLearningGoals" type="text" placeholder="Sample learning goal"/></td>
@@ -781,7 +781,7 @@ const Submission = () => {
                     <tr>
                       <td>
                         <b>
-                          <label className="req" for="contentAlignment">Content Standard<span className="toolTip" title={tooltips.contentAlignment}>?</span> </label>
+                          <label for="contentAlignment">Content Standard<span className="toolTip" title={tooltips.contentAlignment}>?</span> </label>
                         </b>
                       </td>
                       <td><input id="contentAlignment" type="text" placeholder="e.g. CCSS.MATH.CONTEXT.6.NS.A.1"/></td>
