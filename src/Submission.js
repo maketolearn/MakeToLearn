@@ -26,7 +26,18 @@ const Submission = () => {
     const [doi, setDoi] = useState("");
 
     const [loggedIn, setLoggedIn] = useState(false);
-  
+
+    useEffect(() => {
+      // Access the URL query parameters
+      const queryParams = new URLSearchParams(window.location.search);
+
+      // Check if a specific parameter exists
+      if (queryParams.has('sso') && queryParams.has('sig')) {
+        authVerify(queryParams.get('sso'), queryParams.get('sig'))
+      } else {
+        // discourseAuth();
+      }
+    }, []); // Empty dependency array ensures this effect runs once after the initial render
 
     useEffect(() => {
       if (doi != "") {
@@ -36,6 +47,50 @@ const Submission = () => {
         // submitReview(doi);
       }
     }, [doi]);
+
+
+    async function discourseAuth() {
+      const authURL = 'https://feasible-amazingly-rat.ngrok-free.app/auth';
+      // const authURL = 'https://205f-45-85-145-206.ngrok-free.app/auth';
+
+      await fetch(authURL, {
+        headers: {
+          'ngrok-skip-browser-warning': true,
+          'Accept':'application/JSON',
+          'Content-type':'application/json',
+
+        }
+      }).then( res=>res.json() )
+      .then(link => {
+        // console.log(link);
+        window.location.href = link.url;
+      })
+      .catch((error) => console.log("Error: ", error))
+
+    };
+
+    async function authVerify(sso, sig) {
+      // const authURL = 'https://feasible-amazingly-rat.ngrok-free.app/auth';
+      const authURL = `https://feasible-amazingly-rat.ngrok-free.app/verification?sso=${sso}&sig=${sig}`;
+
+      await fetch(authURL, {
+        headers: {
+          'ngrok-skip-browser-warning': true,
+          'Accept':'application/JSON',
+          'Content-type':'application/json',
+
+        }
+      }).then( res=>res.json() )
+      .then(status => {
+        if (status.status === 'Nonce verification successful.') {
+          setLoggedIn(true);
+        } else {
+          discourseAuth();
+        }
+      })
+      .catch((error) => console.log("Error: ", error))
+
+    };
   
     const handleSubmit = (event) => {
       event.preventDefault();
@@ -655,328 +710,356 @@ const Submission = () => {
             <CategoryHeader></CategoryHeader>
             <CategoryBanner subject="Submissions"></CategoryBanner>
 
-            <div id="page">
-              <p>
-              Before submitting an object for review:
-              </p>
-
-              <ol>
-                <li>You must meet with a curator to discuss submission of the object.</li>
-                <li>You must have a valid CAD Library Forum account.</li>
-                <li>You must have a valid thread in the CAD Library Forum that will be used for feedback when the object is reviewed.</li>
-              </ol>
-              
-              <p>Thanks so much for contributing to the CAD Library. We're looking forward to working with you.</p>
-              <p>- CAD Library Curators</p>
-              
-
-              {/* <p>Submit your educational object to the CAD Library:</p> */}
-              {/* <b className="req">Asterisks indicate required fields</b> */}
-              {/* <button type='button' onClick={discourseAuth}>Test Discourse</button>  */}
-              <br />
-              <b>Hover over question marks for more information</b><span className="toolTip" title="Just like that!">?</span>
-              <br />
-              <br />
-
-              <form>
-                <table>
-                  <tbody>
-                    <h4><u>Object Information</u></h4>
-                    <br></br>
-                    <tr>
-                      <td>
-                          <label for="title"> <b className="req">Name of Object</b><span className="toolTip" title={tooltips.title}>?</span></label>
-                        </td>
-                        <td><input id="title" cols="40" rows="1" type="text"/></td>
-                    </tr>
-                    <br></br>
-
-                    <tr>
-                      <td>
-                          <label for="discourseLink"> <b className="req">Link to CAD Library Forum Thread</b><span className="toolTip" title={tooltips.discourseLink}>?</span></label>
-                      </td>
-                      <td><input id="discourseLink" cols="40" rows="1" type="text"/></td>
-                    </tr>
-                    <br></br>
-
-                    <tr>
-                      <td> 
-                        <b className="req">Author</b><span className="toolTip" title={tooltips.author}>?</span>
-                      </td>
-                      <td><input id="authorName" type="text"/></td>
-                    </tr>
-                    <br></br>
-
-                    <tr>
-                      <td> 
-                        <b className="req">Point of Contact</b><span className="toolTip" title={tooltips.pointOfContact}>?</span>
-                      </td>
-                      <td><input id="contactName" type="text"/></td>
-                    </tr>
-                    <br></br>
-
-                    <tr>
-                      <td> 
-                        <b className="req">Email Address</b><span className="toolTip" title={tooltips.contactEmail}>?</span>
-                      </td>
-                      <td><input id="contactEmail" type="email"/></td>
-                    </tr>
-                    <br></br>
-
-                    <tr>
-                      <td> 
-                        <b className="req">Description</b><span className="toolTip" title={tooltips.description}>?</span>
-                      </td>
-                      <td><textarea name="description" id="description" cols="40" rows="4"></textarea></td>
-                    </tr>
-                    <br></br>
-
-                    <tr>
-                      <td> 
-                        <b className="req">Big Idea</b><span className="toolTip" title={tooltips.bigIdea}>?</span>
-                      </td>
-                      <td><textarea name="bigIdea" id="bigIdea" cols="40" rows="4"></textarea></td>
-                    </tr>
-                    <br></br>
-
-                    <tr>
-                      <td>
-                        <b>Keyword</b><span className="toolTip" title={tooltips.keyword}>?</span>
-                      </td>
-                      <td><input id="keywordTerm" type="text"/></td>
-                    </tr>
-                    <br></br>
-
-                    <tr>
-                      <td> <b>Related Work/Article</b><span className="toolTip" title={tooltips.relatedWork}>?</span></td>
-                      <td><label for="citation"><b>Citation</b><span className="toolTip" title={tooltips.citation}>?</span></label></td>
-                      
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td><textarea name="citation" id="citation" cols="40" rows="4"></textarea></td>
-                      
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td><label for="relatedWorkUrl"><b>URL</b><span className="toolTip" title={tooltips.relatedWorkUrl}>?</span></label></td>
-                      
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td><input id="relatedWorkUrl" placeholder="https://"/></td>
-                    </tr>
-                    <br></br>
-
-                    {/* !!!!!!!!!!!!!!!!!!!!!CAD METADATA!!!!!!!!!!!!!!!!!!!!! */}
             
-                    <tr>
-                      <td>
-                        <b>
-                          <label for="sampleLearningGoals">Sample Learning Goal<span className="toolTip" title={tooltips.sampleLearningGoals}>?</span> </label>
-                        </b>
-                      </td>
-                      <td><input id="sampleLearningGoals" type="text" placeholder="Sample learning goal"/></td>
-                    </tr>
-                    <br></br>
-
-                    <tr>
-                      <td>
-                        <b>
-                          <label for="contentAlignment">Content Standard<span className="toolTip" title={tooltips.contentAlignment}>?</span> </label>
-                        </b>
-                      </td>
-                      <td><input id="contentAlignment" type="text" placeholder="e.g. CCSS.MATH.CONTEXT.6.NS.A.1"/></td>
-                    </tr>
-                    <br></br>
-
-
-                    <tr>
-                      <td>
-                        <b>
-                          <label className="req" for="gradeLevels">Grade Levels<span className="toolTip" title={tooltips.gradeLevels}>?</span> </label>
-                        </b>
-                      </td>
-                      <td>
-                        <div class="grade-checkboxes">
-                          {grades.map((grade) =>
-                          <label id="checkbox" key={grade}>
-                              <input className="subject-filter" type="checkbox" onChange={() => setGradesSelected([...gradesSelected, grade], console.log(gradesSelected))}>
-                              </input>
-                              {grade}
-                          </label> 
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                    <br></br>
-
-                    <tr>
-                      <td> <b className="req">Discipline</b><span className="toolTip" title={tooltips.disciplines}>?</span> </td>
-                      <td><label for="discipline"><b>Discipline</b><span className="toolTip" title={tooltips.discipline}>?</span> </label></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td>
-                        <select name="Discipline" id="discipline">
-                          <option value=""></option>
-                          <option value="Science">Science</option>
-                          <option value="Technology">Technology</option>
-                          <option value="Engineering">Engineering</option>
-                          <option value="Mathematics">Mathematics</option>
-                        </select>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td><label for="subdiscipline"><b>Subdiscipline</b><span className="toolTip" title={tooltips.subdiscipline}>?</span> </label></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td><input id="subdiscipline" type="text"/></td>
-                    </tr>
-                    <br></br>
-
-                    <tr>
-                      <td>
-                        <b>
-                          <label for="cadFormat">CAD Format<span className="toolTip" title={tooltips.cadFormat}>?</span> </label>
-                        </b>
-                      </td>
-                      <td><input id="cadFormat" type="text"/></td>
-                    </tr>
-                    <br></br>
-
-                    <tr>
-                      <td>
-                        <b>
-                          <label for="consumableCost">Estimated Material Cost (Consumable)<span className="toolTip" title={tooltips.consumableCost}>?</span> </label>
-                        </b>
-                      </td>
-                      <td><input id="consumableCost" type="text" placeholder="e.g., 10.5, 20, etc"/></td>
-                    </tr>
-                    <br></br>
-
-                    <tr>
-                      <td>
-                        <b>
-                          <label for="reusableCost">Estimated Material Cost (Reusable)<span className="toolTip" title={tooltips.reusableCost}>?</span> </label>
-                        </b>
-                      </td>
-                      <td><input id="reusableCost" type="text" placeholder="e.g., 10.5, 20, etc"/></td>
-                    </tr>
-                    <br />
-
-                    <tr>
-                      <td>
-                        <b>
-                          <label for="equipment">Fabrication Equipment<span className="toolTip" title={tooltips.equipment}>?</span> </label>
-                        </b>
-                      </td>
-                      <td><input id="equipment" type="text"/></td>
-                    </tr>
-                    <br></br>
-
-                    <tr>
-                      <td>
-                        <b>
-                          <label for="fabricationTime">Fabrication Time<span className="toolTip" title={tooltips.fabricationTime}>?</span> </label>
-                        </b>
-                      </td>
-                      <td><textarea id="fabricationTime" cols="40" rows="2" type="text" placeholder="to the nearest tenth of an hour; i.e., 1.5 hours"/></td>
-                    </tr>
-                    <br></br>
-
-
-                    <tr>
-                      <td>
-                        <b>
-                          <label for="assemblyTime">Assembly Time<span className="toolTip" title={tooltips.assemblyTime}>?</span> </label>
-                        </b>
-                      </td>
-                      <td><textarea id="assemblyTime" cols="40" rows="2" type="text" placeholder="to the nearest tenth of an hour; i.e., 1.5 hours"/></td>
-                    </tr>
-                    <br />
-
-
-                    <tr>
-                      <td> <b>Developer (Institution)</b><span className="toolTip" title={tooltips.externalContributor}>?</span> </td>
-
-                      <td><label for="agency"><b>Institution</b><span className="toolTip" title={tooltips.agency}>?</span> </label></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td><input id="agency" type="text"/></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td><label for="identifier"><b>URL</b><span className="toolTip" title={tooltips.identifier}>?</span> </label></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td><input id="identifier" type="text" placeholder="https://"/></td>
-                    </tr>
-                    <br />
-
-
-                    <tr>
-                      <td>
-                        <b>
-                          <label for="objectType">Object Type<span className="toolTip" title={tooltips.objectType}>?</span> </label>
-                        </b>
-                      </td>
-                      <td>
-                        <select name="Object Type" id="objectType">
-                          <option value=""></option>
-                          <option value="static">static</option>
-                          <option value="dynamic">dynamic</option>
-                          <option value="interactive">interactive</option>
-                        </select>
-                      </td>
-                    </tr>
-                    <br></br>
-                    <br></br>
-
-                    <h4><u>Files</u> </h4>
-                    <br></br>
-                    <tr>
-                        <td>
-                            <label for="fabGuidePackage"> <b className="req">Fabrication Guide</b><span className="toolTip" title={tooltips.fabGuidePackage}>?</span></label>
-                        </td>
-                        <td><input type="file" onChange={(event) => handleZipping(event, 'Fabrication_')} multiple></input></td>
-                    </tr>
-                    <br />
-
-                    <tr>
-                        <td>
-                            <label for="instructionalResourcesPackage"> <b className="req">Instructional Resources</b><span className="toolTip" title={tooltips.instructionalResourcesPackage}>?</span></label>
-                        </td>
-                        <td><input type="file" onChange={(event) => handleZipping(event, 'Instruction_')} multiple></input></td>
-                    </tr>
-                    <br />
-
-                    <h4> <u>Image Upload</u> </h4>
-                    <br></br>
-                    <p> 
-                      Please upload a thumbnail image for your object as a .png, .jpg, or .jpeg file.  
-                    </p>
-                    <tr>
-                        <td>
-                            <label for="thumbnailImage"> <b className="req">Thumbnail Image</b><span className="toolTip" title={tooltips.thumbnailImage}>?</span></label>
-                        </td>
-                        <td><input type="file" onChange={handleThumbnailImage}></input></td>
-                    </tr>
-                    <br />
-
-                  </tbody>
-                </table>
-                {errorMessage && (
-                  <p style={{color: "red"}}>{errorMessage}</p>
-                )}
-                <button type='button' onClick={createDataset}>Submit Object for Review</button> 
-              </form>
               
-            </div>
+              
+              { loggedIn ?
+                <div id="page">
+
+                  <p>
+                    Congratulations on successfully logging into the CAD Library!
+                  </p>
+    
+                  <ul>
+                    <li>To submit an object to the CAD Library, you must have a corresponding thread in the CAD Library Forum. This thread will be used to provide feedback about the object during the review process.</li>
+                    <br />
+                    <li>The information requested about the object in the form below is described in the article: 
+                    </li>
+                      <a href="https://citejournal.org/volume-23/issue-3-23/objects-to-think-with/metadata-standards-for-educational-objects/">Metadata Standards for Educational Objects</a>
+                  </ul>
+                  
+                  <p>
+                    <i>Please contact a curator if you have any questions or would like to discuss this.</i>
+                  </p>
+                  
+                  <b>Hover over question marks for more information</b><span className="toolTip" title="Just like that!">?</span>
+                  <br />
+                  <br />
+
+                  <form>
+                    <table>
+                      <tbody>
+                        <h4><u>Object Information</u></h4>
+                        <br></br>
+                        <tr>
+                          <td>
+                              <label for="title"> <b className="req">Name of Object</b><span className="toolTip" title={tooltips.title}>?</span></label>
+                            </td>
+                            <td><input id="title" cols="40" rows="1" type="text"/></td>
+                        </tr>
+                        <br></br>
+
+                        <tr>
+                          <td>
+                              <label for="discourseLink"> <b className="req">Link to CAD Library Forum Thread</b><span className="toolTip" title={tooltips.discourseLink}>?</span></label>
+                          </td>
+                          <td><input id="discourseLink" cols="40" rows="1" type="text"/></td>
+                        </tr>
+                        <br></br>
+
+                        <tr>
+                          <td> 
+                            <b className="req">Author</b><span className="toolTip" title={tooltips.author}>?</span>
+                          </td>
+                          <td><input id="authorName" type="text"/></td>
+                        </tr>
+                        <br></br>
+
+                        <tr>
+                          <td> 
+                            <b className="req">Point of Contact</b><span className="toolTip" title={tooltips.pointOfContact}>?</span>
+                          </td>
+                          <td><input id="contactName" type="text"/></td>
+                        </tr>
+                        <br></br>
+
+                        <tr>
+                          <td> 
+                            <b className="req">Email Address</b><span className="toolTip" title={tooltips.contactEmail}>?</span>
+                          </td>
+                          <td><input id="contactEmail" type="email"/></td>
+                        </tr>
+                        <br></br>
+
+                        <tr>
+                          <td> 
+                            <b className="req">Description</b><span className="toolTip" title={tooltips.description}>?</span>
+                          </td>
+                          <td><textarea name="description" id="description" cols="40" rows="4"></textarea></td>
+                        </tr>
+                        <br></br>
+
+                        <tr>
+                          <td> 
+                            <b className="req">Big Idea</b><span className="toolTip" title={tooltips.bigIdea}>?</span>
+                          </td>
+                          <td><textarea name="bigIdea" id="bigIdea" cols="40" rows="4"></textarea></td>
+                        </tr>
+                        <br></br>
+
+                        <tr>
+                          <td>
+                            <b>Keyword</b><span className="toolTip" title={tooltips.keyword}>?</span>
+                          </td>
+                          <td><input id="keywordTerm" type="text"/></td>
+                        </tr>
+                        <br></br>
+
+                        <tr>
+                          <td> <b>Related Work/Article</b><span className="toolTip" title={tooltips.relatedWork}>?</span></td>
+                          <td><label for="citation"><b>Citation</b><span className="toolTip" title={tooltips.citation}>?</span></label></td>
+                          
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td><textarea name="citation" id="citation" cols="40" rows="4"></textarea></td>
+                          
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td><label for="relatedWorkUrl"><b>URL</b><span className="toolTip" title={tooltips.relatedWorkUrl}>?</span></label></td>
+                          
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td><input id="relatedWorkUrl" placeholder="https://"/></td>
+                        </tr>
+                        <br></br>
+
+                        {/* !!!!!!!!!!!!!!!!!!!!!CAD METADATA!!!!!!!!!!!!!!!!!!!!! */}
+                
+                        <tr>
+                          <td>
+                            <b>
+                              <label for="sampleLearningGoals">Sample Learning Goal<span className="toolTip" title={tooltips.sampleLearningGoals}>?</span> </label>
+                            </b>
+                          </td>
+                          <td><input id="sampleLearningGoals" type="text" placeholder="Sample learning goal"/></td>
+                        </tr>
+                        <br></br>
+
+                        <tr>
+                          <td>
+                            <b>
+                              <label for="contentAlignment">Content Standard<span className="toolTip" title={tooltips.contentAlignment}>?</span> </label>
+                            </b>
+                          </td>
+                          <td><input id="contentAlignment" type="text" placeholder="e.g. CCSS.MATH.CONTEXT.6.NS.A.1"/></td>
+                        </tr>
+                        <br></br>
+
+
+                        <tr>
+                          <td>
+                            <b>
+                              <label className="req" for="gradeLevels">Grade Levels<span className="toolTip" title={tooltips.gradeLevels}>?</span> </label>
+                            </b>
+                          </td>
+                          <td>
+                            <div class="grade-checkboxes">
+                              {grades.map((grade) =>
+                              <label id="checkbox" key={grade}>
+                                  <input className="subject-filter" type="checkbox" onChange={() => setGradesSelected([...gradesSelected, grade], console.log(gradesSelected))}>
+                                  </input>
+                                  {grade}
+                              </label> 
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                        <br></br>
+
+                        <tr>
+                          <td> <b className="req">Discipline</b><span className="toolTip" title={tooltips.disciplines}>?</span> </td>
+                          <td><label for="discipline"><b>Discipline</b><span className="toolTip" title={tooltips.discipline}>?</span> </label></td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td>
+                            <select name="Discipline" id="discipline">
+                              <option value=""></option>
+                              <option value="Science">Science</option>
+                              <option value="Technology">Technology</option>
+                              <option value="Engineering">Engineering</option>
+                              <option value="Mathematics">Mathematics</option>
+                            </select>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td><label for="subdiscipline"><b>Subdiscipline</b><span className="toolTip" title={tooltips.subdiscipline}>?</span> </label></td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td><input id="subdiscipline" type="text"/></td>
+                        </tr>
+                        <br></br>
+
+                        <tr>
+                          <td>
+                            <b>
+                              <label for="cadFormat">CAD Format<span className="toolTip" title={tooltips.cadFormat}>?</span> </label>
+                            </b>
+                          </td>
+                          <td><input id="cadFormat" type="text"/></td>
+                        </tr>
+                        <br></br>
+
+                        <tr>
+                          <td>
+                            <b>
+                              <label for="consumableCost">Estimated Material Cost (Consumable)<span className="toolTip" title={tooltips.consumableCost}>?</span> </label>
+                            </b>
+                          </td>
+                          <td><input id="consumableCost" type="text" placeholder="e.g., 10.5, 20, etc"/></td>
+                        </tr>
+                        <br></br>
+
+                        <tr>
+                          <td>
+                            <b>
+                              <label for="reusableCost">Estimated Material Cost (Reusable)<span className="toolTip" title={tooltips.reusableCost}>?</span> </label>
+                            </b>
+                          </td>
+                          <td><input id="reusableCost" type="text" placeholder="e.g., 10.5, 20, etc"/></td>
+                        </tr>
+                        <br />
+
+                        <tr>
+                          <td>
+                            <b>
+                              <label for="equipment">Fabrication Equipment<span className="toolTip" title={tooltips.equipment}>?</span> </label>
+                            </b>
+                          </td>
+                          <td><input id="equipment" type="text"/></td>
+                        </tr>
+                        <br></br>
+
+                        <tr>
+                          <td>
+                            <b>
+                              <label for="fabricationTime">Fabrication Time<span className="toolTip" title={tooltips.fabricationTime}>?</span> </label>
+                            </b>
+                          </td>
+                          <td><textarea id="fabricationTime" cols="40" rows="2" type="text" placeholder="to the nearest tenth of an hour; i.e., 1.5 hours"/></td>
+                        </tr>
+                        <br></br>
+
+
+                        <tr>
+                          <td>
+                            <b>
+                              <label for="assemblyTime">Assembly Time<span className="toolTip" title={tooltips.assemblyTime}>?</span> </label>
+                            </b>
+                          </td>
+                          <td><textarea id="assemblyTime" cols="40" rows="2" type="text" placeholder="to the nearest tenth of an hour; i.e., 1.5 hours"/></td>
+                        </tr>
+                        <br />
+
+
+                        <tr>
+                          <td> <b>Developer (Institution)</b><span className="toolTip" title={tooltips.externalContributor}>?</span> </td>
+
+                          <td><label for="agency"><b>Institution</b><span className="toolTip" title={tooltips.agency}>?</span> </label></td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td><input id="agency" type="text"/></td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td><label for="identifier"><b>URL</b><span className="toolTip" title={tooltips.identifier}>?</span> </label></td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td><input id="identifier" type="text" placeholder="https://"/></td>
+                        </tr>
+                        <br />
+
+
+                        <tr>
+                          <td>
+                            <b>
+                              <label for="objectType">Object Type<span className="toolTip" title={tooltips.objectType}>?</span> </label>
+                            </b>
+                          </td>
+                          <td>
+                            <select name="Object Type" id="objectType">
+                              <option value=""></option>
+                              <option value="static">static</option>
+                              <option value="dynamic">dynamic</option>
+                              <option value="interactive">interactive</option>
+                            </select>
+                          </td>
+                        </tr>
+                        <br></br>
+                        <br></br>
+
+                        <h4><u>Files</u> </h4>
+                        <br></br>
+                        <tr>
+                            <td>
+                                <label for="fabGuidePackage"> <b className="req">Fabrication Guide</b><span className="toolTip" title={tooltips.fabGuidePackage}>?</span></label>
+                            </td>
+                            <td><input type="file" onChange={(event) => handleZipping(event, 'Fabrication_')} multiple></input></td>
+                        </tr>
+                        <br />
+
+                        <tr>
+                            <td>
+                                <label for="instructionalResourcesPackage"> <b className="req">Instructional Resources</b><span className="toolTip" title={tooltips.instructionalResourcesPackage}>?</span></label>
+                            </td>
+                            <td><input type="file" onChange={(event) => handleZipping(event, 'Instruction_')} multiple></input></td>
+                        </tr>
+                        <br />
+
+                        <h4> <u>Image Upload</u> </h4>
+                        <br></br>
+                        <p> 
+                          Please upload a thumbnail image for your object as a .png, .jpg, or .jpeg file.  
+                        </p>
+                        <tr>
+                            <td>
+                                <label for="thumbnailImage"> <b className="req">Thumbnail Image</b><span className="toolTip" title={tooltips.thumbnailImage}>?</span></label>
+                            </td>
+                            <td><input type="file" onChange={handleThumbnailImage}></input></td>
+                        </tr>
+                        <br />
+
+                      </tbody>
+                    </table>
+                    {errorMessage && (
+                      <p style={{color: "red"}}>{errorMessage}</p>
+                    )}
+                    <button type='button' onClick={checkForUser}>Submit Object for Review</button> 
+                  </form>
+                </div>
+
+              :
+                <div id="page">
+                  <p>
+                  Before submitting an object for review:
+                  </p>
+    
+                  <ol>
+                    <li>You must meet with a curator to discuss submission of the object.</li>
+                    <li>You must have a valid CAD Library Forum account.</li>
+                    <li>You must have a valid thread in the CAD Library Forum that will be used for feedback when the object is reviewed.</li>
+                  </ol>
+                  
+                  <p>Thanks so much for contributing to the CAD Library. We're looking forward to working with you.</p>
+                  <p>- CAD Library Curators</p>
+
+                  <hr>
+                  </hr>
+                  <p>Log in to the CAD Library Forum to begin the submission process.</p>
+                  <p>
+                    <button className="button" onClick={discourseAuth}> Log in to the CAD Library Forum </button>
+                  </p>
+                  </div>
+
+              }
+              
           </div>
         </body>
       </div>
