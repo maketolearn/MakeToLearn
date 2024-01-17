@@ -53,13 +53,13 @@ const Inquiry = () => {
 
                 <p>To inquire, contact one of the following CAD Library curators:</p>
                 <ul >
-                  <input type="radio" name="object_subject" value="Science"></input><label id="checkbox-label">Science Curators&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sumreen Asim</label>
+                  <input id="inquiry-input" type="radio" name="object_subject" value="Science"></input><label id="checkbox-label">Science Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sumreen Asim</label>
                   <br></br>
-                  <input type="radio" name="object_subject" value="Technology"></input><label id="checkbox-label">Technology Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Elizabeth Whitewolf</label>
+                  <input id="inquiry-input" type="radio" name="object_subject" value="Technology"></input><label id="checkbox-label">Technology Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Elizabeth Whitewolf</label>
                   <br></br>
-                  <input type="radio" name="object_subject" value="Engineering"></input><label id="checkbox-label">Engineering Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ryan Novitski</label>
+                  <input id="inquiry-input" type="radio" name="object_subject" value="Engineering"></input><label id="checkbox-label">Engineering Curator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ryan Novitski</label>
                   <br></br>
-                  <input type="radio" name="object_subject" value="Mathematics"></input><label id="checkbox-label">Mathematics Curators&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Steven Greenstein & Allison McCulloch</label>
+                  <input id="inquiry-input" type="radio" name="object_subject" value="Mathematics"></input><label id="checkbox-label">Mathematics Curators&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Steven Greenstein & Allison McCulloch</label>
                 </ul>
 
                 <p>Provide your name, e-mail address, and a short description of your interest.</p>
