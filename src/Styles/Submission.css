@@ -17,6 +17,12 @@ input {
     width: 316px;
     margin-right: 24px;
 }
+
+#inquiry-input {
+    width: auto;
+    margin-right: 24px;
+}
+
 button #createDataset{
     float: right;
     width: calc(100% - 200px);
