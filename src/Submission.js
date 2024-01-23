@@ -176,7 +176,7 @@ const Submission = () => {
     }
 
     async function createDataset() {
-      const API_TOKEN = "04c00114-fb2e-4f0f-9066-bb9bf497db57";
+      const API_TOKEN = process.env.DATAVERSE_API_KEY;
       const SERVER_URL = 'https://dataverse.lib.virginia.edu';
       const PARENT = 'CADLibrary';
 
@@ -556,7 +556,7 @@ const Submission = () => {
     }
     
     async function uploadFiles(doi) {
-      const API_TOKEN = "04c00114-fb2e-4f0f-9066-bb9bf497db57";
+      const API_TOKEN = process.env.DATAVERSE_API_KEY;
       const SERVER_URL = 'https://dataverse.lib.virginia.edu';
       const headers = {
         'X-Dataverse-key': API_TOKEN,
