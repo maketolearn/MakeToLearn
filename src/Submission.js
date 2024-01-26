@@ -25,8 +25,18 @@ const Submission = () => {
 
     const [doi, setDoi] = useState("");
 
+    // * Search functionality
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      setSearchObjects([]);
+      navigate(`/browse`, {state: searchTerm});
+    }
+
     const [loggedIn, setLoggedIn] = useState(false);
 
+    const SERVER_URL = "https://feasible-amazingly-rat.ngrok-free.app";
+
+    // * Check URL for login tokens
     useEffect(() => {
       // Access the URL query parameters
       const queryParams = new URLSearchParams(window.location.search);
@@ -34,24 +44,22 @@ const Submission = () => {
       // Check if a specific parameter exists
       if (queryParams.has('sso') && queryParams.has('sig')) {
         authVerify(queryParams.get('sso'), queryParams.get('sig'))
-      } else {
-        // discourseAuth();
       }
     }, []); // Empty dependency array ensures this effect runs once after the initial render
 
+    // * Upload files once a dataverse object has been created.
     useEffect(() => {
       if (doi != "") {
-        console.log(doi);
+        // console.log(doi);
         uploadFiles(doi);
         // if file upload success --> submit Review
         // submitReview(doi);
       }
     }, [doi]);
 
-
+    // * Request a unique login link from backend
     async function discourseAuth() {
-      const authURL = 'https://feasible-amazingly-rat.ngrok-free.app/auth';
-      // const authURL = 'https://205f-45-85-145-206.ngrok-free.app/auth';
+      const authURL = `${SERVER_URL}/auth`;
 
       await fetch(authURL, {
         headers: {
@@ -67,11 +75,11 @@ const Submission = () => {
       })
       .catch((error) => console.log("Error: ", error))
 
-    };
+    }
 
+    // * Verify that the login worked correctly
     async function authVerify(sso, sig) {
-      // const authURL = 'https://feasible-amazingly-rat.ngrok-free.app/auth';
-      const authURL = `https://feasible-amazingly-rat.ngrok-free.app/verification?sso=${sso}&sig=${sig}`;
+      const authURL = `${SERVER_URL}/verification?sso=${sso}&sig=${sig}`;
 
       await fetch(authURL, {
         headers: {
@@ -90,100 +98,69 @@ const Submission = () => {
       })
       .catch((error) => console.log("Error: ", error))
 
-    };
-  
-    const handleSubmit = (event) => {
-      event.preventDefault();
-      setSearchObjects([]);
-      navigate(`/browse`, {state: searchTerm});
     }
 
-    const replaceSpacesWithUnderscores = (string) => {
-      // Use a regular expression to replace spaces with underscores
-      var resultString = string.replace(/ /g, '_');
-      return resultString;
-    }
+    // * Begins submission process, asks backend to check for user, calls checkForThread with UserID on success
+    async function checkForUser() {
+      const userEmail = document.getElementById("contactEmail").value;
 
-    function addFileToZip(fabricationZip, file) {
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-    
-        // Read the content of the file
-        reader.onload = function (event) {
-          // Add the file to the fabricationZip folder
-          fabricationZip.file(file.name, event.target.result);
-    
-          // Resolve the promise once the file has been added
-          resolve();
-        };
-    
-        reader.readAsArrayBuffer(file);
+      const emailURL =  `${SERVER_URL}/email`;
+
+      // Axios POST request for security
+      axios.post(emailURL, {
+        email: userEmail
+      }).then(response => {
+        // console.log(response);
+        // console.log(response.data.message);
+        if (response.data.success) {
+          console.log(response.data.message);
+          checkForThread(response.data.message);
+        } else {
+          showError(response.data.message)
+        }
+      })
+      .catch(error => {
+        // Handle errors here
+        console.log(error.response)
       });
     }
 
-    const handleZipping = (event, prefix) => {
-      console.log("Handling", prefix)
-      console.log(event.target.files)
-      let file = event.target.files[0];
-      let folderName = prefix + replaceSpacesWithUnderscores(document.getElementById("title").value)
-      let renamedFile = new File([file], `${folderName}.zip`, { type: file.type });
-      // zip the files
-      var zip = new JSZip();
-      var mainZip = zip.folder(folderName)
+    // * Checks for thread and matches with UserID associated with email, creates dataset on success
+    async function checkForThread(userID) {
+      const link = document.getElementById("discourseLink").value;
+      const segments = link.split('/');
+      const id = segments[segments.length-1];
+      // console.log("id", id);
 
-      // Array to store promises for each file
-      var promises = [];
+      const url = `https://forum.cadlibrary.org/t/${id}.json`;
 
-      // Iterate over selected files and add them to the mainZip folder
-      // for (let i = 0; i < selectedFiles.length; i++) {
-      //   promises.push(addFileToZip(mainZip, selectedFiles[i]));
-      // }
-      promises.push(addFileToZip(mainZip, renamedFile));
-
-      Promise.all(promises).then(() => {
-        // Generate the main zip file
-        zip.generateAsync({ type: "blob" }).then(function (mainZipContent) {
-          // // Create a new instance of JSZip for the nested zip
-          // var nestedZip = new JSZip();
-      
-          // // Add the main zip file to the nested zip with the desired folder name
-          // nestedZip.file(folderName + ".zip", mainZipContent);
-      
-          // // Generate the nested zip file
-          // nestedZip.generateAsync({ type: "blob" }).then(function (nestedZipContent) {
-            // Call the provided callback function with the nested zip content
-          // });
-          if (prefix === 'Fabrication_') {
-            setFabGuidePackage(mainZipContent);
-          } else if (prefix === 'Instruction_') {
-            setInstructResourcePackage(mainZipContent);
+      // Axios GET request
+      axios.get(url)
+        .then(response => {
+          // Handle the successful response here
+          if (response.data.user_id === null) {
+            showError("No Such Forum Thread Exists");
+          } else {
+            // console.log("Discourse Article Author: ", response.data.user_id);
+            // console.log("Discourse Article Title: ", response.data.title);
+            // const title = document.getElementById("title").value;
+            if (userID === response.data.user_id) {
+              clearError();
+              // alert("Creating Dataset.")
+              createDataset();
+            } else {
+              showError("The email address should match that of the forum thread's author.");
+            }
           }
+        })
+        .catch(error => {
+          // Handle errors here
+          console.log(error.response)
         });
-      });
     }
 
-    const handleThumbnailImage = (event) => {
-      setThumbnailImage(event.target.files[0])
-    }
-
-    const generateJSONObject = (typeName, multiple, typeClass, value) => {
-      var jsonObject = {};
-      jsonObject["typeName"] = typeName;
-      jsonObject["multiple"] = multiple;
-      jsonObject["typeClass"] = typeClass;
-      jsonObject["value"] = value;
-      return jsonObject;
-    }
-
+    // * Creates dataset once User, Thread are checked, submits through backend
     async function createDataset() {
-      const API_TOKEN = process.env.DATAVERSE_API_KEY;
-      const SERVER_URL = 'https://dataverse.lib.virginia.edu';
-      const PARENT = 'CADLibrary';
-
-      const headers = {
-        'Content-Type': 'application/json',
-        'X-Dataverse-key': API_TOKEN,
-      };
 
       // console.log(inputValues["title"])
       const discipline = document.getElementById("discipline").value;
@@ -461,16 +438,24 @@ const Submission = () => {
           }
       }
 
-      console.log(dataset)
+      // console.log(dataset)
 
-      const res = await axios.post(`${SERVER_URL}/api/dataverses/${PARENT}/datasets`, dataset, {
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+
+      // const res = await axios.post(`${DATAVERSE_URL}/api/dataverses/${PARENT}/datasets`, dataset, {
+      //   headers: headers
+      // })
+      const submitURL = `${SERVER_URL}/submit`;
+      const res = await axios.post(submitURL, dataset, {
         headers: headers
       })
       .then(data => {
-          console.log(data);
+          // console.log(data);
           const doi = data.data.data.persistentId;
           setDoi(doi);
-          console.log(doi);
+          // console.log(doi);
           navigate(`/success`);
       })
       .catch(error => {
@@ -478,77 +463,101 @@ const Submission = () => {
       });
     }
 
-    async function checkForThread(userID) {
-      const link = document.getElementById("discourseLink").value;
-      const segments = link.split('/');
-      const id = segments[segments.length-1];
-      console.log("id", id);
-
-      const url = `https://forum.cadlibrary.org/t/${id}.json`;
-
-      // Axios GET request
-      axios.get(url)
-        .then(response => {
-          // Handle the successful response here
-          if (response.data.user_id === null) {
-            showError("No Such Forum Thread Exists");
-          } else {
-            console.log("Discourse Article Author: ", response.data.user_id);
-            // console.log("Discourse Article Title: ", response.data.title);
-            // const title = document.getElementById("title").value;
-            if (userID === response.data.user_id) {
-              clearError();
-              // alert("Creating Dataset.")
-              createDataset();
-            } else {
-              showError("The email address should match that of the forum thread's author.");
-            }
-          }
-        })
-        .catch(error => {
-          // Handle errors here
-          console.log(error.response)
-        });
+    // * helper function for createDataset
+    const generateJSONObject = (typeName, multiple, typeClass, value) => {
+      var jsonObject = {};
+      jsonObject["typeName"] = typeName;
+      jsonObject["multiple"] = multiple;
+      jsonObject["typeClass"] = typeClass;
+      jsonObject["value"] = value;
+      return jsonObject;
     }
 
-    async function checkForUser() {
-      const userEmail = document.getElementById("contactEmail").value;
+    // * Handles uploaded files on user upload
+    const handleZipping = (event, prefix) => {
+      // console.log("Handling", prefix)
+      // console.log(event.target.files)
+      let file = event.target.files[0];
+      let folderName = prefix + replaceSpacesWithUnderscores(document.getElementById("title").value)
+      let renamedFile = new File([file], `${folderName}.zip`, { type: file.type });
+      // zip the files
+      var zip = new JSZip();
+      var mainZip = zip.folder(folderName)
 
-      const emailURL =  'https://feasible-amazingly-rat.ngrok-free.app/email';
+      // Array to store promises for each file
+      var promises = [];
 
-      // Axios POST request for security
-      axios.post(emailURL, {
-        email: userEmail
-      }).then(response => {
-        // console.log(response);
-        // console.log(response.data.message);
-        if (response.data.success) {
-          console.log(response.data.message);
-          // checkForThread(response.data.message);
-        } else {
-          showError(response.data.message)
-        }
-      })
-      .catch(error => {
-        // Handle errors here
-        console.log(error.response)
+      // Iterate over selected files and add them to the mainZip folder
+      // for (let i = 0; i < selectedFiles.length; i++) {
+      //   promises.push(addFileToZip(mainZip, selectedFiles[i]));
+      // }
+      promises.push(addFileToZip(mainZip, renamedFile));
+
+      Promise.all(promises).then(() => {
+        // Generate the main zip file
+        zip.generateAsync({ type: "blob" }).then(function (mainZipContent) {
+          // // Create a new instance of JSZip for the nested zip
+          // var nestedZip = new JSZip();
+      
+          // // Add the main zip file to the nested zip with the desired folder name
+          // nestedZip.file(folderName + ".zip", mainZipContent);
+      
+          // // Generate the nested zip file
+          // nestedZip.generateAsync({ type: "blob" }).then(function (nestedZipContent) {
+            // Call the provided callback function with the nested zip content
+          // });
+          if (prefix === 'Fabrication_') {
+            setFabGuidePackage(mainZipContent);
+          } else if (prefix === 'Instruction_') {
+            setInstructResourcePackage(mainZipContent);
+          }
+        });
       });
+    }
+
+    // * helper function for handleZipping
+    function addFileToZip(fabricationZip, file) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+    
+        // Read the content of the file
+        reader.onload = function (event) {
+          // Add the file to the fabricationZip folder
+          fabricationZip.file(file.name, event.target.result);
+    
+          // Resolve the promise once the file has been added
+          resolve();
+        };
+    
+        reader.readAsArrayBuffer(file);
+      });
+    }
+
+    // * helper function for handleZipping
+    const replaceSpacesWithUnderscores = (string) => {
+      // Use a regular expression to replace spaces with underscores
+      var resultString = string.replace(/ /g, '_');
+      return resultString;
+    }
+
+    const handleThumbnailImage = (event) => {
+      setThumbnailImage(event.target.files[0])
     }
 
     async function submitReview(doi) {
       const API_TOKEN = process.env.DATAVERSE_API_KEY;
-      const SERVER_URL = 'https://dataverse.lib.virginia.edu';
+      const DATAVERSE_URL = 'https://dataverse.lib.virginia.edu';
 
       const headers = {
         'Content-Type': 'application/json',
         'X-Dataverse-key': API_TOKEN,
       };
 
-      const res = await axios.post(`${SERVER_URL}/api/datasets/:persistentId/submitForReview?persistentId=${doi}`, {}, {
+      const res = await axios.post(`${DATAVERSE_URL}/api/datasets/:persistentId/submitForReview?persistentId=${doi}`, {}, {
         headers: headers
       })
       .then(data => {
-          console.log(data);
+          // console.log(data);
       })
       .catch(error => {
           console.error(error);
@@ -557,7 +566,7 @@ const Submission = () => {
     
     async function uploadFiles(doi) {
       const API_TOKEN = process.env.DATAVERSE_API_KEY;
-      const SERVER_URL = 'https://dataverse.lib.virginia.edu';
+      const DATAVERSE_URL = 'https://dataverse.lib.virginia.edu';
       const headers = {
         'X-Dataverse-key': API_TOKEN,
       };
@@ -567,11 +576,11 @@ const Submission = () => {
         formData.append('file', fabGuidePackage)
         formData.append('fileName', fabGuidePackage.name)
 
-        const res = await axios.post(`${SERVER_URL}/api/datasets/:persistentId/add?persistentId=${doi}`, formData, {
+        const res = await axios.post(`${DATAVERSE_URL}/api/datasets/:persistentId/add?persistentId=${doi}`, formData, {
           headers: headers
         })
         .then(data => {
-            console.log(data);
+            // console.log(data);
         })
         .catch(error => {
             console.error(error);
@@ -582,11 +591,11 @@ const Submission = () => {
         const formData2 = new FormData()
         formData2.append('file', instructResourcePackage)
         formData2.append('filename', instructResourcePackage.name)
-        const res2 = await axios.post(`${SERVER_URL}/api/datasets/:persistentId/add?persistentId=${doi}`, formData2, {
+        const res2 = await axios.post(`${DATAVERSE_URL}/api/datasets/:persistentId/add?persistentId=${doi}`, formData2, {
           headers: headers
         })
         .then(data => {
-            console.log(data);
+            // console.log(data);
         })
         .catch(error => {
             console.error(error);
@@ -597,11 +606,11 @@ const Submission = () => {
         const formData3 = new FormData()
         formData3.append('file', thumbnailImage)
         formData3.append('filename', thumbnailImage.name)
-        const res3 = await axios.post(`${SERVER_URL}/api/datasets/:persistentId/add?persistentId=${doi}`, formData3, {
+        const res3 = await axios.post(`${DATAVERSE_URL}/api/datasets/:persistentId/add?persistentId=${doi}`, formData3, {
           headers: headers
         })
         .then(data => {
-            console.log(data);
+            // console.log(data);
         })
         .catch(error => {
             console.error(error);
