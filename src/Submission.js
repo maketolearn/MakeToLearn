@@ -994,7 +994,6 @@ const Submission = () => {
                           </td>
                           <td>
                             <select name="Object Type" id="objectType">
-                              <option value=""></option>
                               <option value="static">static</option>
                               <option value="dynamic">dynamic</option>
                               <option value="interactive">interactive</option>
