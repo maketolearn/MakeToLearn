@@ -447,8 +447,8 @@ const Submission = () => {
       // const res = await axios.post(`${DATAVERSE_URL}/api/dataverses/${PARENT}/datasets`, dataset, {
       //   headers: headers
       // })
-      const submitURL = `${SERVER_URL}/submit`;
-      const res = await axios.post(submitURL, dataset, {
+      const BACKEND_URL = `${SERVER_URL}/submit`;
+      const res = await axios.post(BACKEND_URL, dataset, {
         headers: headers
       })
       .then(data => {
@@ -569,13 +569,14 @@ const Submission = () => {
         'doi': doi
       };
 
+      const BACKEND_URL = `${SERVER_URL}/file`;
+
       if (fabGuidePackage) {
         const formData = new FormData()
         formData.append('file', fabGuidePackage)
         formData.append('fileName', fabGuidePackage.name)
 
-      const submitURL = `${SERVER_URL}/file`;
-      const res = await axios.post(submitURL, 
+      const res = await axios.post(BACKEND_URL, 
         formData, {
           headers: headers
         })
@@ -591,8 +592,7 @@ const Submission = () => {
         const formData2 = new FormData()
         formData2.append('file', instructResourcePackage)
         formData2.append('filename', instructResourcePackage.name)
-        const submitURL = `${SERVER_URL}/file`;
-        const res2 = await axios.post(submitURL, 
+        const res2 = await axios.post(BACKEND_URL, 
           formData2, {
             headers: headers
           })
@@ -608,7 +608,8 @@ const Submission = () => {
         const formData3 = new FormData()
         formData3.append('file', thumbnailImage)
         formData3.append('filename', thumbnailImage.name)
-        const res3 = await axios.post(`${DATAVERSE_URL}/api/datasets/:persistentId/add?persistentId=${doi}`, formData3, {
+        const res3 = await axios.post(BACKEND_URL, 
+        formData3, {
           headers: headers
         })
         .then(data => {
