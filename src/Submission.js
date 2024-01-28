@@ -565,10 +565,8 @@ const Submission = () => {
     }
     
     async function uploadFiles(doi) {
-      const API_TOKEN = process.env.DATAVERSE_API_KEY;
-      const DATAVERSE_URL = 'https://dataverse.lib.virginia.edu';
       const headers = {
-        'X-Dataverse-key': API_TOKEN,
+        'doi': doi
       };
 
       if (fabGuidePackage) {
@@ -576,7 +574,9 @@ const Submission = () => {
         formData.append('file', fabGuidePackage)
         formData.append('fileName', fabGuidePackage.name)
 
-        const res = await axios.post(`${DATAVERSE_URL}/api/datasets/:persistentId/add?persistentId=${doi}`, formData, {
+      const submitURL = `${SERVER_URL}/file`;
+      const res = await axios.post(submitURL, 
+        formData, {
           headers: headers
         })
         .then(data => {
@@ -591,15 +591,17 @@ const Submission = () => {
         const formData2 = new FormData()
         formData2.append('file', instructResourcePackage)
         formData2.append('filename', instructResourcePackage.name)
-        const res2 = await axios.post(`${DATAVERSE_URL}/api/datasets/:persistentId/add?persistentId=${doi}`, formData2, {
-          headers: headers
-        })
-        .then(data => {
-            // console.log(data);
-        })
-        .catch(error => {
-            console.error(error);
-        });
+        const submitURL = `${SERVER_URL}/file`;
+        const res2 = await axios.post(submitURL, 
+          formData2, {
+            headers: headers
+          })
+          .then(data => {
+              // console.log(data);
+          })
+          .catch(error => {
+              console.error(error);
+          });
       }
       
       if (thumbnailImage) {
