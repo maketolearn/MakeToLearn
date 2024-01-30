@@ -474,7 +474,7 @@ const Submission = () => {
         setDoi(doi);
         // console.log(doi);
         if (!fabGuidePackage && !instructResourcePackage && !thumbnailImage) {
-          navigate(`/success`);
+          // navigate(`/success`);
         }
     })
     .catch(error => {
@@ -623,25 +623,29 @@ const Submission = () => {
 
   // * Submits review request once files are uploaded (also on data creation succes and DOI return)
   async function submitReview(doi) {
-    const API_TOKEN = process.env.DATAVERSE_API_KEY;
-    const DATAVERSE_URL = 'https://dataverse.lib.virginia.edu';
+    try{
+      const headers = {
+        'doi': doi
+      };
 
-    const headers = {
-      'Content-Type': 'application/json',
-      'X-Dataverse-key': API_TOKEN,
-    };
+      const BACKEND_URL = `${SERVER_URL}/review`;
 
-    const res = await axios.post(`${DATAVERSE_URL}/api/datasets/:persistentId/submitForReview?persistentId=${doi}`, {}, {
-      headers: headers
-    })
-    .then(data => {
-        // console.log(data);
-    })
-    .catch(error => {
-        console.error(error);
-    });
+      const res = await axios.post(BACKEND_URL, 
+      {}, {
+        headers: headers
+      })
+      .then(data => {
+          // console.log(data);
+      })
+
+      navigate(`/success`);
+
+    } catch (error) {
+      console.error(error);
+    }
   }
 
+  // * Tooltips for the fields
   const tooltips = {
     "discourseLink": "A link to a thread on the CAD Library Forum that corresponds to the object.",
 
