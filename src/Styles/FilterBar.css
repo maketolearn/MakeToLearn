@@ -41,3 +41,7 @@
 .filter-bar-labels {
     float:none;
 }
+
+label#checkbox {
+    white-space: nowrap;
+}
