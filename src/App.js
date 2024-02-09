@@ -21,6 +21,11 @@ const App = () => {
     navigate(`/browse`, {state: searchTerm});
   }
 
+  const redirectToInquire = (event) => {
+    event.preventDefault();
+    navigate(`/inquire`);
+  }
+
   return (
     <div>
       <body>
@@ -31,11 +36,7 @@ const App = () => {
 
           <div id="page">
             <p>
-            The <em>Educational CAD Model Library</em> is an extension of the <a href="https://citejournal.org/">CITE Journal</a>. In the same way that a peer-reviewed journal is a repository of peer-reviewed academic manuscripts, the <em>CAD Library</em> is a repository of peer-reviewed educational objects. The <em>CITE Journal</em> and the <em>CAD Library</em> are sponsored by the <a href="https://ntls.info/">NTLS Coalition</a> and affiliated professional associations. Each sponsoring association selects the editors, curators, and review boards for its area of expertise. The educational objects on this site are licensed under a <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
-            </p>
-
-            <p>
-              We welcome <Link to="/inquire">submission</Link> of educational objects designed for K-12 teaching and learning for review and publication in the <em>CAD Library</em>.
+            The <em>Educational CAD Model Library</em> is an extension of the <a href="https://citejournal.org/">CITE Journal</a>. In the same way that a peer-reviewed journal is a repository of peer-reviewed academic manuscripts, the <em>CAD Library</em> is a repository of peer-reviewed educational objects. The <em>CITE Journal</em> and the <em>CAD Library</em> are sponsored by the <a href="https://ntls.info/">NTLS Coalition</a> and affiliated professional associations. Each sponsoring association selects the editors, curators, and review boards for its area of expertise.
             </p>
 
             <ul>
@@ -45,6 +46,18 @@ const App = () => {
               <li>Curator, Technology Collection - <Link to="/people/Elizabeth-Whitewolf">Elizabeth Whitewolf</Link></li>
               <li>Curator, Engineering Education Collection - <Link to="/people/Ryan-Novitski">Ryan Novitski</Link></li>
             </ul>
+
+            <p>
+              We welcome <Link to="/inquire">inquiries</Link> regarding the submission of educational objects designed for K-12 teaching and learning for publication in the <em>CAD Library</em>. If you have designed an educational object and you are interested in submitting it to the library, click the Inquire button below for more information.
+            </p>
+
+            <button className='button' onClick={redirectToInquire}>Inquire about the Submission of an Object</button>
+
+            <br></br>
+
+            <p>
+              The educational objects on this site are licensed under a <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+            </p>
             
           </div>
         </div>

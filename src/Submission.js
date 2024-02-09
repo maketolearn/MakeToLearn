@@ -25,7 +25,7 @@ const Submission = () => {
 
     const [doi, setDoi] = useState("");
 
-    const [loggedIn, setLoggedIn] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(true);
 
     useEffect(() => {
       // Access the URL query parameters
@@ -48,6 +48,18 @@ const Submission = () => {
       }
     }, [doi]);
 
+    const handleGradeChange = (option) => {
+      const isSelected = gradesSelected.includes(option);
+      let updated = [];
+      if(isSelected) {
+        updated = gradesSelected.filter((filter) => filter !== option);
+      } 
+      else {
+        updated = [...gradesSelected, option];
+      }
+      setGradesSelected(updated);
+      console.log(gradesSelected)
+    }
 
     async function discourseAuth() {
       const authURL = 'https://feasible-amazingly-rat.ngrok-free.app/auth';
@@ -859,7 +871,7 @@ const Submission = () => {
                             <div class="grade-checkboxes">
                               {grades.map((grade) =>
                               <label id="checkbox" key={grade}>
-                                  <input className="subject-filter" type="checkbox" onChange={() => setGradesSelected([...gradesSelected, grade], console.log(gradesSelected))}>
+                                  <input className="subject-filter" type="checkbox" checked={gradesSelected.includes(grade)} onChange={() => handleGradeChange(grade)}>
                                   </input>
                                   {grade}
                               </label> 
