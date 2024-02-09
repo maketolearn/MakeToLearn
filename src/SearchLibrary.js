@@ -70,37 +70,56 @@ const SearchLibrary = () => {
 
   const pullAllCards = async() => {
     //pull all dois
-    axios.get("https://dataverse.lib.virginia.edu/api/dataverses/CADLibrary/contents")
-    .then((response) => {
-    for(var i = 0; i < response.data.data.length; i += 1){
-        dois.push(response.data.data[i].identifier);
-    }
+    const mainGet = axios.get("https://dataverse.lib.virginia.edu/api/dataverses/CADLibrary/contents");
+    const scienceGet = axios.get("https://dataverse.lib.virginia.edu/api/dataverses/CADLibraryScience/contents");
+    const techGet = axios.get("https://dataverse.lib.virginia.edu/api/dataverses/CADLibraryTechnology/contents");
+    const engineeringGet = axios.get("https://dataverse.lib.virginia.edu/api/dataverses/CADLibraryEngineering/contents");
+    const mathGet = axios.get("https://dataverse.lib.virginia.edu/api/dataverses/CADLibraryMath/contents");
 
-    dois.forEach(doi => {
-        axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ doi)
-        .then(object => {
-            title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
-            author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
-            desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
 
-            let imgID = -1
-            let files = object.data.data.latestVersion.files
+    Promise.all([mainGet, scienceGet, techGet, engineeringGet, mathGet]).then((responses) => {
+      let mainResp = responses[1]
+      // console.log(mainResp)
 
-            for (let i = 0; i < files.length; i++) {
-                if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
-                    imgID = files[i].dataFile.id
-                }
-            }
+      for(var i = 0; i < mainResp.data.data.length; i += 1){
+          if (mainResp.data.data[i].type === 'dataset') {
+            dois.push(mainResp.data.data[i].identifier);
+          }
+      }
 
-            imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
+      for (var i = 1; i < responses.length; i += 1) {
+        for (var j = 0; j < responses[i].data.data.length; j += 1) {
+          dois.push(responses[i].data.data[j].identifier);
+        }
+      }
+      
+      dois = Array.from(new Set(dois));
 
-            objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
-            let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
-            setSearchObjects(sortedObjects);
-            setFilterObjects(sortedObjects);
-        })
-        .catch((error) => console.log("Error: ", error));
-    })
+      dois.forEach(doi => {
+          axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId=doi:10.18130/"+ doi)
+          .then(object => {
+              title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value;
+              author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value;
+              desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value;
+
+              let imgID = -1
+              let files = object.data.data.latestVersion.files
+
+              for (let i = 0; i < files.length; i++) {
+                  if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
+                      imgID = files[i].dataFile.id
+                  }
+              }
+
+              imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID;
+
+              objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doi}, ...objects];
+              let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
+              setSearchObjects(sortedObjects);
+              setFilterObjects(sortedObjects);
+          })
+          .catch((error) => console.log("Error: ", error));
+      })
     })
     .catch((error) => console.log("Error: ", error))
   }
