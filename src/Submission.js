@@ -191,20 +191,17 @@ const Submission = () => {
     // ! TODO add apt collections when new dataverse collections are added  
     if (discipline === "Science") {
       curator = "Sumreen Asim";
-      collection = "";
+      collection = "CADLibraryScience";
     } else if (discipline === "Technology") {
       curator = "Elizabeth Whitewolf";
-      collection = "";
+      collection = "CADLibraryTechnology";
     } else if (discipline === "Engineering") {
       curator = "Ryan Novitski";
-      collection = "";
+      collection = "CADLibraryEngineering";
     } else if (discipline === "Mathematics") {
       curator = "Steven Greenstein";
-      collection = "";
+      collection = "CADLibraryMath";
     }
-
-    // ! TODO remove when new dataverse collections are added  
-    collection = "CADLibrary";
 
     // need to parse through multi-field entries
     // multiple authors
