@@ -31,6 +31,7 @@ const Subject = ({ subjectArg }) => {
   let dois = [];
   let objects = [];
   let equipmentList = [];
+  let formattedEquipmentList = [];
   let subjectCapitalized = subject.charAt(0).toUpperCase() + subject.slice(1);
 
   useEffect(() => {
@@ -56,7 +57,25 @@ const Subject = ({ subjectArg }) => {
       facets.fabEquipment_ss.labels.forEach(equipment => {
         // console.log(Object.keys(equipment)[0])
         equipmentList =  [Object.keys(equipment)[0], ...equipmentList];
-        setFabEquipment(equipmentList);
+        equipmentList.forEach(equipment => {
+          let words = equipment.split(" ")
+          for (let i = 0; i < words.length; i++) {
+            words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+          }
+          let updatedWord = words.join(" ")
+          formattedEquipmentList.push(updatedWord)
+        })
+
+        formattedEquipmentList = [...new Set(formattedEquipmentList)]
+        let filteredItems = []
+        formattedEquipmentList.forEach(item => {
+          if(item.includes("3d Printer")){
+            filteredItems.push(item)
+            formattedEquipmentList.pop(item)
+          }
+        })
+
+        setFabEquipment(formattedEquipmentList);
       })
       // console.log(fabEquipment)
     })
