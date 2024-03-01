@@ -335,7 +335,7 @@ const Submission = () => {
                   "typeName": "productionDate",
                   "multiple": false,
                   "typeClass": "primitive",
-                  "value": "2023-11-03"
+                  "value": new Date().toJSON().slice(0, 10),
                 },
                 {
                   "typeName": "contributor",
