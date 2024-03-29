@@ -65,18 +65,19 @@ const Subject = ({ subjectArg }) => {
           let updatedWord = words.join(" ")
           formattedEquipmentList.push(updatedWord)
         })
+      })
 
-        formattedEquipmentList = [...new Set(formattedEquipmentList)]
-        let filteredItems = []
-        formattedEquipmentList.forEach(item => {
-          if(item.includes("3d Printer")){
-            filteredItems.push(item)
-            formattedEquipmentList.pop(item)
-          }
-        })
+      formattedEquipmentList = [...new Set(formattedEquipmentList)]
+      let filteredItems = []
+      for (let i = 0; i < formattedEquipmentList.length; i++) {
+        if(formattedEquipmentList[i].includes("3d Printer") || formattedEquipmentList[i].includes("3d Printer Optional")){
+          filteredItems.push(formattedEquipmentList[i])
+          formattedEquipmentList.splice(i, 2)
+        }
+      }
+
 
         setFabEquipment(formattedEquipmentList);
-      })
       // console.log(fabEquipment)
     })
     .catch((error) => console.log("Error: ", error));
