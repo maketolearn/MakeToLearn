@@ -1,21 +1,22 @@
 import React from 'react';
 import ObjectCard from './ObjectCard';
 
-const SearchResultDisplay = ({ searchObjects, searchPhrase, cardDisplay, subject }) => {
+const SearchResultDisplay = ({ loading, searchObjects, searchPhrase, cardDisplay, subject }) => {
 
     let objectsNum = searchObjects.length;
     if (subject === "science") {
         objectsNum += 1;
     }
 
-    const noResults = (objectsNum === 0);
+    // const noResults = (objectsNum === 0);
     const oneResult = (objectsNum === 1);
+    const multResult = (objectsNum > 1);
 
     return (
         <div>
             <div>
                 {searchPhrase ? <p>We couldn't find "{searchPhrase}," but you may be interested in these:</p> : <p> </p>}
-                {noResults ? <p>No results found</p> : oneResult ? <p>1 result</p>  : <p>{objectsNum} results</p>}
+                {oneResult ? <p>1 result</p> : loading ? <p>Loading...</p> : multResult ? <p>{objectsNum} results</p> : <p>No results found</p>}
                 <div class={cardDisplay}>
                     {searchObjects.map((object, i) => (
                         <ObjectCard objImageUrl={object.imgUrl} objTitle={object.title} objAuthor={object.author} objDescription={object.desc} doi={object.doi} key={i} />

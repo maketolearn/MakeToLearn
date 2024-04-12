@@ -23,6 +23,8 @@ const Subject = ({ subjectArg }) => {
   // const fabEquipment = ['Scissors', 'Die Cutter', 'Laser Cutter', '3D Printer']
 
   const [filters, setFilters] = useState([]);
+  const [noObjects, setNoObjects] = useState();
+  const isLoading = noObjects == undefined;
 
   let imgUrl = "";
   let title = "";
@@ -86,6 +88,7 @@ const Subject = ({ subjectArg }) => {
     if (subjectCapitalized === "Mathematics") {
       subjectCapitalized = "Math";
     }
+    setNoObjects(undefined);
     axios.get(`https://dataverse.lib.virginia.edu/api/dataverses/CADLibrary${subjectCapitalized}/contents`)
     .then((response) => {
     for(var i = 0; i < response.data.data.length; i += 1){
@@ -114,6 +117,7 @@ const Subject = ({ subjectArg }) => {
           let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
           setSearchObjects(sortedObjects);
           setFilterObjects(sortedObjects);
+          setNoObjects(false);
         })
         .catch((error) => console.log("Error: ", error));
     })
@@ -129,6 +133,7 @@ const Subject = ({ subjectArg }) => {
       return;
     }
     try {
+        setNoObjects(undefined);
         axios.get('https://dataverse.lib.virginia.edu/api/search?type=dataset&per_page=30&subtree=CADLibrary&q="' + searchTerm + '"')
         .then((response) => {
           if (response.data.data.count_in_response === 0) {
@@ -175,6 +180,7 @@ const Subject = ({ subjectArg }) => {
                 console.log("Sorted")
                 setSearchObjects(sortedObjects);
                 setFilterObjects(sortedObjects);
+                setNoObjects(false);
               }
             })
             .catch((error) => console.log("Error: ", error));
@@ -195,11 +201,13 @@ const Subject = ({ subjectArg }) => {
       return;
     }
     try {
+        setNoObjects(undefined);
         axios.get('https://dataverse.lib.virginia.edu/api/search?type=dataset&per_page=30&subtree=CADLibrary&q=' + searchTerm)
         .then((response) => {
           if (response.data.data.count_in_response === 0) {
               objects = [];
               setSearchObjects(objects);
+              setNoObjects(true);
               return;
           }
           setSearchPhrase(searchTerm);
@@ -238,6 +246,7 @@ const Subject = ({ subjectArg }) => {
                 let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
                 setSearchObjects(sortedObjects);
                 setFilterObjects(sortedObjects);
+                setNoObjects(false);
               }
             })
             .catch((error) => console.log("Error: ", error));
@@ -264,6 +273,7 @@ const Subject = ({ subjectArg }) => {
     });
 
     let resultsFound = false;
+    setNoObjects(undefined);
 
     dois.forEach(doi => {
       // console.log(doi);
@@ -348,6 +358,9 @@ const Subject = ({ subjectArg }) => {
             // console.log(sortedObjects);
             setSearchObjects(sortedObjects);
             // console.log(searchObjects);
+            setNoObjects(false);
+          } else if (!resultsFound) {
+            setNoObjects(true);
           }
         })
       .catch((error) => console.log("Error: ", error));
@@ -394,7 +407,7 @@ const Subject = ({ subjectArg }) => {
 
             <div class={resultsDisplay}>
                 {showComponent && <FilterBarSubject filters={filters} fabEquipment={fabEquipment} grades={grades} onFilterChange={(handleFilterChange)}></FilterBarSubject>}
-                <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={cardDisplay} subject={subjectArg}></SearchResultDisplay>
+                <SearchResultDisplay loading={isLoading} searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={cardDisplay} subject={subjectArg}></SearchResultDisplay>
             </div>
             {/* <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={"cards-no-filter"} subject={subjectArg} ></SearchResultDisplay> */}
           </div>
