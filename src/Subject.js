@@ -68,10 +68,8 @@ const Subject = ({ subjectArg }) => {
       })
 
       formattedEquipmentList = [...new Set(formattedEquipmentList)]
-      let filteredItems = []
       for (let i = 0; i < formattedEquipmentList.length; i++) {
         if(formattedEquipmentList[i].includes("3d Printer") || formattedEquipmentList[i].includes("3d Printer Optional")){
-          filteredItems.push(formattedEquipmentList[i])
           formattedEquipmentList.splice(i, 2)
         }
       }
