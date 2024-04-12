@@ -31,6 +31,7 @@ const SearchLibrary = () => {
   let dois = [];
   let objects = [];
   let equipmentList = [];
+  let formattedEquipmentList = [];
 
   useEffect(() => {
     setSearchObjects([]);
@@ -57,11 +58,27 @@ const SearchLibrary = () => {
     .then((response) => {
       let facets = response.data.data.facets[0];
       
-      //setting facets for fab equipment
       facets.fabEquipment_ss.labels.forEach(equipment => {
         // console.log(Object.keys(equipment)[0])
         equipmentList =  [Object.keys(equipment)[0], ...equipmentList];
-        setFabEquipment(equipmentList);
+        equipmentList.forEach(equipment => {
+          let words = equipment.split(" ")
+          for (let i = 0; i < words.length; i++) {
+            words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+          }
+          let updatedWord = words.join(" ")
+          formattedEquipmentList.push(updatedWord)
+        })
+
+        
+      formattedEquipmentList = [...new Set(formattedEquipmentList)]
+      for (let i = 0; i < formattedEquipmentList.length; i++) {
+        if(formattedEquipmentList[i].includes("3d Printer") || formattedEquipmentList[i].includes("3d Printer Optional")){
+          formattedEquipmentList.splice(i, 2)
+        }
+      }
+
+        setFabEquipment(formattedEquipmentList);
       })
       // console.log(fabEquipment)
     })
