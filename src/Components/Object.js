@@ -300,7 +300,7 @@ const Object = () => {
 
                             <div class="desktop-object">
                                 <img id="img-single" src={imgUrl} alt="Object Thumbnail Not Found" align="left"></img>
-                                {introSentence}
+                                {parser(`${introSentence}`)}
                                 <br></br>
                                 <br></br>
 
