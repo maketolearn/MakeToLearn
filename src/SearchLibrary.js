@@ -23,6 +23,8 @@ const SearchLibrary = () => {
   const [fabEquipment, setFabEquipment] = useState([]);
   
   const [filters, setFilters] = useState([]);
+  const [noObjects, setNoObjects] = useState();
+  const isLoading = noObjects == undefined;
 
   let imgUrl = "";
   let title = "";
@@ -93,7 +95,7 @@ const SearchLibrary = () => {
     const engineeringGet = axios.get("https://dataverse.lib.virginia.edu/api/dataverses/CADLibraryEngineering/contents");
     const mathGet = axios.get("https://dataverse.lib.virginia.edu/api/dataverses/CADLibraryMath/contents");
 
-
+    setNoObjects(undefined);
     Promise.all([mainGet, scienceGet, techGet, engineeringGet, mathGet]).then((responses) => {
       let mainResp = responses[1]
       // console.log(mainResp)
@@ -134,6 +136,7 @@ const SearchLibrary = () => {
               let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
               setSearchObjects(sortedObjects);
               setFilterObjects(sortedObjects);
+              setNoObjects(false);
           })
           .catch((error) => console.log("Error: ", error));
       })
@@ -157,6 +160,7 @@ const SearchLibrary = () => {
       axios_text = "https://dataverse.lib.virginia.edu/api/dataverses/CADLibraryTechnology/contents";
     }
     try {
+        setNoObjects(undefined);
         axios.get(axios_text)
         .then((response) => {
           let axios_doi_text = "";
@@ -207,7 +211,7 @@ const SearchLibrary = () => {
                 let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
                 setSearchObjects(sortedObjects);
                 setFilterObjects(sortedObjects);
-              
+                setNoObjects(false);
             })
             .catch((error) => console.log("Error: ", error));
           })
@@ -227,12 +231,13 @@ const SearchLibrary = () => {
       return;
     }
     try {
+      setNoObjects(undefined);
       axios.get('https://dataverse.lib.virginia.edu/api/search?type=dataset&per_page=30&subtree=CADLibrary&q=' + searchTerm)
       .then((response) => {
         if (response.data.data.count_in_response === 0) {
           objects = [];
           setSearchObjects(objects);
-          searchByKeyword();
+          setNoObjects(true);
           return;
         }
         setSearchPhrase(searchTerm);
@@ -264,7 +269,7 @@ const SearchLibrary = () => {
               let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
               setSearchObjects(sortedObjects);
               setFilterObjects(sortedObjects);
-            
+              setNoObjects(false);
           })
           .catch((error) => console.log("Error: ", error));
         })
@@ -290,6 +295,7 @@ const SearchLibrary = () => {
     });
 
     let resultsFound = false;
+    setNoObjects(undefined);
 
     dois.forEach(doi => {
       // console.log(doi);
@@ -374,6 +380,9 @@ const SearchLibrary = () => {
             // console.log(sortedObjects);
             setSearchObjects(sortedObjects);
             // console.log(searchObjects);
+            setNoObjects(false);
+          } else if (!resultsFound) {
+            setNoObjects(true);
           }
         })
       .catch((error) => console.log("Error: ", error));
@@ -417,7 +426,7 @@ const SearchLibrary = () => {
           <div id="page">
             <div class={resultsDisplay}>
                 {showComponent && <div><FilterBar filters={filters} subjects={subjects} fabEquipment={fabEquipment} grades ={grades} onFilterChange={(handleFilterChange)}></FilterBar></div>}
-                <SearchResultDisplay searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={cardDisplay}></SearchResultDisplay>
+                <SearchResultDisplay loading={isLoading} searchObjects={searchObjects} searchPhrase={searchPhrase} cardDisplay={cardDisplay}></SearchResultDisplay>
             </div>
           </div>  
         </div>
