@@ -66,7 +66,7 @@ const Subject = ({ subjectArg }) => {
             })
             formattedEquipmentList = [...new Set(formattedEquipmentList)]
             for(let i = 0; i < formattedEquipmentList.length; i++) {
-                if(formattedEquipmentList[i].includes("3d Printer") || formattedEquipmentList[i].includes("3d Printer Optional")){
+                if(formattedEquipmentList[i].includes("3d Printer") || formattedEquipmentList[i].includes("3d Printer Optional")) {
                     formattedEquipmentList.splice(i, 2)
                 }
             }
@@ -77,13 +77,13 @@ const Subject = ({ subjectArg }) => {
 
     const pullAllCards = async() => {
         // Pull all dois
-        if (subjectCapitalized === "Mathematics") {
+        if(subjectCapitalized === "Mathematics") {
             subjectCapitalized = "Math"
         }
         setNoObjects(undefined)
         axios.get(`https://dataverse.lib.virginia.edu/api/dataverses/CADLibrary${subjectCapitalized}/contents`)
         .then((response) => {
-            for(var i = 0; i < response.data.data.length; i += 1){
+            for(var i = 0; i < response.data.data.length; i += 1) {
                 dois.push(response.data.data[i].identifier)
             }
             dois.forEach(doi => {
@@ -95,8 +95,8 @@ const Subject = ({ subjectArg }) => {
 
                     let imgID = -1
                     let files = object.data.data.latestVersion.files
-                    for (let i = 0; i < files.length; i++) {
-                        if (files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg"){
+                    for(let i = 0; i < files.length; i++) {
+                        if(files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg") {
                             imgID = files[i].dataFile.id
                         }
                     }
@@ -116,7 +116,7 @@ const Subject = ({ subjectArg }) => {
 
     const searchByPhrase = async() => {
         // In case of empty search, return all
-        if (searchTerm === "") {
+        if(searchTerm === "") {
             pullAllCards()
             setSearchPhrase(searchTerm)
             return
@@ -207,35 +207,35 @@ const Subject = ({ subjectArg }) => {
                 }
 
                 dois.forEach(doi => {
-                axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId="+ doi)
-                .then(object => {
-                    let educationalCADBlock = object.data.data.latestVersion.metadataBlocks.educationalcad.fields
-                    let educationCADMetadata = {}
-                    for(let i = 0; i < educationalCADBlock.length; i++) {
-                        let key = educationalCADBlock[i].typeName
-                        educationCADMetadata[key] = educationalCADBlock[i].value
-                    }
-
-                    if(educationCADMetadata["disciplines"][0].discipline.value === subjectCapitalized) {
-                        title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value
-                        author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value
-                        desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value
-
-                        let imgID = -1
-                        let files = object.data.data.latestVersion.files
-                        for(let i = 0; i < files.length; i++) {
-                            if(files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg") {
-                                imgID = files[i].dataFile.id
-                            }
+                    axios.get("https://dataverse.lib.virginia.edu/api/datasets/:persistentId/?persistentId="+ doi)
+                    .then(object => {
+                        let educationalCADBlock = object.data.data.latestVersion.metadataBlocks.educationalcad.fields
+                        let educationCADMetadata = {}
+                        for(let i = 0; i < educationalCADBlock.length; i++) {
+                            let key = educationalCADBlock[i].typeName
+                            educationCADMetadata[key] = educationalCADBlock[i].value
                         }
 
-                        imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID
-                        let doiIdentifier = doi.substring(13)
-                        objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doiIdentifier}, ...objects]
-                        let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
-                        setSearchObjects(sortedObjects)
-                        setFilterObjects(sortedObjects)
-                        setNoObjects(false)
+                        if(educationCADMetadata["disciplines"][0].discipline.value === subjectCapitalized) {
+                            title = object.data.data.latestVersion.metadataBlocks.citation.fields[0].value
+                            author = object.data.data.latestVersion.metadataBlocks.citation.fields[1].value[0].authorName.value
+                            desc = object.data.data.latestVersion.metadataBlocks.citation.fields[3].value[0].dsDescriptionValue.value
+
+                            let imgID = -1
+                            let files = object.data.data.latestVersion.files
+                            for(let i = 0; i < files.length; i++) {
+                                if(files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg") {
+                                    imgID = files[i].dataFile.id
+                                }
+                            }
+
+                            imgUrl = "https://dataverse.lib.virginia.edu/api/access/datafile/" + imgID
+                            let doiIdentifier = doi.substring(13)
+                            objects = [{imgUrl: imgUrl, title: title, author: author, desc: desc, doi: doiIdentifier}, ...objects]
+                            let sortedObjects = objects.sort((obj1, obj2) => (obj1.title > obj2.title) ? 1 : (obj1.title < obj2.title) ? -1 : 0)
+                            setSearchObjects(sortedObjects)
+                            setFilterObjects(sortedObjects)
+                            setNoObjects(false)
                         }
                     })
                     .catch((error) => console.log("Error: ", error))
@@ -318,7 +318,7 @@ const Subject = ({ subjectArg }) => {
 
                     let imgID = -1
                     let files = object.data.data.latestVersion.files
-                    for (let i = 0; i < files.length; i++) {
+                    for(let i = 0; i < files.length; i++) {
                         if(files[i].label.toLowerCase().slice(-3) === "png" || files[i].label.toLowerCase().slice(-3) === "jpg" || files[i].label.toLowerCase().slice(-4) === "jpeg") {
                             imgID = files[i].dataFile.id
                         }
@@ -336,7 +336,7 @@ const Subject = ({ subjectArg }) => {
             .catch((error) => console.log("Error: ", error))
         })
 
-        if(!resultsFound){
+        if(!resultsFound) {
             setSearchObjects([])
         }
     }
